@@ -1,0 +1,7 @@
+AuthType Basic
+AuthName "/www/r.oblax.ru/webstat"
+AuthUserFile /var/www/roblaxru/data/etc/30670855.passwd
+DirectoryIndex index.html
+<Limit GET POST>
+	require valid-user
+</Limit>

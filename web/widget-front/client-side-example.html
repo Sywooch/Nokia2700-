@@ -1,0 +1,19 @@
+<textarea style="width: 100%; height: 370px;" readonly>
+<script type="text/javascript">
+(function (d, w) {
+	var robax_widget='robax-'+'<{key}>';
+	var n = d.getElementsByTagName("script")[0],
+		s = d.createElement("script"),
+		c = function () {w['robax_widget'+robax_widget]=new RobaxWidget({id:robax_widget,key:'<{key}>',w:w});},
+		f = function () {n.parentNode.insertBefore(s, n); d.getElementById(robax_widget).onload=c;};
+		s.id=robax_widget;
+		s.type = "text/javascript";
+		s.async = true;
+		s.src = "//r.oblax.ru/widget-front/robax.js";
+	if (w.opera == "[object Opera]") {
+		d.addEventListener("DOMContentLoaded", f, false);
+	} else { f(); }
+})
+(document, window);
+</script>
+</textarea>

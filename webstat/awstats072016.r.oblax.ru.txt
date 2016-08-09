@@ -1,0 +1,376 @@
+AWSTATS DATA FILE 7.1 (build 1.983)
+# If you remove this file, all statistics for date 201607 will be lost/reset.
+# Last config file used to build this data file was /etc/awstats/awstats.r.oblax.ru.conf.
+
+# Position (offset in bytes) in this file for beginning of each section for
+# direct I/O access. If you made changes somewhere in this file, you should
+# also remove completely the MAP section (AWStats will rewrite it at next
+# update).
+BEGIN_MAP 27
+POS_GENERAL 1990                
+POS_TIME 2672                
+POS_VISITOR 11019               
+POS_DAY 11170               
+POS_DOMAIN 3527                
+POS_LOGIN 3761                
+POS_ROBOT 3916                
+POS_WORMS 4222                
+POS_EMAILSENDER 4353                
+POS_EMAILRECEIVER 4496                
+POS_SESSION 11423               
+POS_SIDER 11608               
+POS_FILETYPES 4631                
+POS_DOWNLOADS 4897                
+POS_OS 4984                
+POS_BROWSER 5174                
+POS_SCREENSIZE 5733                
+POS_UNKNOWNREFERER 5807                
+POS_UNKNOWNREFERERBROWSER 5894                
+POS_ORIGIN 5976                
+POS_SEREFERRALS 6122                
+POS_PAGEREFS 6266                
+POS_SEARCHWORDS 9314                
+POS_KEYWORDS 9466                
+POS_MISC 2334                
+POS_ERRORS 9525                
+POS_CLUSTER 3617                
+POS_SIDER_404 9683                
+END_MAP
+
+# LastLine    = Date of last record processed - Last record line number in last log - Last record offset in last log - Last record signature value
+# FirstTime   = Date of first visit for history file
+# LastTime    = Date of last visit for history file
+# LastUpdate  = Date of last update - Nb of parsed records - Nb of parsed old records - Nb of parsed new records - Nb of parsed corrupted - Nb of parsed dropped
+# TotalVisits = Number of visits
+# TotalUnique = Number of unique visitors
+# MonthHostsKnown   = Number of hosts known
+# MonthHostsUnKnown = Number of hosts unknown
+BEGIN_GENERAL 8
+LastLine 20160731152643 1415 414724 31923709358698
+FirstTime 20160722182017
+LastTime 20160731144148
+LastUpdate 20160731160103 3 0 3 0 0
+TotalVisits 22                  
+TotalUnique 1                   
+MonthHostsKnown 0                   
+MonthHostsUnknown 1                   
+END_GENERAL
+
+# Misc ID - Pages - Hits - Bandwidth
+BEGIN_MISC 10
+QuickTimeSupport 0 0 0
+JavaEnabled 0 0 0
+JavascriptDisabled 0 0 0
+PDFSupport 0 0 0
+WindowsMediaPlayerSupport 0 0 0
+AddToFavourites 0 314 0
+RealPlayerSupport 0 0 0
+TotalMisc 0 0 0
+DirectorSupport 0 0 0
+FlashSupport 0 0 0
+END_MISC
+
+# Hour - Pages - Hits - Bandwidth - Not viewed Pages - Not viewed Hits - Not viewed Bandwidth
+BEGIN_TIME 24
+0 516 548 1354515 11 15 42913
+1 415 422 79391 7 8 48517
+2 422 424 43532 5 6 5853
+3 267 269 83226 9 11 11679
+4 267 275 40129 3 3 5821
+5 364 403 626085 8 14 48390
+6 305 327 460036 21 29 162700
+7 249 253 113462 7 7 9808
+8 327 330 271189 2 3 3224
+9 380 409 229842 11 14 186613
+10 595 1880 10821879 31 102 680329
+11 608 1270 14125217 36 60 225454
+12 606 963 5817551 35 76 1142452
+13 661 1432 6511510 29 79 1087157
+14 694 2025 7191008 46 102 678908
+15 340 1534 7562384 75 143 501915
+16 384 1189 5296701 38 73 116995
+17 350 936 3293166 31 50 314496
+18 285 742 1822388 30 38 1482923
+19 303 868 577220 19 48 944357
+20 340 664 584605 12 20 650436
+21 285 403 1315201 17 32 437151
+22 309 407 1935398 27 46 70705
+23 265 295 291663 4 7 18178
+END_TIME
+
+# Domain - Pages - Hits - Bandwidth
+# The 10 first Pages must be first (order not required for others)
+BEGIN_DOMAIN 1
+ip 9537 18268 69343906
+END_DOMAIN
+
+# Cluster ID - Pages - Hits - Bandwidth
+BEGIN_CLUSTER 0
+END_CLUSTER
+
+# Login - Pages - Hits - Bandwidth - Last visit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_LOGIN 0
+END_LOGIN
+
+# Robot ID - Hits - Bandwidth - Last visit - Hits on robots.txt
+# The 10 first Hits must be first (order not required for others)
+BEGIN_ROBOT 5
+yandex 61 401190 20160731152643 5
+googlebot 52 72905 20160731145932 5
+favicon 20 79380 20160731150810 0
+bingbot 8 70599 20160727004933 3
+bingpreview 4 45174 20160727015043 0
+END_ROBOT
+
+# Worm ID - Hits - Bandwidth - Last visit
+# The 5 first Hits must be first (order not required for others)
+BEGIN_WORMS 0
+END_WORMS
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first Hits must be first (order not required for others)
+BEGIN_EMAILSENDER 0
+END_EMAILSENDER
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first hits must be first (order not required for others)
+BEGIN_EMAILRECEIVER 0
+END_EMAILRECEIVER
+
+# Files type - Hits - Bandwidth - Bandwidth without compression - Bandwidth after compression
+BEGIN_FILETYPES 10
+css 3166 10684165 0 0
+mp3 18 1364334 0 0
+png 17 49080 0 0
+woff2 39 324504 0 0
+woff 4 46848 0 0
+map 17 5449178 0 0
+html 169 2734709 0 0
+jpg 396 275730 0 0
+js 5134 29940969 0 0
+Unknown 9308 18474389 0 0
+END_FILETYPES
+
+# Downloads - Hits - Bandwidth
+BEGIN_DOWNLOADS 1
+/widget-front/open_1.mp3 11 80 1364334
+END_DOWNLOADS
+
+# OS ID - Hits
+BEGIN_OS ID - Hits - Pages 8
+macosx 2195 863
+linuxandroid 570 233
+winxp 5948 5937
+win2003 10 8
+winnt 7754 879
+linux 570 492
+winvista 14 10
+win7 1287 1115
+END_OS
+
+# Browser ID - Hits - Pages
+BEGIN_BROWSER 24
+safari7.0 6 4
+chrome19.0.1084.5402 7 5
+android 213 196
+chrome49.0.2623.110 7 5
+chrome31.0.1650.57 10 8
+chrome31.0.1650.63 10 8
+chrome53.0.2785.34 492 351
+firefox47.0 618 531
+chrome51.0.2704.103 8911 1837
+chrome46.0.2490.76 300 14
+chrome51.0.2704.81 45 15
+nokia 5 4
+chrome52.0.2743.82 842 330
+safari9.0 735 155
+mozilla 42 36
+firefox25.0 15 12
+chrome45.0.2454.101 6 4
+chrome51.0.2704.106 130 82
+netscape5.0 1 1
+chrome42.0.2311.109 6 4
+msie10.0 5 4
+chrome27.0.1453 12 8
+chrome49.0.2623.112 5924 5919
+safari 6 4
+END_BROWSER
+
+# Screen size - Hits
+BEGIN_SCREENSIZE 0
+END_SCREENSIZE
+
+# Unknown referer OS - Last visit date
+BEGIN_UNKNOWNREFERER 0
+END_UNKNOWNREFERER
+
+# Unknown referer Browser - Last visit date
+BEGIN_UNKNOWNREFERERBROWSER 0
+END_UNKNOWNREFERERBROWSER
+
+# Origin - Pages - Hits 
+BEGIN_ORIGIN 6
+From0 255 266
+From1 0 0
+From2 0 0
+From3 8151 8426
+From4 1131 9656
+From5 0 0
+END_ORIGIN
+
+# Search engine referers ID - Pages - Hits
+BEGIN_SEREFERRALS 0
+END_SEREFERRALS
+
+# External page referers - Pages - Hits
+# The 10 first Pages must be first (order not required for others)
+BEGIN_PAGEREFS 41
+http://glav-strou.ru/contact-us/ 5920 5923
+http://test-robax.oblax.ru 1615 1709
+http://glav-strou.ru 282 297
+http://glav-strou.ru/delivery/ 46 111
+http://in-forma.ru 42 60
+http://glav-strou.ru/cement/portlandcement-400-d20-cem-iia-sh-325b/ 40 54
+http://glav-strou.ru/suhie-smesi/legkiy-armirovannyy-nalivnoy-pol-perfektar-laytsloy/ 27 39
+http://glav-strou.ru/cement/ 18 20
+http://glav-strou.ru/suhie-smesi/plitochnyy-kley-bazis/ 13 19
+http://glav-strou.ru/suhie-smesi/kley-gazobeton-k13/ 13 15
+http://glav-strou.ru/suhie-smesi/shpaklevka-polimernaya-superfinishnaya-perfektar-ultrafayn/ 5 7
+http://yii1 8 8
+http://glav-strou.ru/suhie-smesi/suhaya-smes-universalnaya-m-150-fix/ 10 12
+http://glav-strou.ru/suhie-smesi/shtukaturki/shtukaturka-gipsovaya/ 4 5
+http://glav-strou.ru/suhie-smesi/smes-suhaya-shtukaturnaya-gipsovaya-ruchnogo-naneseniya-no-8-tolstosloynaya/ 10 12
+http://glav-strou.ru/suhie-smesi/kley-usilennyy-dlya-keramogranita-i-keramicheskoy-plitki-perfektar-holder/ 4 6
+http://glav-strou.ru/suhie-smesi/stroitelnye-smesi/ 8 8
+http://glav-strou.ru/suhie-smesi/kley-universalnyy-k11/ 0 1
+http://www.mobilephoneemulator.com/emulate.php 10 10
+http://glav-strou.ru/suhie-smesi/styazhka-pola-tolstosloynaya-perfektar-bazovaya/ 0 1
+http://glav-strou.ru/cement/portlandcement-marka-cem-iia-325n-gost-31108-2003/ 0 1
+http://glav-strou.ru/index.php 5 7
+http://glav-strou.ru/suhie-smesi/shtukaturka-gipsovaya-seraya-s27/ 0 1
+http://glav-strou.ru/suhie-smesi/shpaklevka-cementnaya-seraya-perfektar-glayd-standart/ 4 6
+http://glav-strou.ru/suhie-smesi/kladochnye-smesi/ 6 7
+http://glav-strou.ru/suhie-smesi/vysokoprochnyy-rovnitel-perfektar-profisloy/ 4 6
+http://glav-strou.ru/suhie-smesi/bystrotverdeyushchiy-nalivnoy-pol-perfektar-multisloy/ 9 13
+http://glav-strou.ru/suhie-smesi/shtukaturka-gipsovaya-lyogkaya-mn-perfektar-gipstar-seraya/ 5 7
+http://glav-strou.ru/suhie-smesi/kley-keramogranit-k12/ 0 1
+http://glav-strou.ru/suhie-smesi/smes-montazhno-kladochnaya-m-200-dauer-z-20-2/ 4 6
+http://glav-strou.ru/suhie-smesi/shtukaturka-cementnaya-dlya-naruzhnyh-i-vnutrennih-rabot-vodo-i-morozostoykaya-no15/ 4 6
+http://glav-strou.ru/suhie-smesi/kley-dlya-keramogranita-naturalnogo-kamnya-i-klinkernoy-plitki-perfektar-hardfiks-keramogranit/ 0 1
+http://glav-strou.ru/suhie-smesi/suhaya-smes-universalnaya-m-150-maks-m-150-1/ 4 6
+http://glav-strou.ru/suhie-smesi/kley-montazhnyy-dlya-penopolistirola-i-minvaty-k18/ 9 13
+http://glav-strou.ru/suhie-smesi/shpaklevka-gipsovaya-perfektar-superfinish/ 5 5
+http://glav-strou.ru/about_company/ 2 2
+http://glav-strou.ru/suhie-smesi/suhaya-smes-perfektar-m-200-montazhnaya/ 0 1
+http://glav-strou.ru/production/ 2 2
+http://glav-strou.ru/cement/portlandcement-500-d0-cem-iia-sh-425-n/ 4 6
+http://glav-strou.ru/suhie-smesi/peskobeton-m-300-fix/ 4 6
+http://glav-strou.ru/suhie-smesi/elastichnyy-kley-dlya-naturalnogo-kamnya-i-keramogranita-green-line-ecoflex/ 5 6
+END_PAGEREFS
+
+# Search keyphrases - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_SEARCHWORDS 0
+END_SEARCHWORDS
+
+# Search keywords - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_KEYWORDS 0
+END_KEYWORDS
+
+# Errors - Hits - Bandwidth
+BEGIN_ERRORS 6
+403 24 69720
+302 90 45305
+206 5 243790
+500 138 7115717
+301 62 22693
+404 208 610649
+END_ERRORS
+
+# URL with 404 errors - Hits - Last URL referer
+BEGIN_SIDER_404 20
+/logout 3 http://r.oblax.ru/profile/analytics
+/apple-touch-icon-precomposed.png 1 -
+/apple-touch-icon.png 2 -
+/profile/%3Cdiv%3EHello%3C/div%3E 1 http://r.oblax.ru/profile/pay
+/apple-touch-icon-120x120.png 1 -
+/profile/HELLO 1 http://r.oblax.ru/profile/pay
+/profile/payid 1 -
+/profile/pay.php 4 http://r.oblax.ru/profile/pay
+/profile/test.php 1 http://r.oblax.ru/profile/pay
+/apple-touch-icon-120x120-precomposed.png 1 -
+/pay 1 http://r.oblax.ru/profile/pay-with
+/profile/profile/fail 2 -
+/profile/TEST 3 http://r.oblax.ru/profile/pay
+/profile/pay-with.php 1 http://r.oblax.ru/profile/pay
+/paid 1 -
+/page.php 4 http://r.oblax.ru/profile/pay
+/route.php 72 -
+/dist/img/user4-128x128.jpg 106 http://r.oblax.ru/profile/
+/profile/paid-ik 1 -
+/profile/%3Chtml%3E%3Cform%20action='https://merchant.roboxchange.com/Index.aspx'%20method=POST%3E%3Cinput%20type=hidden%20name=MrchLogin%20value=oblax%3E%3Cinput%20type=text%20class='form-control'%20name=OutSum%20value=100%3E%3Cbr%3E%3Cinput%20type=hidden 1 http://r.oblax.ru/profile/pay
+END_SIDER_404
+
+# Host - Pages - Hits - Bandwidth - Last visit date - [Start date of last visit] - [Last page of last visit]
+# [Start date of last visit] and [Last page of last visit] are saved only if session is not finished
+# The 10 first Hits must be first (order not required for others)
+BEGIN_VISITOR 1
+176.9.65.180 9537 18348 69343906 20160731144148 20160731082118 /widget/catched
+END_VISITOR
+
+# Date - Pages - Hits - Bandwidth - Visits
+BEGIN_DAY 7
+20160722 6 54 1499470 1
+20160723 292 1914 16201356 4
+20160727 842 4049 7852035 3
+20160728 3070 5257 20843299 3
+20160729 3668 5006 13951746 3
+20160730 408 620 6865667 6
+20160731 1251 1368 3233725 2
+END_DAY
+
+# Session range - Number of visits
+BEGIN_SESSION 5
+1h+ 11
+0s-30s 6
+15mn-30mn 1
+2mn-5mn 1
+30mn-1h 2
+END_SESSION
+
+# URL - Pages - Bandwidth - Entry - Exit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_SIDER 30
+/widget/catched 3829 7658 1 9
+/widget/location 3747 44964 1 0
+/profile/pay 359 3522268 1 0
+/profile/pay-with 200 2174820 0 0
+/widget/get-widget 156 2045372 2 0
+/widget/avgtime 155 1385 7 0
+/profile/analytics 153 4812496 1 0
+/ 145 1440023 1 2
+/widget/get-urls 129 9822 0 2
+/widget/get-marks 128 20631 0 2
+/profile/fail 16 121339 0 0
+/profile/paid 66 374280 0 0
+/profile/add-widget 11 335216 1 0
+/assets/1d952a50/fonts/glyphicons-halflings-regular.woff2 39 324504 0 1
+/register 5 23000 0 0
+/profile/update-widget/5 18 940944 0 0
+/profile 84 809573 0 0
+/profile/history 44 516846 2 0
+/widget/widget-call 7 2387 0 0
+/assets/1d952a50/css/bootstrap.css.map 17 5449178 0 0
+/profile/pay-history 72 735623 1 1
+/profile/ 24 1294686 0 0
+/profile/get-widget-code/5fbd5012c0f3f9db28bc6ccf0fe9663d 4 4372 0 0
+/login 33 130977 4 2
+/profile/get-widget-code/d61a334abd7f67dffed6225f8cafa823 1 1093 0 0
+/profile/update-widget/7 9 495561 0 0
+/profile/widgets 77 1258870 0 1
+/profile/paid-ik 4 32924 0 0
+/assets/1d952a50/fonts/glyphicons-halflings-regular.woff 4 46848 0 1
+/profile/update-widget/12 1 51968 0 0
+END_SIDER

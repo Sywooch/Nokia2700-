@@ -1,0 +1,141 @@
+<div class="robax-widget-body">
+    <div class="overlay"></div>
+    <div class="robax-widget-open-button" id="open-button" style="<{position}>">
+        <img src="http://test-robax.oblax.ru/widget-front/img/phone-icon.png" class="phone">
+    </div>
+    <div class="robax-widget">
+        <div class="robax-arrow"><div class="robax-arrow-wrapper"><div class="robax-arrow-part"></div><div class="robax-arrow-part cbh-bottom"></div></div></div>
+        <div class="robax-widget-closed"></div>
+        <div class="robax-menu">
+            <div class="robax-menu-button robax-widget-active" data-target=".robax-widget-phone">
+                <div class="robax-widget-menu-button-img phone">
+                </div>
+                <span class="robax-widget-menu-button-text"><{menu.phone-text}></span>
+            </div>
+            <div class="robax-menu-button" data-target=".robax-widget-msg">
+                <div class="robax-widget-menu-button-img msg">
+                </div>
+                <span class="robax-widget-menu-button-text"><{menu.msg-text}></span>
+            </div>
+            <div class="robax-menu-button" data-target=".robax-widget-mail">
+                <div class="robax-widget-menu-button-img mail">
+                </div>
+                <span class="robax-widget-menu-button-text"><{menu.mail-text}></span>
+            </div>
+        </div>
+        <div class="robax-widget-items">
+            <div class="robax-widget-phone robax-widget-active robax-widget-item">
+                <h1 id="phone-h1"><{phone.h1}></h1>
+                <div id="phone-div" class="robax-widget-item-text">
+                    <{phone.item-text}>
+                </div>
+                <h1 id="widget-msg-h1" style="display:none"><{widget-msg.h1}></h1>
+                <div id="widget-msg-div" style="display:none" class="robax-widget-item-text">
+                    <{widget-msg.item-text}>
+                </div>
+                <div class="robax-later" style="display:none;">
+                    <input type="hidden" class="robax-later-data" value="false" />
+                    <div class="robax-later__day">
+                        <input type="hidden" class="robax-later-data-day" value="today" />
+                        <span class="robax-later__day-val ng-binding"><{date.today}></span>
+                        <div class="robax-later-sel cbh-hide" id="cbh_timer_sel_day">
+                            <ul class="robax-later-sel__hold robax-later-sel__hold__day">
+                                <li data-day="today"><{date.today}></li>
+                                <li data-day="tomorrow"><{date.tomorrow}></li>
+                                <li data-day="after-tomorrow"><{date.after-tomorrow}></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <span class="robax-later__sep">в</span>
+                    <div class="robax-later__hour">
+                        <input type="hidden" class="robax-later-data-hour" />
+                        <span class="robax-later__hour-val ng-binding">17:30</span>
+                        <div class="robax-later-sel cbh-hide"  id="cbh_timer_sel_hour">
+                            <ul class="robax-later-sel__hold robax-later-sel__hold__hour">
+                                <li><span>17:30</span></li>
+                                <li><span>17:45</span></li>
+                                <li><span>18:00</span></li>
+                                <li><span>19:00</span></li>
+                                <li><span>20:00</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="robax-widget-phone-form">
+                    <div class="robax-country-box">
+                        <i class="robax-flag ru"></i>
+                        <i>▼</i>
+                        <div class="robax-phone-type-list">
+                            <!--<div class="robax-phone-type-list-item" data-placeholder="+375(___)___-__-__" data-mask="+375(999)999-99-99">
+                                <i class="robax-flag by"></i><{phone.phone-type.by}>
+                            </div>
+                            <div class="robax-phone-type-list-item" data-placeholder="+380(___)___-__-__" data-mask="+380(999)999-99-99">
+                                <i class="robax-flag ua"></i><{phone.phone-type.ua}>
+                            </div>
+                            <div class="robax-phone-type-list-item" data-placeholder="+1(___)___-__-__" data-mask="+1(999)999-99-99">
+                                <i class="robax-flag us"></i><{phone.phone-type.us}>
+                            </div>-->
+                            <div class="robax-phone-type-list-item" data-placeholder="+7(___)___-__-__" data-mask="+7(999)999-99-99">
+                                <i class="robax-flag ru"></i><{phone.phone-type.ru}>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="robax-phone-input" type="text" placeholder="+7(___)___-__-__">
+                </div>
+                <div class="robax-widget-item-button">
+                    <{buttons.post}>
+                </div>
+                <div class="robax-timer" id="robax-timer">
+                    <div class="robax-numbs">
+                        <span id="cbh_timer_minutes">00</span>
+                    </div>
+                    <div class="robax-d">:</div>
+                    <div class="robax-numbs">
+                        <span id="cbh_timer_seconds">07</span>
+                    </div>
+                    <div class="robax-d">:</div>
+                    <div class="robax-numbs">
+                        <span id="cbh_timer_ms">99</span>
+                    </div>
+                </div>
+                <div class="robax-item-later"><span class="robax-item-later-link"><{phone.later-text}></span></div>
+                <div class="robax-item-now" style="display:none;"><span class="robax-item-later-now"><{phone.now-text}></span></div>
+            </div>
+            <div class="robax-widget-msg robax-widget-item">
+                <h1><{widget-msg.h1}></h1>
+                <div class="robax-widget-item-text">
+                    <{widget-msg.item-text}>
+                </div>
+                <div class="robax-widget-msg-body">
+                </div>
+            </div>
+            <div class="robax-widget-mail robax-widget-item">
+                <h1><{mail.h1}></h1>
+                <div class="robax-widget-item-text">
+                    <{mail.item-text}>
+                </div>
+                <form class="robax-widget-form">
+                    <textarea placeholder="Напишите вопрос" name="question"></textarea>
+                    <input type="text" name="email" value="" placeholder="Ваш E-mail (для ответа)" />
+                    <input type="text" name="phone" value="" placeholder="Ваш телефон (по желанию)" />
+                    <div class="robax-widget-item-button">
+                        <{buttons.post-form}>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="robax-widget-bottom">
+            <div class="robax-powered-by"><a href="http://robax.oblax.ru" class="robax-powered-by-link" target="_blank">Установите Робакс к себе на сайт</a></div>
+        </div>
+    </div>
+    <div class="robax-utp-body" style="display: none;">
+        <div class="robax-utp" style="width: 800px; height: 467px; background: url('<{utp_img_url}>');">
+            <div class="robax-utp-closed"></div>
+            <div class="robax-utp-form" style="<{widget_utp_form_position}>">
+                <div class="line"><input type="text" placeholder="Введите ваш телефон"></div>
+                <div class="line"><button style="background: #f1f1f1;">Отправить</button></div>
+            </div>
+        </div>
+    </div>
+    <img class="robax-utp-img" style="position:fixed; right:-10000px; visibility: hidden;" src="<{utp_img_url}>">
+</div>
