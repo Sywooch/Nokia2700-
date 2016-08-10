@@ -27,11 +27,11 @@ $config = [
             'class' => 'yii\swiftmailer\Mailer',
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => 'smtp.gmail.com',
-                'username' => '',
-                'password' => '',
-                'port' => '587',
-                'encryption' => 'tls',
+                'host' => 'smtp.yandex.ru',
+                'username' => 'raposya@yandex.ru',
+                'password' => 'bestrap1',
+                'port' => '465',
+                'encryption' => 'ssl',
               ],
         ],
         'log' => [

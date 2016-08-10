@@ -6,6 +6,8 @@ use yii\bootstrap\ActiveForm;
 use app\models\User;
 use yii\grid\GridView;
 use yii\bootstrap\Tabs;
+use \app\models\WidgetTemplateNotification;
+
 $this->registerJsFile('@web/plugins/bootstrap/js/bootstrap.min.js');
 $path = '/files/images/desktop/';
 $path2 = '/files/images/mobile/';
@@ -277,6 +279,68 @@ $this->title = 'Изменить виджет';
             </div>
         </div>
       </div>
+        <div class="bordered">
+            <label>Настройки сообщений виджета для клиента</label>
+            <br>
+            <?if ($widgetTemplateUsers) {
+                foreach ($widgetTemplateUsers as $key => $value) {?>
+                    <div>
+                        <div style="display: inline-block;">
+                            <?echo SwitchInput::widget([
+                                'name'=>'template[change]['.$value['id_template'].']',
+                                'value'=>$value['status'],
+                                'options'=>[
+                                    'onchange'=>'openBlock('.$value['id_template'].', $(this));',
+                                ]
+                            ]);?>
+                        </div>
+                        <div style="display: inline-block;">
+                            <?$widetTemplate = WidgetTemplateNotification::findOne(['id_template' => $value['id_template']]);?>
+                            <span><?=$widetTemplate->name?></span>
+                        </div>
+                        <div id="openBlock-<?=$value['id_template']?>" style="<?=$value['status'] ? 'display: block;' : 'display: none;'?>margin-bottom: 30px;">
+                            <?if ($value['param']) {?>
+                                <div class="form-group">
+                                    <span>Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][<?=$value['id_template']?>]" min="0" max="60" value="<?=$value['param']?>"/>
+                                </div>
+                            <?} else {?>
+                                <input type="text" style="display: none;" name="template[param][<?=$value['id_template']?>]"/>
+                            <?}?>
+                            <textarea name="template[description][<?=$value['id_template']?>]" class="form-control"><?=$value['description']?></textarea>
+                            <input type="text" style="display: none;" name="template[id][<?=$value['id_template']?>]" value="<?=$value['id_template']?>"/>
+                        </div>
+                    </div>
+                <?}
+            } else {
+                foreach ($widgetTemplate as $key => $value) {?>
+                    <div>
+                        <div style="display: inline-block;">
+                            <?echo SwitchInput::widget([
+                                'name'=>'template[change]['.$value['id_template'].']',
+                                'value'=>0,
+                                'options'=>[
+                                    'onchange'=>'openBlock('.$value['id_template'].', $(this));',
+                                ]
+                            ]);?>
+                        </div>
+                        <div style="display: inline-block;">
+                            <span><?=$value['name']?></span>
+                        </div>
+                        <div id="openBlock-<?=$value['id_template']?>" style="display: none;margin-bottom: 30px;">
+                            <?if ($value['param']) {?>
+                                <div class="form-group">
+                                    <span>Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][<?=$value['id_template']?>]" min="0" max="60" value="<?=$value['param']?>"/>
+                                </div>
+                            <?} else {?>
+                                <input type="text" style="display: none;" name="template[param][<?=$value['id_template']?>]"/>
+                            <?}?>
+                            <textarea name="template[description][<?=$value['id_template']?>]" class="form-control"><?=$value['description']?></textarea>
+                            <input type="text" style="display: none;" name="template[id][<?=$value['id_template']?>]" value="<?=$value['id_template']?>"/>
+                        </div>
+                    </div>
+                <?}
+            }?>
+        </div>
       <div class="bordered">
         <label>Настройки уведомлений</label>
         <br>
@@ -721,22 +785,31 @@ $('.phone_more').click(function(e){
   $("input[name='widget_phone_number_"+j+"']").inputmask("+7(999)999-99-99");
   $('input[name="count_phones"]').val(j);
 });
+
+function openBlock(id, element) {
+    if ($('#openBlock-'+id).css('display') == 'none') {
+        $('#openBlock-'+id).show();
+    } else {
+        $('#openBlock-'+id).hide();
+    }
+}
+
 function siteChange(url) {
-  address = ['http://', 'https://'];
-  new_url = url.replace(address, '');
-  if (url.length) {
-    $('#screenDesktop').attr('src', 'http://mini.s-shot.ru/1280x800/JPEG/1280/Z100/?'+new_url);
-    $('#screenMobile').attr('src', 'http://mini.s-shot.ru/360x640/JPEG/360/Z100/?'+new_url);
-    $.ajax({
-      url: '/profile/savesiteimage',
-      method: 'POST',
-      data: {
-        url_desktop: 'http://mini.s-shot.ru/1280x800/JPEG/1280/Z100/?'+new_url,
-        url_mobile: 'http://mini.s-shot.ru/360x640/JPEG/360/Z100/?'+new_url,
-        site: url
-      },
-    });
-  }
+    address = ['http://', 'https://'];
+    new_url = url.replace(address, '');
+    if (url.length) {
+        $('#screenDesktop').attr('src', 'http://mini.s-shot.ru/1280x800/JPEG/1280/Z100/?'+new_url);
+        $('#screenMobile').attr('src', 'http://mini.s-shot.ru/360x640/JPEG/360/Z100/?'+new_url);
+        $.ajax({
+            url: '/profile/savesiteimage',
+            method: 'POST',
+            data: {
+                url_desktop: 'http://mini.s-shot.ru/1280x800/JPEG/1280/Z100/?'+new_url,
+                url_mobile: 'http://mini.s-shot.ru/360x640/JPEG/360/Z100/?'+new_url,
+                site: url
+            }
+        });
+    }
 }
 </script>
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>

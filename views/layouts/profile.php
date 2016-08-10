@@ -88,7 +88,12 @@ AppAsset::register($this);
 				                    	<a href="<?=Url::to('/profile');?>" class="btn btn-default btn-flat">Профиль</a>
 				                  	</div>
 					                  <div class="pull-right">
-					                    <a href="#" id="logout" class="btn btn-default btn-flat">Выход</a>
+					                    <?=(Html::beginForm(['/site/logout'], 'post')
+										. Html::submitButton(
+											'Выход',
+											['class' => 'btn btn-default btn-flat']
+										)
+										. Html::endForm())?>
 					                  </div>
 				                </li>
 				             </ul>

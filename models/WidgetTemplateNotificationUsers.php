@@ -8,11 +8,11 @@ use Yii;
  * This is the model class for table "widget_template_notification_users".
  *
  * @property integer $id_notification
- * @property integer $id_user
+ * @property integer $id_widget
  * @property integer $id_template
  * @property string $description
  * @property string $param
- * @property boolean $default_template
+ * @property boolean $status
  */
 class WidgetTemplateNotificationUsers extends \yii\db\ActiveRecord
 {
@@ -30,9 +30,9 @@ class WidgetTemplateNotificationUsers extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_user', 'id_template'], 'required'],
-            [['id_user', 'id_template'], 'integer'],
-            [['default_template'], 'boolean'],
+            [['id_widget', 'id_template'], 'required'],
+            [['id_widget', 'id_template'], 'integer'],
+            [['status'], 'boolean'],
             [['description'], 'string', 'max' => 255],
             [['param'], 'string', 'max' => 45],
         ];
@@ -45,11 +45,11 @@ class WidgetTemplateNotificationUsers extends \yii\db\ActiveRecord
     {
         return [
             'id_notification' => 'Id Notification',
-            'id_user' => 'Id User',
+            'id_widget' => 'Id Widget',
             'id_template' => 'Id Template',
             'description' => 'Description',
             'param' => 'Param',
-            'default_template' => 'Default Template',
+            'status' => 'Status',
         ];
     }
 }

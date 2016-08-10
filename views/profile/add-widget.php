@@ -260,7 +260,35 @@ $this->title = 'Добавить виджет';
 		</div>
 	</div>
 	<div class="bordered">
-		<label>Настройки сообщений виджета клиенту</label>
+		<label>Настройки сообщений виджета для клиента</label>
+		<br>
+		<?foreach ($widgetTemplate as $key => $value) {?>
+			<div>
+				<div style="display: inline-block;">
+					<?echo SwitchInput::widget([
+						'name'=>'template[change]['.$value['id_template'].']',
+						'value'=>0,
+						'options'=>[
+							'onchange'=>'openBlock('.$value['id_template'].', $(this));',
+						]
+					]);?>
+				</div>
+				<div style="display: inline-block;">
+					<span><?=$value['name']?></span>
+				</div>
+				<div id="openBlock-<?=$value['id_template']?>" style="display: none;margin-bottom: 30px;">
+					<?if ($value['param']) {?>
+						<div class="form-group">
+							<span>Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][<?=$value['id_template']?>]" min="0" max="60" value="<?=$value['param']?>"/>
+						</div>
+					<?} else {?>
+						<input type="text" style="display: none;" name="template[param][<?=$value['id_template']?>]"/>
+					<?}?>
+					<textarea name="template[description][<?=$value['id_template']?>]" class="form-control"><?=$value['description']?></textarea>
+					<input type="text" style="display: none;" name="template[id][<?=$value['id_template']?>]" value="<?=$value['id_template']?>"/>
+				</div>
+			</div>
+		<?}?>
 	</div>
 	<div class="bordered">
 		<label>Настройки уведомлений</label>
@@ -608,6 +636,14 @@ $('.utp-exampl .utp-form').mouseup(function(){
  console.log(true);
  $(this).unbind('mousemove');
  });*/
+
+function openBlock(id, element) {
+	if ($('#openBlock-'+id).css('display') == 'none') {
+		$('#openBlock-'+id).show();
+	} else {
+		$('#openBlock-'+id).hide();
+	}
+}
 
 function siteChange(url) {
 	address = ['http://', 'https://'];

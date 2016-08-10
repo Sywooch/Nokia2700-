@@ -15,6 +15,8 @@ use app\models\WidgetSendedEmail;
 use app\models\WidgetPendingCalls;
 use app\models\WidgetSettings;
 use app\models\WidgetActionMarks;
+use app\models\WidgetTemplateNotification;
+use app\models\WidgetTemplateNotificationUsers;
 
 class ProfileController extends Controller
 {
@@ -154,6 +156,7 @@ class ProfileController extends Controller
     {
         $model = new WidgetSettings();
         $marks = new WidgetActionMarks();
+        $widgetTemplate = WidgetTemplateNotification::find()->all();
         $postArray = Yii::$app->request->post();
         if(!empty($postArray))
         {
@@ -240,6 +243,15 @@ class ProfileController extends Controller
                 }
                 $marks->site_pages_list = $sites;
                 if($marks->save()) {
+                    for ($i = 0;$i < count($_POST['template']['id']);$i++) {
+                        $widgetTemplateUsers = new WidgetTemplateNotificationUsers();
+                        $widgetTemplateUsers->id_widget = $model->widget_id;
+                        $widgetTemplateUsers->id_template = $_POST['template']['id'][$i];
+                        $widgetTemplateUsers->description = $_POST['template']['description'][$i];
+                        $widgetTemplateUsers->param = $_POST['template']['param'][$i];
+                        $widgetTemplateUsers->status = isset($_POST['template']['change'][$i]) ? 1 : 0;
+                        $widgetTemplateUsers->save();
+                    }
                     return $this->redirect(['profile/widgets']);
                 } else {
                     print_r($marks->errors);
@@ -253,6 +265,7 @@ class ProfileController extends Controller
             return $this->render('add-widget', [
                 'model' => $model,
                 'marks' => $marks,
+                'widgetTemplate' => $widgetTemplate,
             ]);
         }
     }
@@ -261,6 +274,8 @@ class ProfileController extends Controller
     {
         $model = $this->findModel($id);
         $marks = $this->findMarks($id);
+        $widgetTemplate = WidgetTemplateNotification::find()->all();
+        $widgetTemplateUsers = WidgetTemplateNotificationUsers::findAll(['id_widget' => $id]);
 
         $postArray = Yii::$app->request->post();
         if(!empty($postArray))
@@ -340,6 +355,26 @@ class ProfileController extends Controller
                 }
                 $marks->site_pages_list = $sites;
                 if($marks->save()) {
+                    if ($widgetTemplateUsers) {
+                        foreach ($widgetTemplateUsers as $key => $value) {
+                            $value->id_widget = $model->widget_id;
+                            $value->id_template = $_POST['template']['id'][$key];
+                            $value->description = $_POST['template']['description'][$key];
+                            $value->param = $_POST['template']['param'][$key];
+                            $value->status = isset($_POST['template']['change'][$key]) ? 1 : 0;
+                            $value->save();
+                        }
+                    } else {;
+                        for ($i = 0;$i < count($_POST['template']['id']);$i++) {
+                            $widgetTemplateUsers = new WidgetTemplateNotificationUsers();
+                            $widgetTemplateUsers->id_widget = $model->widget_id;
+                            $widgetTemplateUsers->id_template = $_POST['template']['id'][$i];
+                            $widgetTemplateUsers->description = $_POST['template']['description'][$i];
+                            $widgetTemplateUsers->param = $_POST['template']['param'][$i];
+                            $widgetTemplateUsers->status = isset($_POST['template']['change'][$i]) ? 1 : 0;
+                            $widgetTemplateUsers->save();
+                        }
+                    }
                     return $this->redirect(['profile/widgets']);
                 } else {
                     print_r($marks->errors);
@@ -353,6 +388,8 @@ class ProfileController extends Controller
             return $this->render('update-widget', [
                 'model' => $model,
                 'marks' => $marks,
+                'widgetTemplate' => $widgetTemplate,
+                'widgetTemplateUsers' => $widgetTemplateUsers
             ]);
         }
     }
