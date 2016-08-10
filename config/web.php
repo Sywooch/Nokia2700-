@@ -27,9 +27,9 @@ $config = [
             'class' => 'yii\swiftmailer\Mailer',
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => 'smtp.yandex.ru',
-                'username' => 'raposya@yandex.ru',
-                'password' => 'bestrap1',
+                'host' => 'smtp.mail.ru',
+                'username' => 'robax@oblax.ru',
+                'password' => '123qwe',
                 'port' => '465',
                 'encryption' => 'ssl',
               ],

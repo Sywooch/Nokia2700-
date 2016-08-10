@@ -121,7 +121,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         </html>';
         Yii::$app->mailer->compose()
             ->setTo($email)
-            ->setFrom('raposya@yandex.ru')
+            ->setFrom('robax@oblax.ru')
             ->setSubject($subject)
             ->setTextBody($message)
             ->send();
