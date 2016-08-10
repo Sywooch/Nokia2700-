@@ -18,9 +18,10 @@ $this->title = 'Аналитика';
 
 $widget = new WidgetAnalytics;
 
-if (isset($_REQUEST['WidgetAnalytics']['widget_id'])) $widget->widget_id = $_REQUEST['WidgetAnalytics']['widget_id'];
+if (isset($_REQUEST['WidgetAnalytics']['widget_id'])) $widget->widget_id = $_POST['WidgetAnalytics']['widget_id'];
 
-$analytics = $widget::getCatchAnalytics($_REQUEST['WidgetAnalytics']['widget_id']);
+if(isset($_POST))$analytics = WidgetAnalytics::getCatchAnalytics($widget->widget_id);
+else $analytics = WidgetAnalytics::getCatchAnalytics(0);
 
 $items = array();
 $items[]='Все виджеты';
@@ -114,7 +115,7 @@ foreach ($widgetarr as $w)
                             <div class="col-md-3 col-sm-6 col-xs-12">
                                 <?php
                                 $form = ActiveForm::begin();
-                                echo $form->field($widget,'widget_id')->label(false)->dropDownList($items, array('selected' => $_REQUEST['WidgetAnalytics']['widget_id'], 'onchange'=>'this.form.submit()'));
+                                echo $form->field($widget,'widget_id')->label(false)->dropDownList($items, array(/*'selected' => $_REQUEST['WidgetAnalytics']['widget_id'],*/ 'onchange'=>'this.form.submit()'));
                                 ActiveForm::end();
                                 ?>
 

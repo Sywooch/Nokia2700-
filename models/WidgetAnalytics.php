@@ -97,7 +97,7 @@ class WidgetAnalytics extends Model
         return $res;
     }
 
-    public static function getShownWId($acttype = null, $w_id=null)
+    public static function getShownWId($acttype , $w_id=null)
     {
         $query = new Query;
 
@@ -106,24 +106,24 @@ class WidgetAnalytics extends Model
             $query->select('action')
                 ->from('widget_catching')
                 ->join('INNER JOIN', 'widget_settings','widget_settings.widget_site_url=widget_catching.website')
-                ->where('action != "close_page" AND widget_settings.widget_id="'.$w_id.'" AND action = "'.$acttype.'"')
-                ->groupBy('widget_catching.ip');
+                ->where('action = '.$acttype.'" AND widget_settings.widget_id="'.$w_id.'"')
+                ->groupBy('widget_catching.date');
         }
         elseif(isset($w_id))
         {
             $query->select('action')
                 ->from('widget_catching')
                 ->join('INNER JOIN', 'widget_settings','widget_settings.widget_site_url=widget_catching.website')
-                ->where('action != "close_page" AND widget_settings.widget_id="'.$w_id.'"')
-                ->groupBy('widget_catching.ip');
+                ->where('action = "close_page" AND widget_settings.widget_id="'.$w_id.'"')
+                ->groupBy('widget_catching.date');
         }
         else
         {
             $query->select('action')
                 ->from('widget_catching')
                 ->join('INNER JOIN', 'widget_settings','widget_settings.widget_site_url=widget_catching.website')
-                ->where('action != "close_page"')
-                ->groupBy('widget_catching.ip');
+                ->where('action= "'.$acttype.'"')
+                ->groupBy('widget_catching.date');
         }
 
         $shown = count($query->all());
