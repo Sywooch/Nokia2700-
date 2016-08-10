@@ -4,43 +4,90 @@ namespace app\models;
 use \yii\base\Model;
 use \yii\db\Query;
 
+/**
+ * This is the model class for table "widget_action_marks".
+ *
+ * @property integer $widget_id
+ * @property integer $other_page
+ * @property integer $scroll_down
+ * @property integer $active_more40
+ * @property integer $mouse_intencivity
+ * @property string $site_pages_list
+ * @property integer $sitepage_activity
+ * @property integer $sitepage3_activity
+ * @property integer $more_avgtime
+ * @property integer $moretime_after1min
+ * @property integer $form_activity
+ * @property integer $client_activity
+ * @property string $widget_site_url
+ */
+
 class WidgetAnalytics extends Model
 {
-    public static function getCatchAnalytics()
+
+    public  $widget_id;
+    public $other_page;
+    public $scroll_down;
+    public $active_more40;
+    public $mouse_intencivity;
+    public $site_pages_list;
+    public $sitepage_activity;
+    public $sitepage3_activity;
+    public $more_avgtime;
+    public $moretime_after1min;
+    public $form_activity;
+    public $client_activity;
+    public $widget_site_url;
+
+    public function rules()
     {
-        $query = new Query;
-        $query->select('date')
-            ->from('widget_catching');
-        $rows = $query->all();
-        return $rows;
+        return [
+            [['widget_id', 'other_page', 'scroll_down', 'active_more40', 'mouse_intencivity', 'sitepage3_activity', 'more_avgtime', 'moretime_after1min', 'form_activity', 'client_activity', 'widget_site_url'], 'required'],
+            [['widget_id', 'other_page', 'scroll_down', 'active_more40', 'mouse_intencivity', 'sitepage3_activity', 'more_avgtime', 'moretime_after1min', 'form_activity', 'client_activity'], 'integer'],
+            [['widget_site_url'],'string']
+        ];
     }
 
-    public static function getCatchCount()
+    public static function getCatchAnalytics($w_id=null)
     {
-        return count(self::getCatchAnalytics());
-    }
+        $acttypes = array('active_more40', 'moretime_after1min', 'more_avgtime','other_page', 'scroll_down',
+            'mouse_intencivity', 'sitepage3_activity', 'form_activity', 'client_activity');
 
-    public static function getUniqActions($acttype)
-    {
+        $acts = array(
+            'active_more40'=>'<i class="fa fa-hourglass-o"></i>Более 40с. на сайте',
+            'moretime_after1min'=>'<i class="fa fa-hourglass-end"></i>Каждые 30с. после минуты',
+            'more_avgtime'=>'<i class="fa fa-hourglass"></i>Дольше среднего времени',
+            'other_page'=> '<i class="fa fa-clone"></i>Переход на другую страницу',
+            'scroll_down'=>'<i class="fa fa-long-arrow-down"></i>Скролл в конец страницы',
+            'mouse_intencivity'=>'<i class="fa fa-mouse-pointer"></i>Активность мыши',
+            'sitepage3_activity'=>'<i class="fa fa-file-word-o"></i>Посещение более 3-х страниц',
+            'form_activity'=>'<i class="fa fa-commenting-o"></i>Взаимодействие с формами',
+            'client_activity'=>'<i class="fa fa-hand-pointer-o"></i>Нажатие на кнопку');
 
-        $query = new Query;
-        $query->select('ip, action')
-            ->distinct('ip')
-            ->from('widget_catching')
-            ->where('action = "'.$acttype.'"');
-        $rows = $query->all();
-        return count($rows);
-    }
+        $analyt = array();
+        foreach($acttypes as $act)
+        {
 
-    public static function getCatched($acttype)
-    {
-        $query = new Query;
-        $query->select('*')
-            ->from('widget_pending_calls')
-            ->join('LEFT JOIN','widget_catching','widget_catching.id=widget_pending_calls.catching_id')
-            ->distinct('ip')->where('action = "'.$acttype.'"');
-        $rows = $query->all();
-        return count($rows);
+            if($w_id == 0)
+            {
+                $catched = self::getCatchedWId($act);
+                $shown = self::getShownWId($act);
+                ($shown != 0 && $catched != 0) ? $conver = (integer)($catched*100/$shown) : $conver = 0;
+                $analyt[$act] = array('name'=>$acts[$act], 'shown'=>$shown, 'catch'=>$catched, 'conversion'=>$conver );
+            }
+            else
+            {
+                $catched = self::getCatchedWId($act, $w_id);
+                $shown = self::getShownWId($act, $w_id);
+                ($shown != 0 || $catched != 0) ? $conver = (integer)($catched*100/$shown) : $conver = 0;
+                $analyt[$act] = array('name'=>$acts[$act], 'shown'=>$shown, 'catch'=>$catched, 'conversion'=>$conver );
+            }
+
+
+        }
+
+        return $analyt;
+
     }
 
     public static function conversion($a, $b)
@@ -50,54 +97,76 @@ class WidgetAnalytics extends Model
         return $res;
     }
 
-    protected static function getShownWId($w_id)
+    public static function getShownWId($acttype = null, $w_id=null)
     {
-
-
         $query = new Query;
-        $query->select('action')
-            ->from('widget_catching')
-            ->join('INNER JOIN', 'widget_settings','widget_settings.widget_site_url=widget_catching.website')
-            ->where('action != "close_page" AND widget_settings.widget_id="'.$w_id.'"')
-            ->groupBy('widget_catching.ip');
-        /*$query->select ('*')
-                ->from('widget_pending_calls')
-                ->join('LEFT JOIN', 'widget_catching', 'widget_pending_calls.catching_id=widget_catching.id')
-                ->join('LEFT JOIN', 'widget_settings', 'widget_catching.website=widget_settings.widget_site_url')
+
+        if (isset($acttype) && isset($w_id))
+        {
+            $query->select('action')
+                ->from('widget_catching')
+                ->join('INNER JOIN', 'widget_settings','widget_settings.widget_site_url=widget_catching.website')
+                ->where('action != "close_page" AND widget_settings.widget_id="'.$w_id.'" AND action = "'.$acttype.'"')
+                ->groupBy('widget_catching.ip');
+        }
+        elseif(isset($w_id))
+        {
+            $query->select('action')
+                ->from('widget_catching')
+                ->join('INNER JOIN', 'widget_settings','widget_settings.widget_site_url=widget_catching.website')
                 ->where('action != "close_page" AND widget_settings.widget_id="'.$w_id.'"')
-                ->groupBy('widget_catching.ip');*/
+                ->groupBy('widget_catching.ip');
+        }
+        else
+        {
+            $query->select('action')
+                ->from('widget_catching')
+                ->join('INNER JOIN', 'widget_settings','widget_settings.widget_site_url=widget_catching.website')
+                ->where('action != "close_page"')
+                ->groupBy('widget_catching.ip');
+        }
+
         $shown = count($query->all());
         return $shown;
-
+//comments
 
     }
 
-    protected static function getCatchedWId($w_id, $acttype)
+    public static function getCatchedWId($acttype, $w_id=null)
     {
         $query = new Query;
-        /*$query->select('action')
-            ->from('widget_catching')
-            ->join('INNER JOIN', 'widget_settings','widget_settings.widget_site_url=widget_catching.website')
-            ->where('action = "'.$acttype.'" AND widget_settings.widget_id="'.$w_id.'"')
-            ->groupBy('widget_catching.ip');*/
-        $query->select ('*')
-            ->from('widget_pending_calls')
-            ->join('LEFT JOIN', 'widget_catching', 'widget_pending_calls.catching_id=widget_catching.id')
-            ->join('LEFT JOIN', 'widget_settings', 'widget_catching.website=widget_settings.widget_site_url')
-            ->where('action = "'.$acttype.'" AND widget_settings.widget_id="'.$w_id.'"')
-            ->groupBy('widget_catching.ip');
+
+        if(isset($w_id))
+        {
+            $query->select ('*')
+                ->from('widget_pending_calls')
+                ->join('LEFT JOIN', 'widget_catching', 'widget_pending_calls.catching_id=widget_catching.id')
+                ->join('LEFT JOIN', 'widget_settings', 'widget_catching.website=widget_settings.widget_site_url')
+                ->where('action = "'.$acttype.'" AND widget_settings.widget_id="'.$w_id.'"')
+                ->groupBy('widget_catching.ip');
+        }
+        else
+        {
+            $query->select ('*')
+                ->from('widget_pending_calls')
+                ->join('LEFT JOIN', 'widget_catching', 'widget_pending_calls.catching_id=widget_catching.id')
+                ->join('LEFT JOIN', 'widget_settings', 'widget_catching.website=widget_settings.widget_site_url')
+                ->where('action = "'.$acttype.'"')
+                ->groupBy('widget_catching.ip');
+        }
+
         $catched = ($query->all());
         return count($catched);
     }
 
-    protected static function countConv($w_id)
+    public static function countConv($w_id)
     {
         $convercion = array();
         $acttypes = array('active_more40', 'moretime_after1min', 'more_avgtime','other_page', 'scroll_down',
             'mouse_intencivity', 'sitepage3_activity', 'form_activity', 'client_activity');
         foreach ($acttypes as $act)
         {
-            $convercion[$act] = (self::getShownWId($w_id)!=0)?(integer)((self::getCatchedWId($w_id, $act))*100/(self::getShownWId($w_id))):0;
+            $convercion[$act] = (self::getShownWId(null,$w_id)!=0)?(integer)((self::getCatchedWId($act, $w_id))*100/(self::getShownWId(null,$w_id))):0;
         }
         return $convercion;
     }
@@ -136,4 +205,16 @@ class WidgetAnalytics extends Model
             $model->save();
         }
     }
+
+    public static function getWidgets()
+    {
+        $query = new Query;
+        $query->select('widget_action_marks.*, widget_settings.widget_site_url')
+            ->from('widget_action_marks')
+            ->join('INNER JOIN','widget_settings','widget_settings.widget_id=widget_action_marks.widget_id')
+            ->distinct('widget_site_url');
+        $rows = $query->all();
+        return $rows;
+    }
+
 }
