@@ -74,13 +74,25 @@ class SiteController extends Controller
     public function actionRegister()
     {
         $this->layout = 'auth';
+        if (Yii::$app->user->isGuest) {
+            if ($_GET['ref']) {
+                setcookie('ref', $_GET['ref']);
+                return $this->redirect(['/register']);
+            }
+        }
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
         $model = new User();
+        if (isset($_COOKIE['ref'])) {
+            $model->setAttribute('partner', $_COOKIE['ref']);
+        }
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('userRegistered');
+            if (isset($_COOKIE['ref'])) {
+                setcookie('ref', '');
+            }
             return $this->redirect(['site/login']);
         }
         return $this->render('register', [

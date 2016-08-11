@@ -137,6 +137,12 @@ AppAsset::register($this);
 							<i class="fa fa-bar-chart"></i> <span>Аналитика</span>
 						</a>
 					</li>
+					<?php $active = (Url::to(['']) == '/partners') ? 'active' : ''; ?>
+					<li class="<?=$active?>">
+						<a href="<?=Url::to('/partners');?>">
+							<i class="fa fa-users"></i> <span>Партнёрка</span>
+						</a>
+					</li>
         		</ul>
     		</section>
   		</aside>

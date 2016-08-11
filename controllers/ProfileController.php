@@ -195,10 +195,10 @@ class ProfileController extends Controller
             $model->black_list = $black_list;
             $top = empty($postArray['witget-button-top']) ? 'top:0%;' : $postArray['witget-button-top'];
             $left = empty($postArray['witget-button-left']) ? 'left:0%;' : $postArray['witget-button-left'];
-            $topMob = empty($postArray['witget-button-top']) ? 'top:0%;' : $postArray['witget-button-top'];
-            $leftMob = empty($postArray['witget-button-left']) ? 'left:0%;' : $postArray['witget-button-left'];
+            $topMob = empty($postArray['witget-button-top-mob']) ? 'top:0%;' : $postArray['witget-button-top-mob'];
+            $leftMob = empty($postArray['witget-button-left-mob']) ? 'left:0%;' : $postArray['witget-button-left-mob'];
             $model->widget_position = $top.$left;
-            $model->widget_position_mobile = $postArray['witget-button-top-mob'].Yii::$app->request->post('witget-button-left-mob');
+            $model->widget_position_mobile = $topMob.$leftMob;
             $model->widget_name = Yii::$app->request->post('widget_name');
             $model->widget_button_color = Yii::$app->request->post('widget_button_color');
             //$model->widget_work_time = '{"work-start-time":"'.Yii::$app->request->post('work-start-time').'","work-end-time":"'.Yii::$app->request->post('work-end-time').'"}';
@@ -343,7 +343,7 @@ class ProfileController extends Controller
             $model->widget_work_time = json_encode($work_time);
             $model->widget_sound = Yii::$app->request->post('widget_sound');
             (Yii::$app->request->post('hand_turn_on'))?$model->hand_turn_on = 1 : $model->hand_turn_on = 0;
-            (Yii::$app->request->post('utp_turn_on'))?$model->utp_turn_on = 1 : $model->utp_turn_on = 0;
+            ($_POST['WidgetSettings']['utp_turn_on'])?$model->utp_turn_on = 1 : $model->utp_turn_on = 0;
             $model->widget_utp_form_position = Yii::$app->request->post('widget-utp-form-top').Yii::$app->request->post('widget-utp-form-left');
             $model->utm_button_color = Yii::$app->request->post('utm-button-color');
             $model->utp_img_url = Yii::$app->request->post('utp-img-url');

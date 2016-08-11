@@ -255,7 +255,7 @@ $this->title = 'Добавить виджет';
 					<?echo $form->field($model, 'widget_google_metrika')->widget(SwitchInput::classname(), [])->label(false);?>
 				</div>
 				<div style="display: inline-block">
-					<span>Если на сайте подключено <b>Google Analytics</b></span></div>
+                    <span style="margin: 0 15px;">Если на сайте подключено <b>Google Analytics</b></span></div>
 			</div>
 		</div>
 	</div>
@@ -269,7 +269,7 @@ $this->title = 'Добавить виджет';
 						'name'=>'template[change]['.$value['id_template'].']',
 						'value'=>0,
 						'options'=>[
-							'onchange'=>'openBlock('.$value['id_template'].', $(this));',
+							'onchange'=>'openBlock('.$value['id_template'].');',
 						]
 					]);?>
 				</div>
@@ -279,7 +279,7 @@ $this->title = 'Добавить виджет';
 				<div id="openBlock-<?=$value['id_template']?>" style="display: none;margin-bottom: 30px;">
 					<?if ($value['param']) {?>
 						<div class="form-group">
-							<span>Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][<?=$value['id_template']?>]" min="0" max="60" value="<?=$value['param']?>"/>
+                            <span style="margin: 0 15px;">Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][<?=$value['id_template']?>]" min="0" max="60" value="<?=$value['param']?>"/>
 						</div>
 					<?} else {?>
 						<input type="text" style="display: none;" name="template[param][<?=$value['id_template']?>]"/>
@@ -606,12 +606,20 @@ $('.open-marks').on('switchChange.bootstrapSwitch', function(event, state) {
 $('#url_utp_img').change(function(){
 	$('.utp-img-exampl').attr("src",this.value);
 	$('.utp-img-exampl').load(function(){
-		$('.utp-exampl').css({"background":'url('+this.src+')','width':$('.utp-img-exampl').width()+'px','height':$('.utp-img-exampl').height()+'px'});
+		$('.utp-exampl').css({
+		    "background":'url('+this.src+')',
+            'width':$('.utp-img-exampl').width()+'px',
+            'height':$('.utp-img-exampl').height()+'px'
+		});
 		$('.utp-img-exampl').hide();
 	});
 });
 $('.utp-exampl .utp-form').mousedown(function(){
-	var left=$(".utp-exampl").offset().left,top=$(".utp-exampl").offset().top,width=$(".utp-exampl").width(),height=$(".utp-exampl").height(),WidthPercent=width/100,HeightPercent=height/100;
+	var left=$(".utp-exampl").offset().left,
+        top=$(".utp-exampl").offset().top,
+        width=$(".utp-exampl").width(),
+        height=$(".utp-exampl").height(),
+        WidthPercent=width/100,HeightPercent=height/100;
 	var newTop=0,newLeft=0;
 	$(this).bind('mousemove',function(e){
 		var position=e.pageX-50;
@@ -637,7 +645,7 @@ $('.utp-exampl .utp-form').mouseup(function(){
  $(this).unbind('mousemove');
  });*/
 
-function openBlock(id, element) {
+function openBlock(id) {
 	if ($('#openBlock-'+id).css('display') == 'none') {
 		$('#openBlock-'+id).show();
 	} else {

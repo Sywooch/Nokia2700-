@@ -21,10 +21,12 @@ use yii\helpers\Url;
  * @property string $phone
  * @property string $activation
  * @property string $status
+ * @property string $partner
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
     public $auth_key;
+    public $partners_count;
     const DEACTIVATED = '0';
     const ACTIVATED = '1';
     /**
@@ -58,17 +60,19 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'user_id' => 'User ID',
-            'name' => 'Name',
+            'user_id' => 'ID',
+            'name' => 'Имя',
             'email' => 'Email',
             'pass' => 'Pass',
             'password_hash' => 'Password Hash',
             'password_token' => 'Password Token',
-            'create_at' => 'Create At',
+            'create_at' => 'Дата Регистрации',
             'cache' => 'Cache',
             'phone' => 'Phone',
             'activation' => 'Activation',
             'status' => 'Status',
+            'partner' => 'Partner',
+            'partners_count' => 'Привлечённые',
         ];
     }
 
@@ -123,7 +127,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             ->setTo($email)
             ->setFrom('robax@oblax.ru')
             ->setSubject($subject)
-            ->setTextBody($message)
+            ->setHtmlBody($message)
             ->send();
         return true;
     }

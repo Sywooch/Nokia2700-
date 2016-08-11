@@ -29,7 +29,6 @@ class AppAsset extends AssetBundle
     ];
     public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
     public $js = [
-        'plugins/jQuery/jQuery-2.2.0.min.js',
         'plugins/jQuery/jquery-ui.min.js',
         'plugins/bootstrap/js/bootstrap.js',
         'js/fastclick.js',
