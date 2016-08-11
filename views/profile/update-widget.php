@@ -28,107 +28,106 @@ $this->title = 'Изменить виджет';
     <section class="content">
     <!-- Small boxes (Stat box) -->
       <?php $form = ActiveForm::begin(); ?>
-    <div class="">
-
-      <div class="form-group bordered">
-        <div class="form-group">
-          <label>Общие настройки</label>
-        </div>
-        <div class="form-group">
-          <input class="form-control" name="widget_site_url" type="text" placeholder="URL сайта (без http(s))" onblur="siteChange(this.value);" value="<?=$model->widget_site_url?>">
-        </div>
-        <div class="form-group">
-          <select class="form-control" name="widget_sound">
-            <option value="1">Включить звук</option>
-            <option value="0">Выключить звук</option>
+      <div class="">
+        <div class="form-group bordered">
+          <div class="form-group">
+            <label>Общие настройки</label>
+          </div>
+          <div class="form-group">
+            <input class="form-control" name="widget_site_url" type="text" placeholder="URL сайта (без http(s))" onblur="siteChange(this.value);" value="<?=$model->widget_site_url?>">
+          </div>
+          <div class="form-group">
+            <select class="form-control" name="widget_sound">
+              <option value="1">Включить звук</option>
+              <option value="0">Выключить звук</option>
+            </select>
+            <script type="text/javascript">
+              $("[name='widget_sound']").val(<?=$model->widget_sound?>);
+            </script>
+          </div>
+          <label>Цветовая схема <small>(выберете схему)</small></label><br>
+          <ul class="color_theme_list__ul">
+            <li class="color_theme_list__ul__item" style="border-radius: 30px !important; background: rgba(204, 204, 204, 0.95);color:#333;"></li>
+            <li class="color_theme_list__ul__item" style="border-radius: 30px !important; background: black;color:#fff;"></li>
+          </ul>
+          <select class="form-control" name="widget_theme_color" style="display: none;">
+            <option value="1">Светлая тема</option>
+            <option value="0">Тёмная тема</option>
           </select>
           <script type="text/javascript">
-            $("[name='widget_sound']").val(<?=$model->widget_sound?>);
+            $("[name='widget_theme_color']").val(<?=$model->widget_theme_color?>);
+            var theme_id=<?=$model->widget_theme_color?>;
+            if(theme_id==0)	$(".color_theme_list__ul__item").eq(1).attr("class","color_theme_list__ul__item active");
+            else $(".color_theme_list__ul__item").eq(0).attr("class","color_theme_list__ul__item active");
+          </script>
+          <label>Цвет кнопки</label><br>
+          <div class="input-group my-colorpicker colorpicker-element" style="width: 35%;">
+            <input type="text" name="widget_button_color" class="form-control"  placeholder="Цвет кнопки" value="<?=$model->widget_button_color?>">
+            <div class="input-group-addon">
+              <i></i>
+            </div>
+          </div>
+          <script type="text/javascript">
+            $("[name='widget_button_color']").change(function(){
+              $("#open-button").style.background = '#FFF';
+            });
           </script>
         </div>
-        <label>Цветовая схема <small>(выберете схему)</small></label><br>
-        <ul class="color_theme_list__ul">
-          <li class="color_theme_list__ul__item" style="border-radius: 30px !important; background: rgba(204, 204, 204, 0.95);color:#333;"></li>
-          <li class="color_theme_list__ul__item" style="border-radius: 30px !important; background: black;color:#fff;"></li>
-        </ul>
-        <select class="form-control" name="widget_theme_color" style="display: none;">
-          <option value="1">Светлая тема</option>
-          <option value="0">Тёмная тема</option>
-        </select>
-        <script type="text/javascript">
-          $("[name='widget_theme_color']").val(<?=$model->widget_theme_color?>);
-          var theme_id=<?=$model->widget_theme_color?>;
-          if(theme_id==0)	$(".color_theme_list__ul__item").eq(1).attr("class","color_theme_list__ul__item active");
-          else $(".color_theme_list__ul__item").eq(0).attr("class","color_theme_list__ul__item active");
-        </script>
-        <label>Цвет кнопки</label><br>
-        <div class="input-group my-colorpicker colorpicker-element" style="width: 35%;">
-          <input type="text" name="widget_button_color" class="form-control"  placeholder="Цвет кнопки" value="<?=$model->widget_button_color?>">
-          <div class="input-group-addon">
-            <i></i>
-          </div>
-        </div>
-        <script type="text/javascript">
-          $("[name='widget_button_color']").change(function(){
-            $("#open-button").style.background = '#FFF';
-          });
-        </script>
-      </div>
-      <div class="form-group col-sm-6 bordered" style="width: 65%;">
-        <label>Расположение виджета</label><br>
-        <div class="widget-position">
-          <div class="widget-top-position">
-          </div>
-          <div class="widget-body-position" style="width: 600px;height: 400px;">
-            <div class="robax-widget-open-button" id="open-button" style="z-index: 100;background: <?=$model->widget_button_color?>; border-radius: 100%; position: relative; <?=$model->widget_position?> width: 38px; height: 38px;">
-              <?=Html::img('@web'.'/widget-front/img/phone-icon.png',['class' => "phone", 'style' => 'margin: 9px; width: 21px; height: 21px;']); ?>
+        <div class="form-group col-sm-6 bordered" style="width: 65%;">
+          <label>Расположение виджета</label><br>
+          <div class="widget-position">
+            <div class="widget-top-position">
             </div>
-            <img style="width: 600px;height: 400px;position: relative;top: -40px;" id="screenDesktop" src="<?=$path.$model->widget_id.'-'.$model->widget_site_url.'.jpg'?>"/>
-          </div>
-          <div class="clear"></div>
-          <div class="widget-left-position">
-          </div>
-          <input name="witget-button-top" type="hidden">
-          <input name="witget-button-left" type="hidden">
-        </div>
-      </div>
-      <div class="form-group col-sm-6 bordered" style="width: 31%;">
-        <label>Расположение виджета (моб-ая версия)</label><br>
-        <div class="widget-position-mob">
-          <div class="widget-top-position-mob">
-          </div>
-          <div class="widget-body-position-mob" style="width: 225px;height:400px;">
-            <div class="robax-widget-open-button-mob" id="open-button-mob" style="z-index: 100;background: <?=$model->widget_button_color?>; border-radius: 100%; position: relative; <?=$model->widget_position_mobile?> width: 34px; height: 34px;">
-              <?=Html::img('@web'.'/widget-front/img/phone-icon.png',['class' => "phone", 'style' => 'margin: 9px; width: 18px; height: 18px;']); ?>
+            <div class="widget-body-position" style="width: 600px;height: 400px;">
+              <div class="robax-widget-open-button" id="open-button" style="z-index: 100;background: <?=$model->widget_button_color?>; border-radius: 100%; position: relative; <?=$model->widget_position?> width: 38px; height: 38px;">
+                <?=Html::img('@web'.'/widget-front/img/phone-icon.png',['class' => "phone", 'style' => 'margin: 9px; width: 21px; height: 21px;']); ?>
+              </div>
+              <img style="width: 600px;height: 400px;position: relative;top: -40px;" id="screenDesktop" src="<?=$path.$model->widget_id.'-'.$model->widget_site_url.'.jpg'?>"/>
             </div>
-            <img style="width: 225px;height: 400px;position: relative;top: -35px;" id="screenMobile" src="<?=$path2.$model->widget_id.'-'.$model->widget_site_url.'.jpg'?>"/>
+            <div class="clear"></div>
+            <div class="widget-left-position">
+            </div>
+            <input name="witget-button-top" type="hidden">
+            <input name="witget-button-left" type="hidden">
           </div>
-          <div class="clear"></div>
-          <div class="widget-left-position-mob">
-          </div>
-          <input name="witget-button-top-mob" type="hidden">
-          <input name="witget-button-left-mob" type="hidden">
         </div>
-      </div>
-      <div class="clear"></div>
-      <div class="bordered">
-        <label>Настройка поведенческих факторов</label><br>
-        <div style="margin: 10px 0;"><input class="check-box-button open-marks" name="hand_turn_on"
-                                            type="checkbox" <?=($model->hand_turn_on)? "checked":"";?>><span style="margin: 0 15px;">Настроить вручную</span></div>
-        <div class="marks-body" <?= ($model->hand_turn_on)? 'style="display: block;':'style="display: none;'?>">
+        <div class="form-group col-sm-6 bordered" style="width: 31%;">
+          <label>Расположение виджета (моб-ая версия)</label><br>
+          <div class="widget-position-mob">
+            <div class="widget-top-position-mob">
+            </div>
+            <div class="widget-body-position-mob" style="width: 225px;height:400px;">
+              <div class="robax-widget-open-button-mob" id="open-button-mob" style="z-index: 100;background: <?=$model->widget_button_color?>; border-radius: 100%; position: relative; <?=$model->widget_position_mobile?> width: 34px; height: 34px;">
+                <?=Html::img('@web'.'/widget-front/img/phone-icon.png',['class' => "phone", 'style' => 'margin: 9px; width: 18px; height: 18px;']); ?>
+              </div>
+              <img style="width: 225px;height: 400px;position: relative;top: -35px;" id="screenMobile" src="<?=$path2.$model->widget_id.'-'.$model->widget_site_url.'.jpg'?>"/>
+            </div>
+            <div class="clear"></div>
+            <div class="widget-left-position-mob">
+            </div>
+            <input name="witget-button-top-mob" type="hidden">
+            <input name="witget-button-left-mob" type="hidden">
+          </div>
+        </div>
+        <div class="clear"></div>
+        <div class="bordered">
+          <label>Настройка поведенческих факторов</label><br>
+          <div style="margin: 10px 0;"><input class="check-box-button open-marks" name="hand_turn_on"
+                                              type="checkbox" <?=($model->hand_turn_on)? "checked":"";?>><span style="margin: 0 15px;">Настроить вручную</span></div>
+          <div class="marks-body" <?= ($model->hand_turn_on)? 'style="display: block;"':'style="display: none;"'?>>
           <?php
           $items = [
-          0 => '0 баллов',
-          1 => '1 балл',
-          2 => '2 балла',
-          3 => '3 балла',
-          4 => '4 балла',
-          5 => '5 баллов',
-          6 => '6 баллов',
-          7 => '7 баллов',
-          8 => '8 баллов',
-          9 => '9 баллов',
-          10 => '10 баллов',
+              0 => '0 баллов',
+              1 => '1 балл',
+              2 => '2 балла',
+              3 => '3 балла',
+              4 => '4 балла',
+              5 => '5 баллов',
+              6 => '6 баллов',
+              7 => '7 баллов',
+              8 => '8 баллов',
+              9 => '9 баллов',
+              10 => '10 баллов',
           ];
           ?>
           <table>
@@ -163,6 +162,10 @@ $this->title = 'Изменить виджет';
               <td><?=Html::dropDownList('client_activity',$marks->client_activity,$items);?></td>
             </tr>
           </table>
+          </div>
+        </div>
+        <div class="clear"></div>
+        <div class="bordered">
           <label>Посещение конкретной страницы или раздела сайта</label>
           <br>
           <div id="pages_block">
@@ -176,11 +179,11 @@ $this->title = 'Изменить виджет';
             {
               $values = explode('*',$sitePageList[$i-1]);
               echo '<span class="phone">Cсылка №'.$i.'</span>
-                <div class="input-group">
-                <div class="input-group-addon">
-                <i class="fa fa-link"></i>
-                </div>
-                <input type="text" class="form-control widget_url" name="site_page_'.$i.'" data-required="true" value="'.$values[0].'"></div>'
+                  <div class="input-group">
+                  <div class="input-group-addon">
+                  <i class="fa fa-link"></i>
+                  </div>
+                  <input type="text" class="form-control widget_url" name="site_page_'.$i.'" data-required="true" value="'.$values[0].'"></div>'
                   .Html::dropDownList('select_site_page_'.$i,$values[1],$items,['class' => 'form-control']).'<br>';
             }
             ?>
@@ -202,304 +205,313 @@ $this->title = 'Изменить виджет';
           </script>
           <br>
         </div>
-      </div>
-      <div class="clear"></div>
-      <div class="bordered">
-        <label>УТП  </label><br>
-        <div style="margin: 10px 0;"><input class="check-box-button open-utm" type="checkbox"
-                                            <?=($model->utp_turn_on)? "checked":"";?> name="utp_turn_on"><span style="margin: 0 15px;">уникальное торговое предложение, выводится при попытки уйти с сайта</span></div>
-        <div class="utp-body" <?= ($model->utp_turn_on)? 'style="display: block;':'style="display: none;'?>">
-          <div class="callout callout-info"><p>Максимальный размер изображения: 800 x 800</p></div>
-          <input maxlength="500" id="url_utp_img" name="utp-img-url" type="text" class="form-control" placeholder="URL изображения" value="<?$model->utp_img_url?>">
-          <br />
-          <label>Цвет кнопки</label>
-          <div class="input-group  colorpicker-element" style="width: 400px;">
-            <input type="text" name="utm-button-color" class="form-control utm-button-color my-colorpicker"  placeholder="Цвет кнопки" value="<?$model->utm_button_color?>">
-            <!--<div class="input-group-addon">
-              <i></i>
-            </div>-->
+        <div class="clear"></div>
+        <div class="bordered">
+          <label>УТП  </label><br>
+          <div style="margin: 10px 0;">
+            <input class="check-box-button open-utm" type="checkbox"
+                                              <?=($model->utp_turn_on)? "checked":"";?> name="utp_turn_on">
+            <span style="margin: 0 15px;">уникальное торговое предложение, выводится при попытки уйти с сайта</span>
+          </div>
+          <div class="utp-body" <?= ($model->utp_turn_on)? 'style="display: block;':'style="display: none;'?>>
+            <div class="callout callout-info"><p>Максимальный размер изображения: 800 x 800</p></div>
+            <input maxlength="500" id="url_utp_img" name="utp-img-url" type="text" class="form-control" placeholder="URL изображения" value="<?$model->utp_img_url?>">
+            <br />
+            <label>Цвет кнопки</label>
+            <div class="input-group  colorpicker-element" style="width: 400px;">
+              <input type="text" name="utm-button-color" class="form-control utm-button-color my-colorpicker"  placeholder="Цвет кнопки" value="<?$model->utm_button_color?>">
+              <!--<div class="input-group-addon">
+                <i></i>
+              </div>-->
+            </div>
+            <br>
+            <div class="utp-exampl">
+              <div class="utm-closed"></div>
+              <div class="utp-form" style="<?$model->widget_utp_form_position?>">
+                <div class="line"><input type="text" placeholder="Введите ваш телефон" /></div>
+                <div class="line"><button style="background: <?$model->utm_button_color?>;">Отправить</button></div>
+              </div>
+            </div>
+            <img class="utp-img-exampl" style="visibility: hidden;"/>
+            <input name="widget-utp-form-left" value="top:0%;" type="hidden">
+            <input name="widget-utp-form-top" value="left:0%;" type="hidden">
+          </div>
+        </div>
+        <div class="clear"></div>
+        <div class="bordered">
+          <label>Черный список </label><small>(укажите номера, на которые виджет не будет звонить)</small>
+          <br>
+          <div id="black_list_block">
+            <?php
+            $blackList = explode(';', $model->black_list);
+            $num = count($blackList)-1;
+            unset($blackList[$num]);
+            $count_black_list = count($blackList);
+            for($i=1; $i<=$count_black_list; $i++)
+            {
+              echo '<span class="phone">Телефон №'.$i.'</span>
+                  <div class="input-group">
+                  <div class="input-group-addon">
+                  <i class="fa fa-phone"></i>
+                  </div>
+                  <input type="text" class="form-control widget_phone" name="black_list_number_'.$i.'" placeholder="+7(___)___-__-__" data-required="true" value="'.$blackList[$i-1].'">
+                  </div>';
+            }
+            ?>
           </div>
           <br>
-          <div class="utp-exampl">
-            <div class="utm-closed"></div>
-            <div class="utp-form" style="<?$model->widget_utp_form_position?>">
-              <div class="line"><input type="text" placeholder="Введите ваш телефон" /></div>
-              <div class="line"><button style="background: <?$model->utm_button_color?>;">Отправить</button></div>
-            </div>
+          <input type="hidden" name="count_black_list" value="<?=$count_black_list?>">
+          <div class="input-group">
+            <button class="blacklist_more btn">Добавить еще один номер</button>
           </div>
-          <img class="utp-img-exampl" style="visibility: hidden;"/>
-          <input name="widget-utp-form-left" value="top:0%;" type="hidden">
-          <input name="widget-utp-form-top" value="left:0%;" type="hidden">
+          <br>
         </div>
-      </div>
-      <div class="bordered">
-        <label>Черный список </label><small>(укажите номера, на которые виджет не будет звонить)</small>
-        <br>
-        <div id="black_list_block">
-          <?php
-          $blackList = explode(';', $model->black_list);
-          $num = count($blackList)-1;
-          unset($blackList[$num]);
-          $count_black_list = count($blackList);
-          for($i=1; $i<=$count_black_list; $i++)
-          {
-            echo '<span class="phone">Телефон №'.$i.'</span>
-                <div class="input-group">
-                <div class="input-group-addon">
-                <i class="fa fa-phone"></i>
-                </div>
-                <input type="text" class="form-control widget_phone" name="black_list_number_'.$i.'" placeholder="+7(___)___-__-__" data-required="true" value="'.$blackList[$i-1].'">
-                </div>';
-          }
-          ?>
-        </div>
-        <br>
-        <input type="hidden" name="count_black_list" value="<?=$count_black_list?>">
-        <div class="input-group">
-          <button class="blacklist_more btn">Добавить еще один номер</button>
-        </div>
-        <br>
-      </div>
-      <div class="bordered">
-        <label>Настройки Цели </label><small>(помогут ослеживать конверсию виджета, инструкция)</small>
-        <br>
-        <div class="form-group">
-          <input class="form-control" name="widget_name" type="text" placeholder="Имя Цели" value="<?$model->widget_name?>">
-        </div>
-        <div class="form-group">
-          <input class="form-control" name="widget_yandex_metrika" type="text" placeholder="Yandex Metrika" value="<?$model->widget_yandex_metrika?>">
-        </div>
-        <div class="form-group">
-          <div style="margin: 10px 0;">
-            <div style="display: inline-block;">
-              <?echo $form->field($model, 'widget_google_metrika')->widget(SwitchInput::classname(), [])->label(false);?>
-            </div>
-            <div style="display: inline-block">
-              <span>Если на сайте подключено <b>Google Analytics</b></span></div>
-            </div>
-        </div>
-      </div>
+        <div class="clear"></div>
         <div class="bordered">
-            <label>Настройки сообщений виджета для клиента</label>
-            <br>
-            <?if ($widgetTemplateUsers) {
-                foreach ($widgetTemplateUsers as $key => $value) {?>
-                    <div>
-                        <div style="display: inline-block;">
-                            <?echo SwitchInput::widget([
-                                'name'=>'template[change]['.$value['id_template'].']',
-                                'value'=>$value['status'],
-                                'options'=>[
-                                    'onchange'=>'openBlock('.$value['id_template'].', $(this));',
-                                ]
-                            ]);?>
-                        </div>
-                        <div style="display: inline-block;">
-                            <?$widetTemplate = WidgetTemplateNotification::findOne(['id_template' => $value['id_template']]);?>
-                            <span><?=$widetTemplate->name?></span>
-                        </div>
-                        <div id="openBlock-<?=$value['id_template']?>" style="<?=$value['status'] ? 'display: block;' : 'display: none;'?>margin-bottom: 30px;">
-                            <?if ($value['param']) {?>
-                                <div class="form-group">
-                                    <span>Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][<?=$value['id_template']?>]" min="0" max="60" value="<?=$value['param']?>"/>
-                                </div>
-                            <?} else {?>
-                                <input type="text" style="display: none;" name="template[param][<?=$value['id_template']?>]"/>
-                            <?}?>
-                            <textarea name="template[description][<?=$value['id_template']?>]" class="form-control"><?=$value['description']?></textarea>
-                            <input type="text" style="display: none;" name="template[id][<?=$value['id_template']?>]" value="<?=$value['id_template']?>"/>
-                        </div>
-                    </div>
-                <?}
-            } else {
-                foreach ($widgetTemplate as $key => $value) {?>
-                    <div>
-                        <div style="display: inline-block;">
-                            <?echo SwitchInput::widget([
-                                'name'=>'template[change]['.$value['id_template'].']',
-                                'value'=>0,
-                                'options'=>[
-                                    'onchange'=>'openBlock('.$value['id_template'].', $(this));',
-                                ]
-                            ]);?>
-                        </div>
-                        <div style="display: inline-block;">
-                            <span><?=$value['name']?></span>
-                        </div>
-                        <div id="openBlock-<?=$value['id_template']?>" style="display: none;margin-bottom: 30px;">
-                            <?if ($value['param']) {?>
-                                <div class="form-group">
-                                    <span>Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][<?=$value['id_template']?>]" min="0" max="60" value="<?=$value['param']?>"/>
-                                </div>
-                            <?} else {?>
-                                <input type="text" style="display: none;" name="template[param][<?=$value['id_template']?>]"/>
-                            <?}?>
-                            <textarea name="template[description][<?=$value['id_template']?>]" class="form-control"><?=$value['description']?></textarea>
-                            <input type="text" style="display: none;" name="template[id][<?=$value['id_template']?>]" value="<?=$value['id_template']?>"/>
-                        </div>
-                    </div>
-                <?}
-            }?>
+          <label>Настройки Цели </label><small>(помогут ослеживать конверсию виджета, инструкция)</small>
+          <br>
+          <div class="form-group">
+            <input class="form-control" name="widget_name" type="text" placeholder="Имя Цели" value="<?$model->widget_name?>">
+          </div>
+          <div class="form-group">
+            <input class="form-control" name="widget_yandex_metrika" type="text" placeholder="Yandex Metrika" value="<?$model->widget_yandex_metrika?>">
+          </div>
+          <div class="form-group">
+            <div style="margin: 10px 0;">
+              <div style="display: inline-block;">
+                <?echo $form->field($model, 'widget_google_metrika')->widget(SwitchInput::classname(), [])->label(false);?>
+              </div>
+              <div style="display: inline-block">
+                <span>Если на сайте подключено <b>Google Analytics</b></span></div>
+              </div>
+          </div>
         </div>
-      <div class="bordered">
-        <label>Настройки уведомлений</label>
-        <br>
-        <div id="emails_block">
-          <?php
-            $mails = explode(';', $model->widget_user_email);
-            $num = count($mails)-1;
-            unset($mails[$num]);
-            $count_mails = count($mails);
-            for($i=1; $i<=$count_mails; $i++)
+        <div class="clear"></div>
+        <div class="bordered">
+              <label>Настройки сообщений виджета для клиента</label>
+              <br>
+              <?if ($widgetTemplateUsers) {
+                  foreach ($widgetTemplateUsers as $key => $value) {?>
+                      <div>
+                          <div style="display: inline-block;">
+                              <?echo SwitchInput::widget([
+                                  'name'=>'template[change]['.$value['id_template'].']',
+                                  'value'=>$value['status'],
+                                  'options'=>[
+                                      'onchange'=>'openBlock('.$value['id_template'].', $(this));',
+                                  ]
+                              ]);?>
+                          </div>
+                          <div style="display: inline-block;">
+                              <?$widetTemplate = WidgetTemplateNotification::findOne(['id_template' => $value['id_template']]);?>
+                              <span><?=$widetTemplate->name?></span>
+                          </div>
+                          <div id="openBlock-<?=$value['id_template']?>" style="<?=$value['status'] ? 'display: block;' : 'display: none;'?>margin-bottom: 30px;">
+                              <?if ($value['param']) {?>
+                                  <div class="form-group">
+                                      <span>Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][<?=$value['id_template']?>]" min="0" max="60" value="<?=$value['param']?>"/>
+                                  </div>
+                              <?} else {?>
+                                  <input type="text" style="display: none;" name="template[param][<?=$value['id_template']?>]"/>
+                              <?}?>
+                              <textarea name="template[description][<?=$value['id_template']?>]" class="form-control"><?=$value['description']?></textarea>
+                              <input type="text" style="display: none;" name="template[id][<?=$value['id_template']?>]" value="<?=$value['id_template']?>"/>
+                          </div>
+                      </div>
+                  <?}
+              } else {
+                  foreach ($widgetTemplate as $key => $value) {?>
+                      <div>
+                          <div style="display: inline-block;">
+                              <?echo SwitchInput::widget([
+                                  'name'=>'template[change]['.$value['id_template'].']',
+                                  'value'=>0,
+                                  'options'=>[
+                                      'onchange'=>'openBlock('.$value['id_template'].', $(this));',
+                                  ]
+                              ]);?>
+                          </div>
+                          <div style="display: inline-block;">
+                              <span><?=$value['name']?></span>
+                          </div>
+                          <div id="openBlock-<?=$value['id_template']?>" style="display: none;margin-bottom: 30px;">
+                              <?if ($value['param']) {?>
+                                  <div class="form-group">
+                                      <span>Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][<?=$value['id_template']?>]" min="0" max="60" value="<?=$value['param']?>"/>
+                                  </div>
+                              <?} else {?>
+                                  <input type="text" style="display: none;" name="template[param][<?=$value['id_template']?>]"/>
+                              <?}?>
+                              <textarea name="template[description][<?=$value['id_template']?>]" class="form-control"><?=$value['description']?></textarea>
+                              <input type="text" style="display: none;" name="template[id][<?=$value['id_template']?>]" value="<?=$value['id_template']?>"/>
+                          </div>
+                      </div>
+                  <?}
+              }?>
+          </div>
+        <div class="clear"></div>
+        <div class="bordered">
+          <label>Настройки уведомлений</label>
+          <br>
+          <div id="emails_block">
+            <?php
+              $mails = explode(';', $model->widget_user_email);
+              $num = count($mails)-1;
+              unset($mails[$num]);
+              $count_mails = count($mails);
+              for($i=1; $i<=$count_mails; $i++)
+              {
+                echo '<span class="phone">Ваша эл-почта</span>
+                      <div class="input-group">
+                          <div class="input-group-addon">
+                              <b>@</b>
+                          </div>
+                          <input type="text" class="form-control" name="widget_user_email_'.$i.'" placeholder="Email" data-required="true" value="'.$mails[$i-1].'">
+                      </div>';
+              }
+            ?>
+          </div>
+          <br>
+          <input type="hidden" name="count_emails" value="<?=$count_mails?>">
+          <div class="input-group">
+            <button class="email_more btn">Добавить еще один email</button>
+          </div>
+          <br>
+          <!--<div class="callout callout-info"><p>Телефон №1 </p></div>-->
+          <div id="phones_block">
+            <?php
+            $phones = explode(';', $model->widget_phone_numbers);
+            $num = count($phones)-1;
+            unset($phones[$num]);
+            $count_phones = count($phones);
+            for($i=1; $i<=$count_phones; $i++)
             {
-              echo '<span class="phone">Ваша эл-почта</span>
+              echo '<span class="phone">Телефон №'.$i.'</span>
                     <div class="input-group">
                         <div class="input-group-addon">
-                            <b>@</b>
+                          <i class="fa fa-phone"></i>
                         </div>
-                        <input type="text" class="form-control" name="widget_user_email_'.$i.'" placeholder="Email" data-required="true" value="'.$mails[$i-1].'">
+                        <input type="text" class="form-control widget_phone" name="widget_phone_number_'.$i.'" placeholder="+7(___)___-__-__" data-required="true" value="'.$phones[$i-1].'">
                     </div>';
             }
-          ?>
-        </div>
-        <br>
-        <input type="hidden" name="count_emails" value="<?=$count_mails?>">
-        <div class="input-group">
-          <button class="email_more btn">Добавить еще один email</button>
-        </div>
-        <br>
-        <!--<div class="callout callout-info"><p>Телефон №1 </p></div>-->
-        <div id="phones_block">
-          <?php
-          $phones = explode(';', $model->widget_phone_numbers);
-          $num = count($phones)-1;
-          unset($phones[$num]);
-          $count_phones = count($phones);
-          for($i=1; $i<=$count_phones; $i++)
-          {
-            echo '<span class="phone">Телефон №'.$i.'</span>
-                  <div class="input-group">
-                      <div class="input-group-addon">
-                        <i class="fa fa-phone"></i>
-                      </div>
-                      <input type="text" class="form-control widget_phone" name="widget_phone_number_'.$i.'" placeholder="+7(___)___-__-__" data-required="true" value="'.$phones[$i-1].'">
-                  </div>';
-          }
-          ?>
-        </div>
-        <br>
-        <input type="hidden" name="count_phones" value="<?=$count_phones?>">
-        <div class="input-group">
-          <button class="phone_more btn">Добавить еще один номер телефона</button>
-        </div>
-      </div>
-      <div class="bordered">
-        <div class="form-group">
-          <label>Настройки времени</label><br>
-          <div class="line-time">
-            <label>Часовой пояс(GMT):</label>
-            <select class="form-control" name="widget_GMT">
-              <option value="-12">-12</option>
-              <option value="-11">-11</option>
-              <option value="-10">-10</option>
-              <option value="-9">-9</option>
-              <option value="-8">-8</option>
-              <option value="-7">-7</option>
-              <option value="-6">-6</option>
-              <option value="-5">-5</option>
-              <option value="-4:30">-4:30</option>
-              <option value="-4">-4</option>
-              <option value="-3:30">-3:30</option>
-              <option value="-3">-3</option>
-              <option value="-2">-2</option>
-              <option value="-1">-1</option>
-              <option value="0">+0</option>
-              <option value="1">+1</option>
-              <option value="2">+2</option>
-              <option value="3" selected="selected">+3</option>
-              <option value="3:30">+3:30</option>
-              <option value="4">+4</option>
-              <option value="4:30">+4:30</option>
-              <option value="5">+5</option>
-              <option value="5:30">+5:30</option>
-              <option value="5:45">+5:45</option>
-              <option value="6">+6</option>
-              <option value="6:30">+6:30</option>
-              <option value="7">+7</option>
-              <option value="8">+8</option>
-              <option value="8:30">+8:30</option>
-              <option value="8:45">+8:45</option>
-              <option value="9">+9</option>
-              <option value="9:30">+9:30</option>
-              <option value="10">+10</option>
-              <option value="10:30">+10:30</option>
-              <option value="11">+11</option>
-              <option value="11:30">+11:30</option>
-              <option value="12">+12</option>
-              <option value="12:45">+12:45</option>
-              <option value="13">+13</option>
-              <option value="13:45">+13:45</option>
-              <option value="14">+14</option>
-            </select>
+            ?>
           </div>
           <br>
-          <br>
-          <?php
-          $work_time = json_decode($model->widget_work_time);
-//          print_r($work_time);
-//          die();
-          ?>
-          <table class="table table-striped">
-            <tr>
-              <th>День недели:</th>
-              <th>Начало рабочего дня:</th>
-              <th>Конец рабочего дня:</th>
-            </tr>
-            <tr>
-              <td>Понедельник</td>
-              <td><input class="form-control" name="work-start-time-monday" type="text" placeholder="09:00" value="<?=$work_time->monday->start?>"></td>
-              <td><input class="form-control" name="work-end-time-monday" type="text" placeholder="18:00" value="<?=$work_time->monday->end?>"></td>
-            </tr>
-            <tr>
-              <td>Вторник</td>
-              <td><input class="form-control" name="work-start-time-tuesday" type="text" placeholder="09:00" value="<?=$work_time->tuesday->start?>"></td>
-              <td><input class="form-control" name="work-end-time-tuesday" type="text" placeholder="18:00" value="<?=$work_time->tuesday->end?>"></td>
-            </tr>
-            <tr>
-              <td>Среда</td>
-              <td><input class="form-control" name="work-start-time-wednesday" type="text" placeholder="09:00" value="<?=$work_time->wednesday->start?>"></td>
-              <td><input class="form-control" name="work-end-time-wednesday" type="text" placeholder="18:00" value="<?=$work_time->wednesday->end?>"></td>
-            </tr>
-            <tr>
-              <td>Четверг</td>
-              <td><input class="form-control" name="work-start-time-thursday" type="text" placeholder="09:00" value="<?=$work_time->thursday->start?>"></td>
-              <td><input class="form-control" name="work-end-time-thursday" type="text" placeholder="18:00" value="<?=$work_time->thursday->end?>"></td>
-            </tr>
-            <tr>
-              <td>Пятница</td>
-              <td><input class="form-control" name="work-start-time-friday" type="text" placeholder="09:00" value="<?=$work_time->friday->start?>"></td>
-              <td><input class="form-control" name="work-end-time-friday" type="text" placeholder="18:00" value="<?=$work_time->friday->end?>"></td>
-            </tr>
-            <tr>
-              <td>Суббота</td>
-              <td><input class="form-control" name="work-start-time-saturday" type="text" placeholder="09:00" value="<?=$work_time->saturday->start?>"></td>
-              <td><input class="form-control" name="work-end-time-saturday" type="text" placeholder="18:00" value="<?=$work_time->saturday->end?>"></td>
-            </tr>
-            <tr>
-              <td>Воскресенье</td>
-              <td><input class="form-control" name="work-start-time-sunday" type="text" placeholder="09:00" value="<?=$work_time->sunday->start?>"></td>
-              <td><input class="form-control" name="work-end-time-sunday" type="text" placeholder="18:00" value="<?=$work_time->sunday->end?>"></td>
-            </tr>
-          </table>
+          <input type="hidden" name="count_phones" value="<?=$count_phones?>">
+          <div class="input-group">
+            <button class="phone_more btn">Добавить еще один номер телефона</button>
+          </div>
         </div>
+        <div class="clear"></div>
+        <div class="bordered">
+          <div class="form-group">
+            <label>Настройки времени</label><br>
+            <div class="line-time">
+              <label>Часовой пояс(GMT):</label>
+              <select class="form-control" name="widget_GMT">
+                <option value="-12">-12</option>
+                <option value="-11">-11</option>
+                <option value="-10">-10</option>
+                <option value="-9">-9</option>
+                <option value="-8">-8</option>
+                <option value="-7">-7</option>
+                <option value="-6">-6</option>
+                <option value="-5">-5</option>
+                <option value="-4:30">-4:30</option>
+                <option value="-4">-4</option>
+                <option value="-3:30">-3:30</option>
+                <option value="-3">-3</option>
+                <option value="-2">-2</option>
+                <option value="-1">-1</option>
+                <option value="0">+0</option>
+                <option value="1">+1</option>
+                <option value="2">+2</option>
+                <option value="3" selected="selected">+3</option>
+                <option value="3:30">+3:30</option>
+                <option value="4">+4</option>
+                <option value="4:30">+4:30</option>
+                <option value="5">+5</option>
+                <option value="5:30">+5:30</option>
+                <option value="5:45">+5:45</option>
+                <option value="6">+6</option>
+                <option value="6:30">+6:30</option>
+                <option value="7">+7</option>
+                <option value="8">+8</option>
+                <option value="8:30">+8:30</option>
+                <option value="8:45">+8:45</option>
+                <option value="9">+9</option>
+                <option value="9:30">+9:30</option>
+                <option value="10">+10</option>
+                <option value="10:30">+10:30</option>
+                <option value="11">+11</option>
+                <option value="11:30">+11:30</option>
+                <option value="12">+12</option>
+                <option value="12:45">+12:45</option>
+                <option value="13">+13</option>
+                <option value="13:45">+13:45</option>
+                <option value="14">+14</option>
+              </select>
+            </div>
+            <br>
+            <br>
+            <?php
+            $work_time = json_decode($model->widget_work_time);
+  //          print_r($work_time);
+  //          die();
+            ?>
+            <table class="table table-striped">
+              <tr>
+                <th>День недели:</th>
+                <th>Начало рабочего дня:</th>
+                <th>Конец рабочего дня:</th>
+              </tr>
+              <tr>
+                <td>Понедельник</td>
+                <td><input class="form-control" name="work-start-time-monday" type="text" placeholder="09:00" value="<?=$work_time->monday->start?>"></td>
+                <td><input class="form-control" name="work-end-time-monday" type="text" placeholder="18:00" value="<?=$work_time->monday->end?>"></td>
+              </tr>
+              <tr>
+                <td>Вторник</td>
+                <td><input class="form-control" name="work-start-time-tuesday" type="text" placeholder="09:00" value="<?=$work_time->tuesday->start?>"></td>
+                <td><input class="form-control" name="work-end-time-tuesday" type="text" placeholder="18:00" value="<?=$work_time->tuesday->end?>"></td>
+              </tr>
+              <tr>
+                <td>Среда</td>
+                <td><input class="form-control" name="work-start-time-wednesday" type="text" placeholder="09:00" value="<?=$work_time->wednesday->start?>"></td>
+                <td><input class="form-control" name="work-end-time-wednesday" type="text" placeholder="18:00" value="<?=$work_time->wednesday->end?>"></td>
+              </tr>
+              <tr>
+                <td>Четверг</td>
+                <td><input class="form-control" name="work-start-time-thursday" type="text" placeholder="09:00" value="<?=$work_time->thursday->start?>"></td>
+                <td><input class="form-control" name="work-end-time-thursday" type="text" placeholder="18:00" value="<?=$work_time->thursday->end?>"></td>
+              </tr>
+              <tr>
+                <td>Пятница</td>
+                <td><input class="form-control" name="work-start-time-friday" type="text" placeholder="09:00" value="<?=$work_time->friday->start?>"></td>
+                <td><input class="form-control" name="work-end-time-friday" type="text" placeholder="18:00" value="<?=$work_time->friday->end?>"></td>
+              </tr>
+              <tr>
+                <td>Суббота</td>
+                <td><input class="form-control" name="work-start-time-saturday" type="text" placeholder="09:00" value="<?=$work_time->saturday->start?>"></td>
+                <td><input class="form-control" name="work-end-time-saturday" type="text" placeholder="18:00" value="<?=$work_time->saturday->end?>"></td>
+              </tr>
+              <tr>
+                <td>Воскресенье</td>
+                <td><input class="form-control" name="work-start-time-sunday" type="text" placeholder="09:00" value="<?=$work_time->sunday->start?>"></td>
+                <td><input class="form-control" name="work-end-time-sunday" type="text" placeholder="18:00" value="<?=$work_time->sunday->end?>"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="clear"></div>
+        <div class="line-time">
+            <?= Html::submitButton('Сохранить', ['class' => 'btn btn-block btn-success btn-lg']) ?>
+          </div>
+        <div class="clear"></div>
+        <div class="line-time">
+            <?= Html::button('Отменить', ['class' => 'btn btn-block btn-danger btn-lg']) ?>
+          </div>
       </div>
-        <div class="line-time">
-          <?= Html::submitButton('Сохранить', ['class' => 'btn btn-block btn-success btn-lg']) ?>
-        </div>
-        <div class="line-time">
-          <?= Html::button('Отменить', ['class' => 'btn btn-block btn-danger btn-lg']) ?>
-        </div>
-
       <?php ActiveForm::end(); ?>
     <script type="text/javascript">
       $(".check-box-button").bootstrapSwitch();

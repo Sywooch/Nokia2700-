@@ -114,6 +114,7 @@ AppAsset::register($this);
             				<i class="fa fa-rub"></i> <span>Платежи</span> <i class="fa fa-angle-left pull-right"></i>
           				</a>
 				        <ul class="treeview-menu">
+							<li><a href="<?=Url::to('/profile/tarifs');?>" class=""><i class="fa fa-credit-card"></i>Тарифный план</a></li>
 				        	<li><a href="<?=Url::to('/profile/pay');?>" class=""><i class="fa fa-credit-card"></i>Пополнение баланса </a></li>
 				           	<li><a href="<?=Url::to('/profile/pay-history');?>" class=""><i class="fa fa-line-chart"></i>История баланса </a></li>
 				        </ul>

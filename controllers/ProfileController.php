@@ -29,7 +29,13 @@ class ProfileController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'pay', 'pay-history', 'analytics', 'savesiteimage', 'widgets', 'history', 'add-widget', 'update-widget', 'get-widget-code', 'pay-with', 'paid', 'fail','paid-ik', 'update-paid-ik'],
+                        'actions' => [
+                            'index', 'pay', 'pay-history',
+                            'analytics', 'savesiteimage',
+                            'widgets', 'history', 'add-widget',
+                            'update-widget', 'get-widget-code',
+                            'pay-with', 'paid', 'fail','paid-ik',
+                            'update-paid-ik', 'tarifs'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -55,6 +61,11 @@ class ProfileController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    public function actionTarifs()
+    {
+        return $this->render('tarifs');
     }
 
     public function actionAnalytics()
