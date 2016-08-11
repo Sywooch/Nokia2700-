@@ -212,7 +212,6 @@ $this->title = 'Изменить виджет';
                 <div style="display: inline-block;">
                     <?echo $form->field($model, 'utp_turn_on')->widget(SwitchInput::classname(), [
                         'options'=>[
-                            'name' => '',
                             'onchange'=>'openUtp($(this));',
                         ]
                     ])->label(false);?>
