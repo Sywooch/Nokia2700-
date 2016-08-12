@@ -4,6 +4,10 @@ namespace app\controllers;
 
 use app\models\Paymant;
 use Yii;
+use yii\db\ActiveQuery;
+use yii\db\Connection;
+use yii\db\Query;
+use yii\db\QueryBuilder;
 use yii\filters\AccessControl;
 use yii\data\ActiveDataProvider;
 use yii\data\SqlDataProvider;
@@ -35,7 +39,8 @@ class ProfileController extends Controller
                             'widgets', 'history', 'add-widget',
                             'update-widget', 'get-widget-code',
                             'pay-with', 'paid', 'fail','paid-ik',
-                            'update-paid-ik', 'tarifs'],
+                            'update-paid-ik', 'tarifs', 'user-tarif',
+                            'for-test'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -53,6 +58,8 @@ class ProfileController extends Controller
             $this->layout = "@app/views/layouts/main";
         }
         if(!in_array($action->id, $this->publicActions)) return $this->redirect(Yii::$app->user->loginUrl);*/
+
+        Paymant::renewCache(Yii::$app->user->identity->id);
         $this->enableCsrfValidation = false;
         $this->layout = "@app/views/layouts/profile";
         return parent::beforeAction($action);
@@ -61,6 +68,11 @@ class ProfileController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    public function actionForTest()
+    {
+        return $this->render('for-test');
     }
 
     public function actionTarifs()
@@ -125,6 +137,18 @@ class ProfileController extends Controller
     {
         $result = WidgetSettings::find()->where('user_id='.Yii::$app->user->identity->id)->all();
         return $this->render('widgets',['widgets' => $result]);
+    }
+
+    public function actionUserTarif()
+    {
+        $postArray = Yii::$app->request->post();
+        $tarifs = $postArray['Tarifs'];
+        $t_id = $tarifs['id'];
+        $u_id = $tarifs['user_id'];
+        $connection = Yii::$app->db;
+        $connection->createCommand()->update('user_tarif',['tarif_id'=>$t_id], "user_id = $u_id")->execute();
+        return $this->render('index');
+
     }
 
     public function actionHistory()

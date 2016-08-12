@@ -5,6 +5,7 @@
 /* @var $model app\models\LoginForm */
 
 use app\models\Paymant;
+use app\models\Tarifs;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
@@ -12,7 +13,7 @@ use app\models\WidgetCatching;
 
 $this->title = 'Профиль пользователя';
 
-Paymant::renewCache(Yii::$app->user->identity->id);
+$cur_tarif = Tarifs::getUserTarif(Yii::$app->user->identity->id)['0'];
 
 ?>
 <section class="content-header">
@@ -63,7 +64,8 @@ Paymant::renewCache(Yii::$app->user->identity->id);
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
               <li class="active"><a href="#activity" data-toggle="tab">Общая информация</a></li>
-              <!--<li><a href="#settings" data-toggle="tab"><{profile.settings}></a></li>-->
+                <li class=""><a href="#tarif" data-toggle="tab">Текущий тарифный план</a></li>
+              <li><a href="#settings" data-toggle="tab">Настройки профиля</a></li>
             </ul>
             <div class="tab-content">
 	            <div class="active tab-pane" id="activity">
@@ -95,6 +97,38 @@ Paymant::renewCache(Yii::$app->user->identity->id);
 						</tbody>
 					</table>
 	            </div>
+                <div class="tab-pane" id="tarif">
+                    <div class="row">
+                        <div class="clearfix visible-sm-block"></div>
+                        <div class="col-md-5 col-sm-6 col-xs-12">
+                            <div class="box box-widget widget-user-2">
+                                <!-- Add the bg color to the header using any of the bg-* classes -->
+                                <div class="widget-user-header bg-light-blue">
+                                    <div class="widget-user-image">
+                                        <i class="icon ion-ios-telephone-outline"></i>
+                                    </div>
+                                    <!-- /.widget-user-image -->
+                                    <h3 class="widget-user-username"><? echo $cur_tarif['tarif_name']?></h3>
+                                </div>
+                                <div class="box-footer no-padding">
+                                    <ul class="nav nav-stacked">
+                                        <li><a href="#">Абонентская плата <span class="pull-right badge bg-light-blue"><?=$cur_tarif['price']." "?> руб.</span></a></li>
+                                        <li><a href="#">Стоимость минуты звонка <span class="pull-right badge bg-light-blue"><?=$cur_tarif['minute_price']." "?> руб.</span></a></li>
+                                        <li><a href="#">Стоимость одного смс <span class="pull-right badge bg-light-blue"><?=$cur_tarif['sms_price']." "?> руб.</span></a></li>
+                                    </ul>
+                                    <a href="<?=Url::to('/profile/tarifs');?>" class="btn btn-primary btn-block"><b>Изменить тарифный план</b></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="settings">
+                    <div class="row">
+                        <div class="col-md-7 col-sm-6 col-xs-12">
+
+                        </div>
+                    </div>
+                </div>
             </div>
 		  </div>
 		</div>

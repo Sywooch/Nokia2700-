@@ -38,6 +38,8 @@ class Paymant extends Model
             ->where("user_id='$user_id' AND status = 1");
         $finance = $query->all();
 
+
+
         $cache = 0;
 
         foreach ($finance as $fin)
@@ -47,7 +49,7 @@ class Paymant extends Model
 
         if (($model = User::findOne($user_id)) !== null) {
             $model->cache = $cache;
-            $model->save();
+            $model->update();
         }
     }
 
