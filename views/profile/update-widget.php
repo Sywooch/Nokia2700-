@@ -18,10 +18,6 @@ $this->title = 'Изменить виджет';
       Редактирование
       <small>виджета №<?=$model->widget_id?></small>
     </h1>
-    <!--<ol class="breadcrumb">
-      <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li class="active">Dashboard</li>
-    </ol>-->
   </section>
 
     <!-- Main content -->
@@ -113,24 +109,34 @@ $this->title = 'Изменить виджет';
       <div class="clear"></div>
       <div class="bordered">
         <label>Настройка поведенческих факторов</label><br>
-        <div style="margin: 10px 0;"><input class="check-box-button open-marks" name="hand_turn_on"
-                                            type="checkbox" <?=($model->hand_turn_on)? "checked":"";?>><span style="margin: 0 15px;">Настроить вручную</span></div>
-        <div class="marks-body" <?= ($model->hand_turn_on)? 'style="display: block;':'style="display: none;'?>">
-          <?php
-          $items = [
-          0 => '0 баллов',
-          1 => '1 балл',
-          2 => '2 балла',
-          3 => '3 балла',
-          4 => '4 балла',
-          5 => '5 баллов',
-          6 => '6 баллов',
-          7 => '7 баллов',
-          8 => '8 баллов',
-          9 => '9 баллов',
-          10 => '10 баллов',
-          ];
-          ?>
+        <div class="form-group">
+          <div style="margin: 10px 0;">
+            <div style="display: inline-block;">
+              <?echo $form->field($model, 'hand_turn_on')->widget(SwitchInput::classname(), [
+                  'options'=>[
+                      'onchange'=>'openMarks();',
+                  ]
+              ])->label(false);?>
+            </div>
+            <div style="display: inline-block">
+              <span style="margin: 0 15px;">уникальное торговое предложение, выводится при попытки уйти с сайта</span>
+            </div>
+          </div>
+        </div>
+        <div id="openMarks" class="marks-body" <?= ($model->hand_turn_on)? 'style="display: block;':'style="display: none;'?>">
+          <?$items = [
+            0 => '0 баллов',
+            1 => '1 балл',
+            2 => '2 балла',
+            3 => '3 балла',
+            4 => '4 балла',
+            5 => '5 баллов',
+            6 => '6 баллов',
+            7 => '7 баллов',
+            8 => '8 баллов',
+            9 => '9 баллов',
+            10 => '10 баллов',
+          ];?>
           <table>
             <tr>
               <td style="padding-right:10px">Переход на другую страницу</td>
@@ -190,16 +196,6 @@ $this->title = 'Изменить виджет';
           <div class="input-group">
             <button class="sitepage_more btn">Добавить еще одну страницу</button>
           </div>
-          <script type=text/javascript>
-            var l = <?=$count_site_pages?>;
-            $('.sitepage_more').click(function(e){
-              e.preventDefault();
-              l++;
-              var page_input = '<span class="phone">Ссылка на страницу</span><div class="input-group"><div class="input-group-addon"><i class="fa fa-link"></i></div><input type="text" class="form-control" name="site_page_'+l+'" placeholder="URL"> </div><select class="form-control" name="select_site_page_'+l+'"><option value="0">0 баллов</option> <option value="1">1 балл</option> <option value="2">2 балла</option> <option value="3">3 балла</option> <option value="4">4 балла</option> <option value="5">5 баллов</option> <option value="6">6 баллов</option> <option value="7">7 баллов</option> <option value="8">8 баллов</option> <option value="9">9 баллов</option> <option value="10">10 баллов</option> </select><br>';
-              $('#pages_block').append(page_input);
-              $('input[name="count_pages"]').val(l);
-            });
-          </script>
           <br>
         </div>
       </div>
@@ -212,7 +208,7 @@ $this->title = 'Изменить виджет';
                 <div style="display: inline-block;">
                     <?echo $form->field($model, 'utp_turn_on')->widget(SwitchInput::classname(), [
                         'options'=>[
-                            'onchange'=>'openUtp($(this));',
+                            'onchange'=>'openUtp();',
                         ]
                     ])->label(false);?>
                 </div>
@@ -230,17 +226,19 @@ $this->title = 'Изменить виджет';
                 <input type="text" name="utm-button-color" class="form-control utm-button-color my-colorpicker"  placeholder="Цвет кнопки" value="<?=$model->utm_button_color?>">
             </div>
             <br>
-            <?list($width, $height, $type, $attr) = getimagesize($model->utp_img_url);?>
+            <?$width = 0;$height = 0;
+            if ($model->utp_img_url) list($width, $height, $type, $attr) = getimagesize($model->utp_img_url);?>
             <div class="utp-exampl" style="background: url(<?=$model->utp_img_url?>);background-repeat: no-repeat;width: <?=$width?>px;height: <?=$height?>px;">
                 <div class="utm-closed"></div>
-                <div class="utp-form" style="<?$model->widget_utp_form_position?>">
+                <div class="utp-form" style="<?=$model->widget_utp_form_position?>">
                     <div class="line"><input type="text" placeholder="Введите ваш телефон" /></div>
                     <div class="line"><button style="background: <?=$model->utm_button_color?>;">Отправить</button></div>
                 </div>
             </div>
             <img class="utp-img-exampl"  style="display: none;"/>
-            <input name="widget-utp-form-left" style="display: none;"/>
-            <input name="widget-utp-form-top" style="display: none;"/>
+            <?$pos = explode(';', $model->widget_utp_form_position)?>
+            <input name="widget-utp-form-left" style="display: none;" value="<?=$pos[0]?>;"/>
+            <input name="widget-utp-form-top" style="display: none;" value="<?=$pos[1]?>;"/>
         </div>
     </div>
       <div class="bordered">
@@ -299,7 +297,7 @@ $this->title = 'Изменить виджет';
                         <div style="display: inline-block;">
                             <?echo SwitchInput::widget([
                                 'name'=>'template[change]['.$value['id_template'].']',
-                                'value'=>$value['status'],
+                                'value'=>$value['status'] ? 1 : 0,
                                 'options'=>[
                                     'onchange'=>'openBlock('.$value['id_template'].');',
                                 ]
@@ -312,13 +310,13 @@ $this->title = 'Изменить виджет';
                         <div id="openBlock-<?=$value['id_template']?>" style="<?=$value['status'] ? 'display: block;' : 'display: none;'?>margin-bottom: 30px;">
                             <?if ($value['param']) {?>
                                 <div class="form-group">
-                                    <span>Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][<?=$value['id_template']?>]" min="0" max="60" value="<?=$value['param']?>"/>
+                                    <span>Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][]" min="0" max="60" value="<?=$value['param']?>"/>
                                 </div>
                             <?} else {?>
-                                <input type="text" style="display: none;" name="template[param][<?=$value['id_template']?>]"/>
+                                <input type="text" style="display: none;" name="template[param][]"/>
                             <?}?>
-                            <textarea name="template[description][<?=$value['id_template']?>]" class="form-control"><?=$value['description']?></textarea>
-                            <input type="text" style="display: none;" name="template[id][<?=$value['id_template']?>]" value="<?=$value['id_template']?>"/>
+                            <textarea name="template[description][]" class="form-control"><?=$value['description']?></textarea>
+                            <input type="text" style="display: none;" name="template[id][]" value="<?=$value['id_template']?>"/>
                         </div>
                     </div>
                 <?}
@@ -331,7 +329,7 @@ $this->title = 'Изменить виджет';
                                 'value'=>0,
                                 'options'=>[
                                     'onchange'=>'openBlock('.$value['id_template'].');',
-                                ]
+                                ],
                             ]);?>
                         </div>
                         <div style="display: inline-block;">
@@ -340,13 +338,13 @@ $this->title = 'Изменить виджет';
                         <div id="openBlock-<?=$value['id_template']?>" style="display: none;margin-bottom: 30px;">
                             <?if ($value['param']) {?>
                                 <div class="form-group">
-                                    <span>Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][<?=$value['id_template']?>]" min="0" max="60" value="<?=$value['param']?>"/>
+                                    <span>Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][]" min="0" max="60" value="<?=$value['param']?>"/>
                                 </div>
                             <?} else {?>
-                                <input type="text" style="display: none;" name="template[param][<?=$value['id_template']?>]"/>
+                                <input type="text" style="display: none;" name="template[param][]"/>
                             <?}?>
-                            <textarea name="template[description][<?=$value['id_template']?>]" class="form-control"><?=$value['description']?></textarea>
-                            <input type="text" style="display: none;" name="template[id][<?=$value['id_template']?>]" value="<?=$value['id_template']?>"/>
+                            <textarea name="template[description][]" class="form-control"><?=$value['description']?></textarea>
+                            <input type="text" style="display: none;" name="template[id][]" value="<?=$value['id_template']?>"/>
                         </div>
                     </div>
                 <?}
@@ -406,7 +404,7 @@ $this->title = 'Изменить виджет';
       </div>
       <div class="bordered">
         <div class="form-group">
-          <label>Настройки времени</label><br>
+          <label>Настройки рабочего времени</label><br>
           <div class="line-time">
             <label>Часовой пояс(GMT):</label>
             <select class="form-control" name="widget_GMT">
@@ -513,106 +511,9 @@ $this->title = 'Изменить виджет';
 
       <?php ActiveForm::end(); ?>
     <script type="text/javascript">
-      $(".check-box-button").bootstrapSwitch();
-      //------
-      $(".utm-button-color").colorpicker().on('changeColor',function(){
-        $('.utp-form .line button').css('background',$(this).val());
-      });
-      $('.open-marks').on('switchChange.bootstrapSwitch', function(event, state) {
-        var css=$('.marks-body').css('display');
-        if(css==''||css=='block')$('.marks-body').hide();
-        else $('.marks-body').show();
-        console.log(css);
-      });
-      // Mask`s
-      helper.setMask($("[name='widget_phone_number_1']")[0],'+7(999)999-99-99');
-      helper.setMask($("[name='work-start-time-monday']")[0],'99:99');
-      helper.setMask($("[name='work-end-time-monday']")[0],'99:99');
-      helper.setMask($("[name='work-start-time-tuesday']")[0],'99:99');
-      helper.setMask($("[name='work-end-time-tuesday']")[0],'99:99');
-      helper.setMask($("[name='work-start-time-wednesday']")[0],'99:99');
-      helper.setMask($("[name='work-end-time-wednesday']")[0],'99:99');
-      helper.setMask($("[name='work-start-time-thursday']")[0],'99:99');
-      helper.setMask($("[name='work-end-time-thursday']")[0],'99:99');
-      helper.setMask($("[name='work-start-time-friday']")[0],'99:99');
-      helper.setMask($("[name='work-end-time-friday']")[0],'99:99');
-      helper.setMask($("[name='work-start-time-saturday']")[0],'99:99');
-      helper.setMask($("[name='work-end-time-saturday']")[0],'99:99');
-      helper.setMask($("[name='work-start-time-sunday']")[0],'99:99');
-      helper.setMask($("[name='work-end-time-sunday']")[0],'99:99');
-      //---------
-      $('.btn-success').click(function(){
-        var param={action:'widget-edit',id:<?=$model->widget_id?>};
-      //param['widget_name']=$("[name='widget_name']").val();
-      param['widget_site_url']=$("[name='widget_site_url']").val();
-      param['widget_sound']=$("[name='widget_sound']").val();
-      param['widget_theme_color']=$("[name='widget_theme_color']").val();
-      param['widget_button_color']=$("[name='widget_button_color']").val();
-      param['widget_phone_number_1']=$("[name='widget_phone_number_1']").val();
-      param['widget_phone_number_2']=$("[name='widget_phone_number_2']").val();
-      param['widget_phone_number_3']=$("[name='widget_phone_number_3']").val();
-      param['widget_phone_number_4']=$("[name='widget_phone_number_4']").val();
-      param['widget_user_email']=$("[name='widget_user_email']").val();
-      param['widget_GMT']=$("[name='widget_GMT']").val();
-      param['position']=$("[name='witget-button-top']").val()+$("[name='witget-button-left']").val();
-      param['position_mob']=$("[name='witget-button-top-mob']").val()+$("[name='witget-button-left-mob']").val();
-      param['widget-utp-form-position']=$("[name='widget-utp-form-top']").val()+$("[name='widget-utp-form-left']").val();
-      param['utm-button-color']=$("[name='utm-button-color']").val();
-      param['utp-img-url']=$("[name='utp-img-url']").val();
-      param['settings']=new Object;
-      param['other_page'] = $("[name='other_page']").val();
-      param['scroll_down'] = $("[name='scroll_down']").val();
-      param['active_more40'] = $("[name='active_more40']").val();
-      param['mouse_intencivity'] = $("[name='mouse_intencivity']").val();
-      param['sitepage_activity'] = $("[name='sitepage_activity']").val();
-      param['sitepage3_activity'] = $("[name='sitepage3_activity']").val();
-      param['more_avgtime'] = $("[name='more_avgtime']").val();
-      param['moretime_after1min'] = $("[name='moretime_after1min']").val();
-      param['form_activity'] = $("[name='form_activity']").val();
-      param['client_activity'] = $("[name='client_activity']").val();
-      var time_start=$("[name='work-start-time']").val(),time_end=$("[name='work-end-time']").val();
-      var test_start_time=Number(time_start.split(':')[0]*60)+Number(time_start.split(':')[1]),test_end_time=Number(time_end.split(':')[0]*60)+Number(time_end.split(':')[1]);
-      param['settings']=JSON.stringify(param['settings']);
-      param['widget_work_time']='{"work-start-time":"'+$("[name='work-start-time']").val()+'","work-end-time":"'+$("[name='work-end-time']").val()+'"}';
-      for(var k in param){
-        if(param[k]==undefined&&($("[name='"+k+"']").attr('data-required')==true&&$("[name='"+k+"']").val()=='')){
-          $("[name='"+k+"']").parent().addClass('has-error');
-          return false;
-        }
-      }
-      if(test_start_time<test_end_time&&test_start_time<1440&&test_end_time<1440) $.post('/route.php',param,function(r){
-        console.log(param);
-        console.log(JSON.parse(r.replace(/\ufeff/g,'')));
-        var o=JSON.parse(r.replace(/\ufeff/g,'')),info={};
-        info['msg']=o['msg']; info['title']='Информационное окно';
-        var html=helper.replaceAll(document.getElementById('modal').innerHTML,info);
-        document.getElementsByTagName('body')[0].innerHTML+=html;
-        $('.close,.modal-dialog .btn').click(function(){
-          window.location.hash='widgets';
-          $('.modal-info').remove();
-        });
-      });
-      else {
-        if(test_start_time<test_end_time||test_start_time<1440) $("[name='work-start-time']").parent().addClass('has-error');
-        if(test_end_time<1440) $("[name='work-end-time']").parent().addClass('has-error');
-        return false;
-      }
-      });
 
       $('.btn-danger').click(function(){
         window.location.href='../widgets';
-      });
-
-      $(".my-colorpicker").colorpicker();
-      $('.color_theme_list__ul__item').eq(0).click(function(){
-        $(this).attr("class","color_theme_list__ul__item active");
-        $('.color_theme_list__ul__item').eq(1).attr("class","color_theme_list__ul__item");
-        $("[name='widget_theme_color']").val(0);
-      });
-      $('.color_theme_list__ul__item').eq(1).click(function(){
-        $(this).attr("class","color_theme_list__ul__item active");
-        $('.color_theme_list__ul__item').eq(0).attr("class","color_theme_list__ul__item");
-        $("[name='widget_theme_color']").val(1);
       });
     </script>
     <script type="text/javascript">
@@ -627,7 +528,7 @@ $this->title = 'Изменить виджет';
       .colorpicker-element .input-group-addon i {border: 1px solid #d2d6de;}
       .utm-closed {position: relative; top: -2%; left: 98%; border: 1px solid rgba(0, 0, 0, .1); width: 30px; border-radius: 15px; text-align: center; box-shadow: 0 0 0 3px rgba(0, 0, 0, .4); font-weight: 900; height: 30px; color: rgba(0, 0, 0, .63); box-sizing: border-box; padding: 2px; z-index: 10; -webkit-transition: all .3s ease-out; transition: all .3s ease-out; cursor: pointer; background: #f1f1f1 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABBElEQVQ4T5WT63KCMBSEd+FJK2K9VPxfwXEG+wDiCF56f7NOn0OOkyg2YkIxf2G/bM7u4egp/ik9zIts8YE7znASh6WUMw6i+IHAnsLeepW+t2Fo8aHMPd8PqASjcdIRyq4NRIkhKEB28mX6rQHqDCdxAMEWxGO+XLzZnFRigQRF9vKl/rkA/oPYxDcA/Zwo6QpkQ7C/ztLXM/hkW9jNV+mn6e7KQfXBhAiFLrHVgTGT060ABAhdMVsdXNlWg2qI2Ar4GxhCT8imiG8Al5yNgTX1pB6jc9ouiFkkLTZLUi+TDaIBrpLY2liH0FwM1e02y1RBVLzsR8+/Hv1pW3F1gdpiAMkRptjH3QzyD+8AAAAASUVORK5CYII='); background-repeat: no-repeat; background-position: center center;}
       .utp-exampl {max-width: 800px; max-height:800px; background-repeat: no-repeat;}
-      .utp-exampl .utp-form {position: relative; top:0%; left:0%; width: 200px; height: 70px; z-index: 9; cursor: move;}
+      .utp-exampl .utp-form {position: relative; top: 0; left: 0; width: 200px; height: 70px; z-index: 9; cursor: move;}
       .utp-exampl .utp-form .line input,.utp-exampl .utp-form .line button {box-shadow:0 0 0 3px rgba(0, 0, 0, .2); border-radius: 15px; width: 100%; height: 30px; margin-bottom: 10px; border: 1px solid #CACACA; position:relative; z-index: -1; padding: 5px 0 5px 10px; background: #f5f5f5;}
       .utp-exampl .utp-form .line button {margin: 0;}
       span.phone   {font-weight: 400; font-size: 14px;}
@@ -677,115 +578,163 @@ echo "</pre>";*/
 $("[name='witget-button-top']").val('top:'+$('.robax-widget-open-button')[0].style.top+';');
 $("[name='witget-button-left']").val('left:'+$('.robax-widget-open-button')[0].style.left+';');
 $(".widget-top-position").slider({
-  orientation: "vertical",
-  range: "min",
-  min: 0,
-  max: 100,
-  value: (100 - parseInt($('.robax-widget-open-button')[0].style.top.replace('%', ''))),
-  slide: function( event, ui ) {
-    $(".robax-widget-open-button").css('top', (100 - ui.value) + '%');
-    $("[name='witget-button-top']").val('top: ' + (100 - ui.value) + '%;');
-  }
+    orientation: "vertical",
+    range: "min",
+    min: 0,
+    max: 100,
+    value: (100 - parseInt($('.robax-widget-open-button')[0].style.top.replace('%', ''))),
+    slide: function( event, ui ) {
+        $(".robax-widget-open-button").css('top', (100 - ui.value) + '%');
+        $("[name='witget-button-top']").val('top: ' + (100 - ui.value) + '%;');
+    }
 });
 $(".widget-left-position").slider({
-  range: "min",
-  min: 0,
-  max: 100,
-  value: parseInt($('.robax-widget-open-button')[0].style.left.replace('%', '')),
-  slide: function( event, ui ) {
-    $(".robax-widget-open-button").css('left', (ui.value) + '%');
-    $("[name='witget-button-left']").val('left: ' + (ui.value) + '%;');
-  }
+    range: "min",
+    min: 0,
+    max: 100,
+    value: parseInt($('.robax-widget-open-button')[0].style.left.replace('%', '')),
+    slide: function( event, ui ) {
+        $(".robax-widget-open-button").css('left', (ui.value) + '%');
+        $("[name='witget-button-left']").val('left: ' + (ui.value) + '%;');
+    }
 });
-
 //Настройка виджета Мобайл
 $("[name='witget-button-top-mob']").val('top:'+$('.robax-widget-open-button-mob')[0].style.top+';');
 $("[name='witget-button-left-mob']").val('left:'+$('.robax-widget-open-button-mob')[0].style.left+';');
 $(".widget-top-position-mob").slider({
-  orientation: "vertical",
-  range: "min",
-  min: 0,
-  max: 100,
-  value: (100 - parseInt($('.robax-widget-open-button-mob')[0].style.top.replace('%', ''))),
-  slide: function( event, ui ) {
-    $(".robax-widget-open-button-mob").css('top', (100 - ui.value) + '%');
-    $("[name='witget-button-top-mob']").val('top: ' + (100 - ui.value) + '%;');
-  }
+    orientation: "vertical",
+    range: "min",
+    min: 0,
+    max: 100,
+    value: (100 - parseInt($('.robax-widget-open-button-mob')[0].style.top.replace('%', ''))),
+    slide: function( event, ui ) {
+        $(".robax-widget-open-button-mob").css('top', (100 - ui.value) + '%');
+        $("[name='witget-button-top-mob']").val('top: ' + (100 - ui.value) + '%;');
+    }
 });
 $(".widget-left-position-mob").slider({
-  range: "min",
-  min: 0,
-  max: 100,
-  value: parseInt($('.robax-widget-open-button-mob')[0].style.left.replace('%', '')),
-  slide: function( event, ui ) {
-    $(".robax-widget-open-button-mob").css('left', (ui.value) + '%');
-    $("[name='witget-button-left-mob']").val('left: ' + (ui.value) + '%;');
-  }
+    range: "min",
+    min: 0,
+    max: 100,
+    value: parseInt($('.robax-widget-open-button-mob')[0].style.left.replace('%', '')),
+    slide: function( event, ui ) {
+        $(".robax-widget-open-button-mob").css('left', (ui.value) + '%');
+        $("[name='witget-button-left-mob']").val('left: ' + (ui.value) + '%;');
+    }
 });
 //Добавление телефона (чёрный список)
 var k = <?=$count_black_list?>;
 $('.blacklist_more').click(function(e){
-  e.preventDefault();
-  k++;
-  var BL_input = '<span class="phone">Телефон №'+k+'</span><div class="input-group"><div class="input-group-addon"><i class="fa fa-phone"></i> </div> <input type="text" class="form-control widget_phone" name="black_list_number_'+k+'" placeholder="+7(___)___-__-__" data-required="false"></div>';
-  $('#black_list_block').append(BL_input);
-  $("input[name='black_list_number_"+k+"']").inputmask("+7(999)999-99-99");
-  $('input[name="count_black_list"]').val(k);
+    k++;
+    e.preventDefault();
+    var BL_input = '<span class="phone">Телефон №'+k+'</span><div class="input-group"><div class="input-group-addon"><i class="fa fa-phone"></i> </div> <input type="text" class="form-control widget_phone" name="black_list_number_'+k+'" placeholder="+7(___)___-__-__" data-required="false"></div>';
+    $('#black_list_block').append(BL_input);
+    $("input[name='black_list_number_"+k+"']").inputmask("+7(999)999-99-99");
+    $('input[name="count_black_list"]').val(k);
 });
 //Добавление емэйла (настройка уведомлений)
 var i = <?=$count_mails?>;
 $('.email_more').click(function(e){
-  e.preventDefault();
-  i++;
-  var email_input = '<span class="phone">Ваша эл-почта</span><div class="input-group"> <div class="input-group-addon"><b>@</b></div> <input type="text" class="form-control" name="widget_user_email_'+i+'" placeholder="Email" data-required="true"> </div>';
-  $('#emails_block').append(email_input);
-  $('input[name="count_emails"]').val(i);
+    i++;
+    e.preventDefault();
+    var email_input = '<span class="phone">Ваша эл-почта</span><div class="input-group"> <div class="input-group-addon"><b>@</b></div> <input type="text" class="form-control" name="widget_user_email_'+i+'" placeholder="Email" data-required="true"> </div>';
+    $('#emails_block').append(email_input);
+    $('input[name="count_emails"]').val(i);
 });
 //Добавление телефона (определяется при звонке клиенту)
 var j = <?=$count_phones?>;
 $('.phone_more').click(function(e){
-  e.preventDefault();
-  j++;
-  var phone_input = '<span class="phone">Телефон №'+j+'</span><div class="input-group"><div class="input-group-addon"><i class="fa fa-phone"></i> </div> <input type="text" class="form-control widget_phone" name="widget_phone_number_'+j+'" placeholder="+7(___)___-__-__" data-required="false"></div>';
-  $('#phones_block').append(phone_input);
-  $("input[name='widget_phone_number_"+j+"']").inputmask("+7(999)999-99-99");
-  $('input[name="count_phones"]').val(j);
+    j++;
+    e.preventDefault();
+    var phone_input = '<span class="phone">Телефон №'+j+'</span><div class="input-group"><div class="input-group-addon"><i class="fa fa-phone"></i> </div> <input type="text" class="form-control widget_phone" name="widget_phone_number_'+j+'" placeholder="+7(___)___-__-__" data-required="false"></div>';
+    $('#phones_block').append(phone_input);
+    $("input[name='widget_phone_number_"+j+"']").inputmask("+7(999)999-99-99");
+    $('input[name="count_phones"]').val(j);
+});
+//Добавит страницу
+var l = <?=$count_site_pages?>;
+$('.sitepage_more').click(function(e){
+    l++;
+    e.preventDefault();
+    var page_input = '<span class="phone">Ссылка на страницу</span><div class="input-group"><div class="input-group-addon"><i class="fa fa-link"></i></div><input type="text" class="form-control" name="site_page_'+l+'" placeholder="URL"> </div><select class="form-control" name="select_site_page_'+l+'"><option value="0">0 баллов</option> <option value="1">1 балл</option> <option value="2">2 балла</option> <option value="3">3 балла</option> <option value="4">4 балла</option> <option value="5">5 баллов</option> <option value="6">6 баллов</option> <option value="7">7 баллов</option> <option value="8">8 баллов</option> <option value="9">9 баллов</option> <option value="10">10 баллов</option> </select><br>';
+    $('#pages_block').append(page_input);
+    $('input[name="count_pages"]').val(l);
+});
+/*********************************/
+$(".utm-button-color").colorpicker().on('changeColor',function(){
+    $('.utp-form .line button').css('background',$(this).val());
 });
 //УТП
 $('#url_utp_img').change(function(){
-  $('.utp-img-exampl').attr("src",this.value);
-  $('.utp-img-exampl').load(function(){
-    $('.utp-exampl').css({
-      'background': 'url('+this.src+')',
-      'width': $('.utp-img-exampl').width()+'px',
-      'height': $('.utp-img-exampl').height()+'px'
+    $('.utp-img-exampl').attr("src",this.value);
+    $('.utp-img-exampl').load(function(){
+        $('.utp-exampl').css({
+          'background': 'url('+this.src+')',
+          'width': $('.utp-img-exampl').width()+'px',
+          'height': $('.utp-img-exampl').height()+'px'
+        });
     });
-  });
 });
 $('.utp-form').draggable({
-  stop: function() {
-    $("[name='widget-utp-form-top']").val('top: '+$(this).css('top')+';');
-    $("[name='widget-utp-form-left']").val('left: '+$(this).css('left')+';');
-  },
-  containment: '.utp-exampl',
-  scroll: false
+    stop: function() {
+        $("[name='widget-utp-form-top']").val('top: '+$(this).css('top')+';');
+        $("[name='widget-utp-form-left']").val('left: '+$(this).css('left')+';');
+    },
+    containment: '.utp-exampl',
+    scroll: false
 });
-function openUtp(element) {
+// Mask`s
+helper.setMask($("[name='widget_phone_number_1']")[0],'+7(999)999-99-99');
+helper.setMask($("[name='work-start-time-monday']")[0],'99:99');
+helper.setMask($("[name='work-end-time-monday']")[0],'99:99');
+helper.setMask($("[name='work-start-time-tuesday']")[0],'99:99');
+helper.setMask($("[name='work-end-time-tuesday']")[0],'99:99');
+helper.setMask($("[name='work-start-time-wednesday']")[0],'99:99');
+helper.setMask($("[name='work-end-time-wednesday']")[0],'99:99');
+helper.setMask($("[name='work-start-time-thursday']")[0],'99:99');
+helper.setMask($("[name='work-end-time-thursday']")[0],'99:99');
+helper.setMask($("[name='work-start-time-friday']")[0],'99:99');
+helper.setMask($("[name='work-end-time-friday']")[0],'99:99');
+helper.setMask($("[name='work-start-time-saturday']")[0],'99:99');
+helper.setMask($("[name='work-end-time-saturday']")[0],'99:99');
+helper.setMask($("[name='work-start-time-sunday']")[0],'99:99');
+helper.setMask($("[name='work-end-time-sunday']")[0],'99:99');
+//
+$(".my-colorpicker").colorpicker();
+$('.color_theme_list__ul__item').eq(0).click(function(){
+    $(this).attr("class","color_theme_list__ul__item active");
+    $('.color_theme_list__ul__item').eq(1).attr("class","color_theme_list__ul__item");
+    $("[name='widget_theme_color']").val(0);
+});
+$('.color_theme_list__ul__item').eq(1).click(function(){
+    $(this).attr("class","color_theme_list__ul__item active");
+    $('.color_theme_list__ul__item').eq(0).attr("class","color_theme_list__ul__item");
+    $("[name='widget_theme_color']").val(1);
+});
+//Функции
+function openMarks() {
+  if ($('#openMarks').css('display') == 'none') {
+    $('#openMarks').show();
+  } else {
+    $('#openMarks').hide();
+  }
+}
+function openUtp() {
     if ($('#openUtp').css('display') == 'none') {
         $('#openUtp').show();
     } else {
         $('#openUtp').hide();
     }
 }
-
 function openBlock(id) {
-    if ($('#openBlock-'+id).css('display') == 'none') {
+    if ($('#openBlock-'+id).css('display') == 'none' && $('.bootstrap-switch-id-w'+id).hasClass('bootstrap-switch-on')) {
+        $('#w'+id).val(1);
         $('#openBlock-'+id).show();
     } else {
-        $('#openBlock-'+id).hide();
+      $('#w'+id).val(0);
+      $('#openBlock-'+id).hide();
     }
 }
-
 function siteChange(url) {
     address = ['http://', 'https://'];
     new_url = url.replace(address, '');
@@ -804,10 +753,3 @@ function siteChange(url) {
     }
 }
 </script>
-<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button);
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>

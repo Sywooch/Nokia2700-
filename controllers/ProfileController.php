@@ -39,9 +39,7 @@ class ProfileController extends Controller
                             'widgets', 'history', 'add-widget',
                             'update-widget', 'get-widget-code',
                             'pay-with', 'paid', 'fail','paid-ik',
-                            'update-paid-ik', 'tarifs', 'user-tarif',
-                            'for-test'],
-                        'allow' => true,
+                            'update-paid-ik', 'tarifs', 'sound', 'user-tarif', 'for-test'],                        'allow' => true,
                         'roles' => ['@'],
                     ],
                 ],
@@ -228,7 +226,7 @@ class ProfileController extends Controller
             //$model->widget_work_time = '{"work-start-time":"'.Yii::$app->request->post('work-start-time').'","work-end-time":"'.Yii::$app->request->post('work-end-time').'"}';
             $model->widget_theme_color = Yii::$app->request->post('widget_theme_color');
             $model->widget_yandex_metrika = Yii::$app->request->post('widget_yandex_metrika');
-            $model->widget_google_metrika = $_POST['WidgetSettings']['widget_google_metrika'];
+            ($_POST['WidgetSettings']['widget_google_metrika']) ? $model->widget_google_metrika = 1 : $model->widget_google_metrika = 0;
             $phones = '';
             for($i=1; $i<=$postArray['count_phones']; $i++)
             {
@@ -254,9 +252,9 @@ class ProfileController extends Controller
             $model->widget_work_time = json_encode($work_time);
             $model->widget_GMT = Yii::$app->request->post('widget_GMT');
             $model->widget_sound = Yii::$app->request->post('widget_sound');
-            (Yii::$app->request->post('hand_turn_on'))?$model->hand_turn_on = 1 : $model->hand_turn_on = 0;
-            (Yii::$app->request->post('utp_turn_on'))?$model->utp_turn_on = 1 : $model->utp_turn_on = 0;
-            $model->widget_utp_form_position = Yii::$app->request->post('widget-utp-form-top').Yii::$app->request->post('widget-utp-form-left');
+            ($_POST['WidgetSettings']['hand_turn_on']) ? $model->hand_turn_on = 1 : $model->hand_turn_on = 0;
+            ($_POST['WidgetSettings']['utp_turn_on']) ? $model->utp_turn_on = 1 : $model->utp_turn_on = 0;
+            $model->widget_utp_form_position = $_POST['widget-utp-form-top'].$_POST['widget-utp-form-left'];
             $model->utm_button_color = Yii::$app->request->post('utm-button-color');
             $model->utp_img_url = Yii::$app->request->post('utp-img-url');
             if($model->save()) {
@@ -284,7 +282,7 @@ class ProfileController extends Controller
                         $widgetTemplateUsers->id_template = $_POST['template']['id'][$i];
                         $widgetTemplateUsers->description = $_POST['template']['description'][$i];
                         $widgetTemplateUsers->param = $_POST['template']['param'][$i];
-                        $widgetTemplateUsers->status = isset($_POST['template']['change'][$i]) ? 1 : 0;
+                        $widgetTemplateUsers->status =  $_POST['template']['change'][$_POST['template']['id'][$i]];
                         $widgetTemplateUsers->save();
                     }
                     return $this->redirect(['profile/widgets']);
@@ -340,7 +338,7 @@ class ProfileController extends Controller
             //$model->widget_work_time = '{"work-start-time":"'.Yii::$app->request->post('work-start-time').'","work-end-time":"'.Yii::$app->request->post('work-end-time').'"}';
             $model->widget_theme_color = Yii::$app->request->post('widget_theme_color');
             $model->widget_yandex_metrika = Yii::$app->request->post('widget_yandex_metrika');
-            $model->widget_google_metrika = $_POST['WidgetSettings']['widget_google_metrika'];
+            ($_POST['WidgetSettings']['widget_google_metrika']) ? $model->widget_google_metrika = 1 : $model->widget_google_metrika = 0;
             $phone = '';
             for($i=1; $i<=$postArray['count_phones']; $i++)
             {
@@ -366,9 +364,9 @@ class ProfileController extends Controller
             $work_time['sunday']['end'] = $postArray['work-end-time-sunday'];
             $model->widget_work_time = json_encode($work_time);
             $model->widget_sound = Yii::$app->request->post('widget_sound');
-            (Yii::$app->request->post('hand_turn_on'))?$model->hand_turn_on = 1 : $model->hand_turn_on = 0;
-            ($_POST['WidgetSettings']['utp_turn_on'])?$model->utp_turn_on = 1 : $model->utp_turn_on = 0;
-            $model->widget_utp_form_position = Yii::$app->request->post('widget-utp-form-top').Yii::$app->request->post('widget-utp-form-left');
+            ($_POST['WidgetSettings']['hand_turn_on']) ? $model->hand_turn_on = 1 : $model->hand_turn_on = 0;
+            ($_POST['WidgetSettings']['utp_turn_on']) ? $model->utp_turn_on = 1 : $model->utp_turn_on = 0;
+            $model->widget_utp_form_position = $_POST['widget-utp-form-top'].$_POST['widget-utp-form-left'];
             $model->utm_button_color = Yii::$app->request->post('utm-button-color');
             $model->utp_img_url = Yii::$app->request->post('utp-img-url');
             if($model->save()) {
@@ -396,17 +394,17 @@ class ProfileController extends Controller
                             $value->id_template = $_POST['template']['id'][$key];
                             $value->description = $_POST['template']['description'][$key];
                             $value->param = $_POST['template']['param'][$key];
-                            $value->status = isset($_POST['template']['change'][$key]) ? 1 : 0;
+                            $value->status = $_POST['template']['change'][$_POST['template']['id'][$key]];
                             $value->save();
                         }
-                    } else {;
+                    } else {
                         for ($i = 0;$i < count($_POST['template']['id']);$i++) {
                             $widgetTemplateUsers = new WidgetTemplateNotificationUsers();
                             $widgetTemplateUsers->id_widget = $model->widget_id;
                             $widgetTemplateUsers->id_template = $_POST['template']['id'][$i];
                             $widgetTemplateUsers->description = $_POST['template']['description'][$i];
                             $widgetTemplateUsers->param = $_POST['template']['param'][$i];
-                            $widgetTemplateUsers->status = isset($_POST['template']['change'][$i]) ? 1 : 0;
+                            $widgetTemplateUsers->status = $_POST['template']['change'][$_POST['template']['id'][$i]];
                             $widgetTemplateUsers->save();
                         }
                     }
@@ -427,6 +425,19 @@ class ProfileController extends Controller
                 'widgetTemplateUsers' => $widgetTemplateUsers
             ]);
         }
+    }
+
+    public function actionSound()
+    {
+        $getUrlSound = WidgetSettings::getUrlSound(Yii::getAlias("@webroot/files/robaks.mp3"));
+        $result = $getUrlSound->result;
+        $statusURL = $result->statusURL;
+        $sendSound = WidgetSettings::sendSound(Yii::getAlias("@webroot/files/robaks.mp3"), $statusURL);
+
+        return $this->render('sound', [
+            'getUrlSound' => $getUrlSound,
+            'sendSound' => $sendSound,
+        ]);
     }
 
     public function actionGetWidgetCode($code)

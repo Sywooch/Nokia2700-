@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use CURLFile;
 use Yii;
 
 /**
@@ -384,6 +385,66 @@ class WidgetSettings extends \yii\db\ActiveRecord
             return true;
         }
         return false;
+    }
+
+    public static function getUrlSound($file)
+    {
+        $customer = '883140779001066';
+        $data = array(
+            "id" => "1",
+            "jsonrpc" => "2.0",
+            "method" => "setCallBackPrompt",
+            "params" => array(
+                "customer_name"=> $customer,
+                'file_name' => $file
+            )
+        );
+
+        if ($mtt_curl = curl_init())
+        {
+            curl_setopt($mtt_curl, CURLOPT_URL, 'https://webapicommon.mtt.ru/index.php');                          //устанавливает адрес обращения для curl
+            curl_setopt($mtt_curl, CURLOPT_USERPWD, 'CallBack_16:jexEy4phu6RezecH');     //задает логин и пароль
+            curl_setopt($mtt_curl, CURLOPT_POST, 1);                            //устанавливаем в качестве передачи донных метод post
+            curl_setopt($mtt_curl, CURLOPT_RETURNTRANSFER, 1);                  //устанавливаем флаг для получения результата
+            curl_setopt($mtt_curl, CURLOPT_SSL_VERIFYPEER, false);              //устанавливаем флаг "не проверять сертификаты ssl и принимать их"
+            curl_setopt($mtt_curl, CURLOPT_POSTFIELDS, json_encode($data));             //преобразуем массив в json и задаем поля для post запроса
+            $response = json_decode(curl_exec($mtt_curl));                           //отправляем запрос, преобразуем json в php-объект
+            if ($response === null){
+                //если результат равен null то значит произошла ошибка, выбрасываем исключение
+                return false;
+            }else{
+                return $response;
+            }
+        } else {
+            //если не удалось проинициализировать curl выбрасываем исключения
+            return false;
+        }
+    }
+
+    public static function sendSound($file, $url)
+    {
+        $cfile = new CURLFile($file,'audio/mpeg','test_name');
+        $data = array('test_file' => $cfile);
+
+        if ($mtt_curl = curl_init())
+        {
+            curl_setopt($mtt_curl, CURLOPT_URL, $url);                          //устанавливает адрес обращения для curl
+            //curl_setopt($mtt_curl, CURLOPT_USERPWD, 'CallBack_16:jexEy4phu6RezecH');     //задает логин и пароль
+            curl_setopt($mtt_curl, CURLOPT_POST, 1);                            //устанавливаем в качестве передачи донных метод post
+            //curl_setopt($mtt_curl, CURLOPT_RETURNTRANSFER, 1);                  //устанавливаем флаг для получения результата
+            //curl_setopt($mtt_curl, CURLOPT_SSL_VERIFYPEER, false);              //устанавливаем флаг "не проверять сертификаты ssl и принимать их"
+            curl_setopt($mtt_curl, CURLOPT_POSTFIELDS, $data);             //преобразуем массив в json и задаем поля для post запроса
+            $response = json_decode(curl_exec($mtt_curl));                           //отправляем запрос, преобразуем json в php-объект
+            if ($response === null){
+                //если результат равен null то значит произошла ошибка, выбрасываем исключение
+                return false;
+            }else{
+                return $response;
+            }
+        } else {
+            //если не удалось проинициализировать curl выбрасываем исключения
+            return false;
+        }
     }
 
     public function mttCallBackAPI($data)

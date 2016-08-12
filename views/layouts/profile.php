@@ -136,11 +136,15 @@ AppAsset::register($this);
 							<i class="fa fa-bar-chart"></i> <span>Аналитика</span>
 						</a>
 					</li>
-					<?php $active = (Url::to(['']) == '/partners') ? 'active' : ''; ?>
-					<li class="<?=$active?>">
-						<a href="<?=Url::to('/partners');?>">
-							<i class="fa fa-users"></i> <span>Партнёрка</span>
+					<?php $active = (Url::to(['']) == '/partners' || Url::to(['']) == '/partners/promo') ? 'active' : ''; ?>
+					<li class="treeview <?=$active?>">
+						<a href="#">
+							<i class="fa fa-users"></i> <span>Партнёрка</span> <i class="fa fa-angle-left pull-right"></i>
 						</a>
+						<ul class="treeview-menu">
+							<li><a href="<?=Url::to('/partners');?>" class=""><i class="fa fa-bar-chart"></i>Общая информация</a></li>
+							<li><a href="<?=Url::to('/partners/promo');?>" class=""><i class="fa fa-image"></i>Промо материалы</a></li>
+						</ul>
 					</li>
         		</ul>
     		</section>

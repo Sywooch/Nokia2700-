@@ -34,7 +34,7 @@ class AppAsset extends AssetBundle
         'js/fastclick.js',
         'js/demo.js',
         'js/app.min.js',
-        'js/modal.js',
+        //'js/modal.js',
         'js/Chart.min.js',
         'plugins/bootstrap/js/bootstrap-switch.min.js',
         'plugins/colorpicker/bootstrap-colorpicker.min.js',

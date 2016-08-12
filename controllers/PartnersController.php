@@ -17,7 +17,7 @@ class PartnersController extends \yii\web\Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'sendmail'],
+                        'actions' => ['index', 'sendmail', 'promo'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -65,6 +65,11 @@ class PartnersController extends \yii\web\Controller
             'dataProviderLeft' => $dataProviderLeft,
             'dataProviderRight' => $dataProviderRight,
         ]);
+    }
+
+    public function actionPromo()
+    {
+        return $this->render('promo');
     }
 
     public function actionSendmail()

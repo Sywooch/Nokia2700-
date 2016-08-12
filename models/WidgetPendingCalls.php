@@ -60,7 +60,7 @@ class WidgetPendingCalls extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'widget_id' => 'Номер виджета',
+            'widget_id' => 'ID виджета',
             'id' => 'ID',
             'call_time' => 'Дата звонка',
             'phone' => 'Телефон',
@@ -71,8 +71,8 @@ class WidgetPendingCalls extends \yii\db\ActiveRecord
             'call_back_cost' => 'Сумма',
             'record_status' => 'Record Status',
             'test_info' => 'Test Info',
-            'waiting_period_A' => 'Время ожидания абонента А',
-            'waiting_period_B' => 'Время ожидания абонента Б',
+            'waiting_period_A' => 'Время ожидания Менеджера',
+            'waiting_period_B' => 'Время ожидания Клиента',
         ];
     }
 
@@ -88,16 +88,16 @@ class WidgetPendingCalls extends \yii\db\ActiveRecord
         switch($this->end_side)
         {
             case 'end_side_A':
-                return 'Сторона А';
+                return 'Менеджер';
                 break;
             case 'end_side_B':
-                return 'Сторона Б';
+                return 'Клиент';
                 break;
             case 'Call ended by cancel on side A':
-                return 'Абонент А не поднял трубку';
+                return 'Менеджер не поднял трубку';
                 break;
             case 'Call ended by cancel on side B':
-                return 'Абонент Б не поднял трубку';
+                return 'Клиент не поднял трубку';
                 break;
             default:
                 return 'Звонок не состоялся';

@@ -26,6 +26,7 @@ $this->title = 'Звонки с виджетов';
 				'content' => 
 					GridView::widget([
 						'dataProvider' => $callProvider,
+						'summary' => 'Показано <b>{end}</b> из <b>{totalCount}</b> элементов.',
 				        'columns' => [
 				            'widget_id',
 				            'call_time',
@@ -43,6 +44,7 @@ $this->title = 'Звонки с виджетов';
 				'content' => 
 					GridView::widget([
 						'dataProvider' => $messageProvider,
+						'summary' => 'Показано <b>{end}</b> из <b>{totalCount}</b> элементов.',
 				        'columns' => [
 				            'widget_id',
 				            'name',

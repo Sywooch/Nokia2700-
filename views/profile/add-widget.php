@@ -92,9 +92,20 @@ $this->title = 'Добавить виджет';
 	</div>
 	<div class="clear"></div>
 	<div class="bordered">
-	  <label>Настройка поведения</label><br>
-	  <div style="margin: 10px 0;"><input class="check-box-button open-marks" type="checkbox" ><span style="margin: 0 15px;">Настроить вручную</span></div>
-	  <div class="marks-body" style="display: none;">
+	  <label>Настройки поведенческих факторов</label><br>
+        <div style="margin: 10px 0;">
+            <div style="display: inline-block;">
+                <?echo $form->field($model, 'hand_turn_on')->widget(SwitchInput::classname(), [
+                    'options'=>[
+                        'onchange'=>'openMarks();',
+                    ]
+                ])->label(false);?>
+            </div>
+            <div style="display: inline-block">
+                <span style="margin: 0 15px;">уникальное торговое предложение, выводится при попытки уйти с сайта</span>
+            </div>
+        </div>
+	  <div id="openMarks" class="marks-body" style="display: none;">
 		<?php
 		$items = [
 			0 => '0 баллов',
@@ -171,33 +182,33 @@ $this->title = 'Добавить виджет';
 		  <div class="input-group">
 			  <button class="pages_more btn">Добавить еще одну страницу</button>
 		  </div>
-		  <script type=text/javascript>
-			  var l = 1;
-			  $('.pages_more').click(function(e){
-				  e.preventDefault();
-				  l++;
-				  var page_input = '<span class="phone">Ссылка на страницу</span><div class="input-group"><div class="input-group-addon"><i class="fa fa-link"></i> </div><input type="text" class="form-control" name="site_page_'+l+'" placeholder="URL"> </div><select class="form-control" name="select_site_page_'+l+'"> <option value="0">0 баллов</option> <option value="1">1 балл</option> <option value="2">2 балла</option> <option value="3">3 балла</option> <option value="4">4 балла</option> <option value="5">5 баллов</option> <option value="6">6 баллов</option> <option value="7">7 баллов</option> <option value="8">8 баллов</option> <option value="9">9 баллов</option> <option value="10">10 баллов</option> </select>';
-				  $('#pages_block').append(page_input);
-				  $('input[name="count_pages"]').val(l);
-			  });
-		  </script>
 		  <br>
 	  </div>
 	</div>
 	<div class="clear"></div>
 	<div class="bordered">
 		<label>УТП  </label><br>
-		<div style="margin: 10px 0;"><input class="check-box-button open-utm" type="checkbox" ><span style="margin: 0 15px;">уникальное торговое предложение, выводится при попытки уйти с сайта</span></div>
-		<div class="utp-body" style="display: none;">
+        <div class="form-group">
+            <div style="margin: 10px 0;">
+                <div style="display: inline-block;">
+                    <?echo $form->field($model, 'utp_turn_on')->widget(SwitchInput::classname(), [
+                        'options'=>[
+                            'onchange'=>'openUtp();',
+                        ]
+                    ])->label(false);?>
+                </div>
+                <div style="display: inline-block">
+                    <span style="margin: 0 15px;">уникальное торговое предложение, выводится при попытки уйти с сайта</span>
+                </div>
+            </div>
+        </div>
+        <div id="openUtp" class="utp-body" style="display: none;">
 			<div class="callout callout-info"><p>Максимальный размер изображения: 800 x 800</p></div>
 			<input maxlength="500" id="url_utp_img" name="utp-img-url" type="text" class="form-control" placeholder="URL изображения">
 			<br />
 			<label>Цвет кнопки</label>
 			<div class="input-group  colorpicker-element" style="width: 400px;">
 			  <input type="text" name="utm-button-color" class="form-control utm-button-color my-colorpicker"  placeholder="Цвет кнопки">
-			  <!--<div class="input-group-addon">
-				<i></i>
-			  </div>-->
 			</div>
 			<br>
 			<div class="utp-exampl">
@@ -207,9 +218,9 @@ $this->title = 'Добавить виджет';
 					<div class="line"><button style="background: #fff;">Отправить</button></div>
 				</div>
 			</div>
-			<img class="utp-img-exampl" style="visibility: hidden;"/>
-			<input name="widget-utp-form-left" value="top:0%;" type="hidden">
-			<input name="widget-utp-form-top" value="left:0%;" type="hidden">
+            <img class="utp-img-exampl"  style="display: none;"/>
+            <input name="widget-utp-form-left" style="display: none;"/>
+            <input name="widget-utp-form-top" style="display: none;"/>
 		</div>
 	</div>
 	  <div class="bordered">
@@ -279,13 +290,13 @@ $this->title = 'Добавить виджет';
 				<div id="openBlock-<?=$value['id_template']?>" style="display: none;margin-bottom: 30px;">
 					<?if ($value['param']) {?>
 						<div class="form-group">
-                            <span style="margin: 0 15px;">Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][<?=$value['id_template']?>]" min="0" max="60" value="<?=$value['param']?>"/>
+                            <span style="margin: 0 15px;">Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][]" min="0" max="60" value="<?=$value['param']?>"/>
 						</div>
 					<?} else {?>
-						<input type="text" style="display: none;" name="template[param][<?=$value['id_template']?>]"/>
+						<input type="text" style="display: none;" name="template[param][]?>]"/>
 					<?}?>
-					<textarea name="template[description][<?=$value['id_template']?>]" class="form-control"><?=$value['description']?></textarea>
-					<input type="text" style="display: none;" name="template[id][<?=$value['id_template']?>]" value="<?=$value['id_template']?>"/>
+					<textarea name="template[description][]" class="form-control"><?=$value['description']?></textarea>
+					<input type="text" style="display: none;" name="template[id][]" value="<?=$value['id_template']?>"/>
 				</div>
 			</div>
 		<?}?>
@@ -422,23 +433,6 @@ $this->title = 'Добавить виджет';
   </div>
   <?php ActiveForm::end(); ?>
 <script type="text/javascript">
-$(".check-box-button").bootstrapSwitch();
-// Mask`s
-helper.setMask($("[name='widget_phone_number_1']")[0],'+7(999)999-99-99');
-helper.setMask($("[name='work-start-time-monday']")[0],'99:99');
-helper.setMask($("[name='work-end-time-monday']")[0],'99:99');
-helper.setMask($("[name='work-start-time-tuesday']")[0],'99:99');
-helper.setMask($("[name='work-end-time-tuesday']")[0],'99:99');
-helper.setMask($("[name='work-start-time-wednesday']")[0],'99:99');
-helper.setMask($("[name='work-end-time-wednesday']")[0],'99:99');
-helper.setMask($("[name='work-start-time-thursday']")[0],'99:99');
-helper.setMask($("[name='work-end-time-thursday']")[0],'99:99');
-helper.setMask($("[name='work-start-time-friday']")[0],'99:99');
-helper.setMask($("[name='work-end-time-friday']")[0],'99:99');
-helper.setMask($("[name='work-start-time-saturday']")[0],'99:99');
-helper.setMask($("[name='work-end-time-saturday']")[0],'99:99');
-helper.setMask($("[name='work-start-time-sunday']")[0],'99:99');
-helper.setMask($("[name='work-end-time-sunday']")[0],'99:99');
 //---------
 $('.btn-success').click(function(){
 	var time_start=$("[name='work-start-time']").val(),time_end=$("[name='work-end-time']").val();
@@ -460,24 +454,12 @@ $('.btn-success').click(function(){
 		return false;
 	}
 });
-
-$(".my-colorpicker").colorpicker();
-$('.color_theme_list__ul__item').eq(0).click(function(){
-	$(this).attr("class","color_theme_list__ul__item active");
-	$('.color_theme_list__ul__item').eq(1).attr("class","color_theme_list__ul__item");
-	$("[name='widget_theme_color']").val(0);
-});
-$('.color_theme_list__ul__item').eq(1).click(function(){
-	$(this).attr("class","color_theme_list__ul__item active");
-	$('.color_theme_list__ul__item').eq(0).attr("class","color_theme_list__ul__item");
-	$("[name='widget_theme_color']").val(1);
-});
 </script>
 <style>
 .colorpicker-element .input-group-addon i {border: 1px solid #d2d6de;}
 .utm-closed {position: relative; top: -2%; left: 98%; border: 1px solid rgba(0, 0, 0, .1); width: 30px; border-radius: 15px; text-align: center; box-shadow: 0 0 0 3px rgba(0, 0, 0, .4); font-weight: 900; height: 30px; color: rgba(0, 0, 0, .63); box-sizing: border-box; padding: 2px; z-index: 10; -webkit-transition: all .3s ease-out; transition: all .3s ease-out; cursor: pointer; background: #f1f1f1 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABBElEQVQ4T5WT63KCMBSEd+FJK2K9VPxfwXEG+wDiCF56f7NOn0OOkyg2YkIxf2G/bM7u4egp/ik9zIts8YE7znASh6WUMw6i+IHAnsLeepW+t2Fo8aHMPd8PqASjcdIRyq4NRIkhKEB28mX6rQHqDCdxAMEWxGO+XLzZnFRigQRF9vKl/rkA/oPYxDcA/Zwo6QpkQ7C/ztLXM/hkW9jNV+mn6e7KQfXBhAiFLrHVgTGT060ABAhdMVsdXNlWg2qI2Ar4GxhCT8imiG8Al5yNgTX1pB6jc9ouiFkkLTZLUi+TDaIBrpLY2liH0FwM1e02y1RBVLzsR8+/Hv1pW3F1gdpiAMkRptjH3QzyD+8AAAAASUVORK5CYII='); background-repeat: no-repeat; background-position: center center;}
 .utp-exampl {max-width: 800px; max-height:800px; background-repeat: no-repeat;}
-.utp-exampl .utp-form {position: relative; top:0%; left:0%; width: 200px; height: 70px; z-index: 9; cursor: move;}
+.utp-exampl .utp-form {position: relative; top: 0; left: 0; width: 200px; height: 70px; z-index: 9; cursor: move;}
 .utp-exampl .utp-form .line input,.utp-exampl .utp-form .line button {box-shadow:0 0 0 3px rgba(0, 0, 0, .2); border-radius: 15px; width: 100%; height: 30px; margin-bottom: 10px; border: 1px solid #CACACA; position:relative; z-index: -1; padding: 5px 0 5px 10px; background: #f5f5f5;}
 .utp-exampl .utp-form .line button {margin: 0;}
 span.phone   {font-weight: 400; font-size: 14px;}
@@ -561,8 +543,8 @@ $(".widget-left-position-mob").slider({
 //Добавление телефона (чёрный список)
 var k = <?=$count_black_list?>;
 $('.blacklist_more').click(function(e){
-	e.preventDefault();
-	k++;
+    k++;
+    e.preventDefault();
 	var BL_input = '<span class="phone">Телефон №'+k+'</span><div class="input-group"><div class="input-group-addon"><i class="fa fa-phone"></i> </div> <input type="text" class="form-control widget_phone" name="black_list_number_'+k+'" placeholder="+7(___)___-__-__" data-required="false"></div>';
 	$('#black_list_block').append(BL_input);
 	$("input[name='black_list_number_"+k+"']").inputmask("+7(999)999-99-99");
@@ -571,8 +553,8 @@ $('.blacklist_more').click(function(e){
 //Добавление емэйла (настройка уведомлений)
 var i = 1;
 $('.email_more').click(function(e){
-	e.preventDefault();
-	i++;
+    i++;
+    e.preventDefault();
 	var email_input = '<span class="phone">Ваша эл-почта</span><div class="input-group"> <div class="input-group-addon"><b>@</b></div> <input type="text" class="form-control" name="widget_user_email_'+i+'" placeholder="Email" data-required="true"> </div>';
 	$('#emails_block').append(email_input);
 	$('input[name="count_emails"]').val(i);
@@ -580,28 +562,25 @@ $('.email_more').click(function(e){
 //Добавление телефона (определяется при звонке клиенту)
 var j = 1;
 $('.phone_more').click(function(e){
-	e.preventDefault();
-	j++;
+    j++;
+    e.preventDefault();
 	var phone_input = '<span class="phone">Телефон №'+j+'</span><div class="input-group"><div class="input-group-addon"><i class="fa fa-phone"></i> </div> <input type="text" class="form-control widget_phone" name="widget_phone_number_'+j+'" placeholder="+7(___)___-__-__" data-required="false"></div>';
 	$('#phones_block').append(phone_input);
 	$("input[name='widget_phone_number_"+j+"']").inputmask("+7(999)999-99-99");
 	$('input[name="count_phones"]').val(j);
 });
+//Добавить страницу
+var l = 1;
+$('.pages_more').click(function(e){
+    e.preventDefault();
+    l++;
+    var page_input = '<span class="phone">Ссылка на страницу</span><div class="input-group"><div class="input-group-addon"><i class="fa fa-link"></i> </div><input type="text" class="form-control" name="site_page_'+l+'" placeholder="URL"> </div><select class="form-control" name="select_site_page_'+l+'"> <option value="0">0 баллов</option> <option value="1">1 балл</option> <option value="2">2 балла</option> <option value="3">3 балла</option> <option value="4">4 балла</option> <option value="5">5 баллов</option> <option value="6">6 баллов</option> <option value="7">7 баллов</option> <option value="8">8 баллов</option> <option value="9">9 баллов</option> <option value="10">10 баллов</option> </select>';
+    $('#pages_block').append(page_input);
+    $('input[name="count_pages"]').val(l);
+});
 /*********************************/
 $(".utm-button-color").colorpicker().on('changeColor',function(){
 	$('.utp-form .line button').css('background',$(this).val());
-});
-$('.open-utm').on('switchChange.bootstrapSwitch', function(event, state) {
-	var css=$('.utp-body').css('display');
-	if(css==''||css=='block')$('.utp-body').hide();
-	else $('.utp-body').show();
-	console.log(css);
-});
-$('.open-marks').on('switchChange.bootstrapSwitch', function(event, state) {
-	var css=$('.marks-body').css('display');
-	if(css==''||css=='block')$('.marks-body').hide();
-	else $('.marks-body').show();
-	console.log(css);
 });
 $('#url_utp_img').change(function(){
 	$('.utp-img-exampl').attr("src",this.value);
@@ -614,45 +593,66 @@ $('#url_utp_img').change(function(){
 		$('.utp-img-exampl').hide();
 	});
 });
-$('.utp-exampl .utp-form').mousedown(function(){
-	var left=$(".utp-exampl").offset().left,
-        top=$(".utp-exampl").offset().top,
-        width=$(".utp-exampl").width(),
-        height=$(".utp-exampl").height(),
-        WidthPercent=width/100,HeightPercent=height/100;
-	var newTop=0,newLeft=0;
-	$(this).bind('mousemove',function(e){
-		var position=e.pageX-50;
-		if(position>=left&&position<=left+width-50){
-			newLeft=(position-left)/WidthPercent;
-		}
-		console.log($(this).height());
-		position=e.pageY-50;
-		if(position>=top&&position<=top+height-50){
-			newTop=(position-top)/HeightPercent;
-		}
-		$(this).css('left',Math.ceil(newTop)+'%');
-		$(".utp-exampl .utp-form").eq(0).css({'left':Math.ceil(newLeft)+'%','top':Math.ceil(newTop)+'%'});
-		$("[name='widget-utp-form-left']").val('left:'+Math.ceil(newLeft)+'%;');
-		$("[name='widget-utp-form-top']").val('top:'+Math.ceil(newTop)+'%;');
-	});
+$('.utp-form').draggable({
+    stop: function() {
+        $("[name='widget-utp-form-top']").val('top: '+$(this).css('top')+';');
+        $("[name='widget-utp-form-left']").val('left: '+$(this).css('left')+';');
+    },
+    containment: '.utp-exampl',
+    scroll: false
 });
-$('.utp-exampl .utp-form').mouseup(function(){
-	$(this).unbind('mousemove');
+// Mask`s
+helper.setMask($("[name='widget_phone_number_1']")[0],'+7(999)999-99-99');
+helper.setMask($("[name='work-start-time-monday']")[0],'99:99');
+helper.setMask($("[name='work-end-time-monday']")[0],'99:99');
+helper.setMask($("[name='work-start-time-tuesday']")[0],'99:99');
+helper.setMask($("[name='work-end-time-tuesday']")[0],'99:99');
+helper.setMask($("[name='work-start-time-wednesday']")[0],'99:99');
+helper.setMask($("[name='work-end-time-wednesday']")[0],'99:99');
+helper.setMask($("[name='work-start-time-thursday']")[0],'99:99');
+helper.setMask($("[name='work-end-time-thursday']")[0],'99:99');
+helper.setMask($("[name='work-start-time-friday']")[0],'99:99');
+helper.setMask($("[name='work-end-time-friday']")[0],'99:99');
+helper.setMask($("[name='work-start-time-saturday']")[0],'99:99');
+helper.setMask($("[name='work-end-time-saturday']")[0],'99:99');
+helper.setMask($("[name='work-start-time-sunday']")[0],'99:99');
+helper.setMask($("[name='work-end-time-sunday']")[0],'99:99');
+//
+$(".my-colorpicker").colorpicker();
+$('.color_theme_list__ul__item').eq(0).click(function(){
+    $(this).attr("class","color_theme_list__ul__item active");
+    $('.color_theme_list__ul__item').eq(1).attr("class","color_theme_list__ul__item");
+    $("[name='widget_theme_color']").val(0);
 });
-/*$('.utp-exampl .utp-form').mouseout(function(){
- console.log(true);
- $(this).unbind('mousemove');
- });*/
-
+$('.color_theme_list__ul__item').eq(1).click(function(){
+    $(this).attr("class","color_theme_list__ul__item active");
+    $('.color_theme_list__ul__item').eq(0).attr("class","color_theme_list__ul__item");
+    $("[name='widget_theme_color']").val(1);
+});
+//Функции
+function openMarks() {
+    if ($('#openMarks').css('display') == 'none') {
+        $('#openMarks').show();
+    } else {
+        $('#openMarks').hide();
+    }
+}
+function openUtp() {
+    if ($('#openUtp').css('display') == 'none') {
+        $('#openUtp').show();
+    } else {
+        $('#openUtp').hide();
+    }
+}
 function openBlock(id) {
-	if ($('#openBlock-'+id).css('display') == 'none') {
+	if ($('#openBlock-'+id).css('display') == 'none' && $('.bootstrap-switch-id-w'+id).hasClass('bootstrap-switch-on')) {
+		$('#w'+id).val(1);
 		$('#openBlock-'+id).show();
 	} else {
+		$('#w'+id).val(0);
 		$('#openBlock-'+id).hide();
 	}
 }
-
 function siteChange(url) {
 	address = ['http://', 'https://'];
 	new_url = url.replace(address, '');
@@ -666,7 +666,7 @@ function siteChange(url) {
 				url_desktop: 'http://mini.s-shot.ru/1280x800/JPEG/1280/Z100/?'+new_url,
 				url_mobile: 'http://mini.s-shot.ru/360x640/JPEG/360/Z100/?'+new_url,
 				site: url
-			},
+			}
 		});
 	}
 }

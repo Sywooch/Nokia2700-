@@ -4,10 +4,10 @@ use yii\widgets\ActiveForm;
 use yii\grid\GridView;
 use yii\helpers\Html;
 
-$this->title = 'Партнёрская программа';
+$this->title = 'Партнёрская программа: Общая информация';
 ?>
 <section class="content-header">
-    <h1><?=$this->title?></h1>
+    <h1>Общая информация</h1>
 </section>
 <section class="content">
     <div class="row">
@@ -59,6 +59,7 @@ $this->title = 'Партнёрская программа';
                 <div class="box-footer">
                     <?= GridView::widget([
                         'dataProvider' => $dataProviderLeft,
+                        'summary' => 'Показано <b>{end}</b> из <b>{totalCount}</b> элементов.',
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
@@ -79,6 +80,7 @@ $this->title = 'Партнёрская программа';
                 <div class="box-footer">
                     <?= GridView::widget([
                         'dataProvider' => $dataProviderRight,
+                        'summary' => 'Показано {end} из {totalCount} элементов.',
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
@@ -87,13 +89,6 @@ $this->title = 'Партнёрская программа';
                             'create_at',
                         ],
                     ]); ?>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 text-center">
-            <div class="box box-primary">
-                <div class="box-body">
-                    <h3>Промо материалы</h3>
                 </div>
             </div>
         </div>

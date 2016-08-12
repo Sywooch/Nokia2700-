@@ -75,7 +75,7 @@ class SiteController extends Controller
     {
         $this->layout = 'auth';
         if (Yii::$app->user->isGuest) {
-            if ($_GET['ref']) {
+            if (isset($_GET['ref'])) {
                 setcookie('ref', $_GET['ref']);
                 return $this->redirect(['/register']);
             }
