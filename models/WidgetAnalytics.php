@@ -1,6 +1,7 @@
 <?php
 
 namespace app\models;
+use Yii;
 use \yii\base\Model;
 use \yii\db\Query;
 
@@ -106,7 +107,7 @@ class WidgetAnalytics extends Model
             $query->select('action')
                 ->from('widget_catching')
                 ->join('INNER JOIN', 'widget_settings','widget_settings.widget_site_url=widget_catching.website')
-                ->where('action = '.$acttype.'" AND widget_settings.widget_id="'.$w_id.'"')
+                ->where('`action` = "'.$acttype.'" AND widget_settings.widget_id="'.$w_id.'" AND widget_settings.user_id = "'.Yii::$app->user->identity->id.'"')
                 ->groupBy('widget_catching.date');
         }
         elseif(isset($w_id))
@@ -114,7 +115,7 @@ class WidgetAnalytics extends Model
             $query->select('action')
                 ->from('widget_catching')
                 ->join('INNER JOIN', 'widget_settings','widget_settings.widget_site_url=widget_catching.website')
-                ->where('action = "close_page" AND widget_settings.widget_id="'.$w_id.'"')
+                ->where('`action` = "close_page" AND widget_settings.widget_id="'.$w_id.'" AND widget_settings.user_id = "'.Yii::$app->user->identity->id.'"')
                 ->groupBy('widget_catching.date');
         }
         else
@@ -122,7 +123,7 @@ class WidgetAnalytics extends Model
             $query->select('action')
                 ->from('widget_catching')
                 ->join('INNER JOIN', 'widget_settings','widget_settings.widget_site_url=widget_catching.website')
-                ->where('action= "'.$acttype.'"')
+                ->where('action= "'.$acttype.'" AND widget_settings.user_id = "'.Yii::$app->user->identity->id.'"')
                 ->groupBy('widget_catching.date');
         }
 
@@ -212,6 +213,7 @@ class WidgetAnalytics extends Model
         $query->select('widget_action_marks.*, widget_settings.widget_site_url')
             ->from('widget_action_marks')
             ->join('INNER JOIN','widget_settings','widget_settings.widget_id=widget_action_marks.widget_id')
+            ->where('widget_settings.user_id ="'.Yii::$app->user->identity->id.'"')
             ->distinct('widget_site_url');
         $rows = $query->all();
         return $rows;

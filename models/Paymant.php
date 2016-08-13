@@ -46,12 +46,22 @@ class Paymant extends Model
         {
             ($fin['type'])? $cache -= $fin['payment']: $cache += $fin['payment'];
         }
-
-        if (null != ($mod = User::findOne($user_id))) {
-            $mod->cache = (integer)$cache;
-
+        $mod = User::findOne($user_id);
+        if($cache <= $mod['cache_notification'] && $mod['cache_notif_status'] != 1)
+        {
+            User::sendNotification($mod['email'],$cache);
+            $mod->cache_notif_status = 1;
             $mod->save();
+        }
+        else
+        {
+            $mod->cache_notif_status = 0;
+            $mod->save();
+        }
 
+        if (null != $mod ) {
+            $mod->cache = (integer)$cache;
+            $mod->save();
             return $mod;
         }
     }

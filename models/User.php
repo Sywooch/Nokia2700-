@@ -22,14 +22,15 @@ use yii\helpers\Url;
  * @property string $phone
  * @property string $activation
  * @property integer $status
+ * @property integer $cache_notification
  * @property string $partner
  */
 class User extends ActiveRecord implements IdentityInterface
 {
     public $auth_key;
     public $partners_count;
-    const DEACTIVATED = '0';
-    const ACTIVATED = '1';
+    const DEACTIVATED = 0;
+    const ACTIVATED = 1;
     /**
      * @inheritdoc
      */
@@ -46,7 +47,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['name', 'email', 'pass', 'phone'], 'required'],
             [['create_at'], 'safe'],
-            [['cache'], 'integer'],
+            [['cache', 'cache_notification'], 'integer'],
             [['status'], 'integer'],
             [['name'], 'string', 'max' => 50],
             [['email', 'pass', 'password_hash', 'password_token'], 'string', 'max' => 120],
@@ -74,6 +75,7 @@ class User extends ActiveRecord implements IdentityInterface
             'status' => 'Status',
             'partner' => 'Partner',
             'partners_count' => 'Привлечённые',
+            'cache_notification'=> 'Порог остатка на счету для уведомления'
         ];
     }
 
@@ -122,6 +124,28 @@ class User extends ActiveRecord implements IdentityInterface
                 <p>Чтобы подтвердить вашу учётную запись, пройдите по ссылке</p>
                 <p>'.$link.'</p>
                 <p>Спасибо за регистрацию!</p>
+            </body>
+        </html>';
+        Yii::$app->mailer->compose()
+            ->setTo($email)
+            ->setFrom('robax@oblax.ru')
+            ->setSubject($subject)
+            ->setHtmlBody($message)
+            ->send();
+        return true;
+    }
+
+    public static function sendNotification($email,$cache)
+    {
+        $subject = "Уведомление о состоянии счета";
+        $message =
+            '<html>
+            <head>
+                <title>Достигнута пороговая сумма на счету!</title>
+            </head>
+            <body>
+                <p>Ваш баланс: '.$cache.'!</p>
+                <p>Пополните пожалуйста счет!</p>
             </body>
         </html>';
         Yii::$app->mailer->compose()
