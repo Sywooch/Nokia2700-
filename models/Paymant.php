@@ -47,9 +47,12 @@ class Paymant extends Model
             ($fin['type'])? $cache -= $fin['payment']: $cache += $fin['payment'];
         }
 
-        if (($model = User::findOne($user_id)) !== null) {
-            $model->cache = $cache;
-            $model->update();
+        if (null != ($mod = User::findOne($user_id))) {
+            $mod->cache = (integer)$cache;
+
+            $mod->save();
+
+            return $mod;
         }
     }
 

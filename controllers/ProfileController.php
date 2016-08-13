@@ -57,7 +57,9 @@ class ProfileController extends Controller
         }
         if(!in_array($action->id, $this->publicActions)) return $this->redirect(Yii::$app->user->loginUrl);*/
 
-        Paymant::renewCache(Yii::$app->user->identity->id);
+        /*echo '<pre>'; print_r(*/
+       Paymant::renewCache(Yii::$app->user->identity->id);
+        /*echo '</pre>';*/
         $this->enableCsrfValidation = false;
         $this->layout = "@app/views/layouts/profile";
         return parent::beforeAction($action);

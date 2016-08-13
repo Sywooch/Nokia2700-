@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 use yii\db\Query;
 use yii\web\IdentityInterface;
 use yii\helpers\Url;
@@ -23,7 +24,7 @@ use yii\helpers\Url;
  * @property string $status
  * @property string $partner
  */
-class User extends \yii\db\ActiveRecord implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface
 {
     public $auth_key;
     public $partners_count;
@@ -46,7 +47,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             [['name', 'email', 'pass', 'phone'], 'required'],
             [['create_at'], 'safe'],
             [['cache'], 'integer'],
-            [['status'], 'string'],
+            [['status'], 'integer'],
             [['name'], 'string', 'max' => 50],
             [['email', 'pass', 'password_hash', 'password_token'], 'string', 'max' => 120],
             [['phone'], 'string', 'max' => 15],
