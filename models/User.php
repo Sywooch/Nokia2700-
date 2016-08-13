@@ -21,7 +21,7 @@ use yii\helpers\Url;
  * @property integer $cache
  * @property string $phone
  * @property string $activation
- * @property string $status
+ * @property integer $status
  * @property string $partner
  */
 class User extends ActiveRecord implements IdentityInterface
