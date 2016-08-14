@@ -54,18 +54,18 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                     <li class="active"><a href="#activity" data-toggle="tab">Общая информация</a></li>
                     <li class=""><a href="#tarif" data-toggle="tab">Текущий тарифный план</a></li>
                 </ul>
-                <div class="tab-content">
+                <div class="tab-content" style="padding-bottom: 0;">
                     <div class="active tab-pane" id="activity">
                         <? $formUser = ActiveForm::begin(['action'=>'/profile/update-user'])?>
                         <table class="table">
                             <tbody>
                             <tr>
-                                <td>ID пользователя</td>
+                                <td style="vertical-align: middle;">ID пользователя</td>
                                 <td><?=$id?></td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>Имя пользователя</td>
+                                <td style="vertical-align: middle;">Имя пользователя</td>
                                 <td>
                                     <?=$formUser->field($user, 'name')->label(false)->textInput([
                                         'readonly'=>true,
@@ -79,7 +79,7 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                                 </td>
                             </tr>
                             <tr>
-                                <td>Почта пользователя</td>
+                                <td style="vertical-align: middle;">Почта пользователя</td>
                                 <td>
                                     <?=$formUser->field($user, 'email')->label(false)->textInput([
                                         'readonly'=>true,
@@ -93,7 +93,7 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                                 </td>
                             </tr>
                             <tr>
-                                <td>Телефон пользователя</td>
+                                <td style="vertical-align: middle;">Телефон пользователя</td>
                                 <td>
                                     <?=$formUser->field($user, 'phone')->label(false)->textInput([
                                         'readonly'=>true,
@@ -107,12 +107,12 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                                 </td>
                             </tr>
                             <tr>
-                                <td>Дата создания</td>
+                                <td style="vertical-align: middle;">Дата создания</td>
                                 <td><?=$date->format('d.m.Y H:i:s')?></td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>Уведомить меня если сумма на счету меньше :</td>
+                                <td style="vertical-align: middle;">Уведомить меня если сумма на счету меньше :</td>
                                 <td>
                                     <?=$formUser->field($user, 'cache_notification')->label(false)->textInput([
                                         'readonly'=>true,

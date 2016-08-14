@@ -49,7 +49,6 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'site/activate/<code:\w+>' => 'site/activate',
-                'profile/get-widget-code/<code:\w+>' => 'profile/get-widget-code',
                 'profile/update-widget/<id:\d+>' => 'profile/update-widget',
                 'profile/deletewidget/<id:\d+>' => 'profile/deletewidget',
                 'widget/listener/event.php' => 'widget/listener',
