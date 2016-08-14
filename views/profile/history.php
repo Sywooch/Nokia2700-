@@ -34,6 +34,8 @@ $this->title = 'Звонки с виджетов';
 							'EndSide',
 							'waiting_period_A',
 							'waiting_period_B',
+							'call_back_record_URL_A',
+							'call_back_record_URL_B',
 				            'call_back_cost',
 				        ],
     			]),

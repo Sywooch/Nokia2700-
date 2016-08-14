@@ -60,7 +60,7 @@ class WidgetPendingCalls extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'widget_id' => 'ID виджета',
+            'widget_id' => 'ID',
             'id' => 'ID',
             'call_time' => 'Дата звонка',
             'phone' => 'Телефон',
@@ -71,8 +71,10 @@ class WidgetPendingCalls extends \yii\db\ActiveRecord
             'call_back_cost' => 'Сумма',
             'record_status' => 'Record Status',
             'test_info' => 'Test Info',
-            'waiting_period_A' => 'Время ожидания Менеджера',
-            'waiting_period_B' => 'Время ожидания Клиента',
+            'waiting_period_A' => 'Время ожи-я Мен-а',
+            'waiting_period_B' => 'Время ожи-я Кли-а',
+            'call_back_record_URL_A' => 'Запись Мен-а',
+            'call_back_record_URL_B' => 'Запись Кли-а',
         ];
     }
 

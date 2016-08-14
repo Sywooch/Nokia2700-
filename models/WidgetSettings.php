@@ -370,8 +370,8 @@ class WidgetSettings extends \yii\db\ActiveRecord
                 $model->call_back_real_length_A = $response->result->callBackFollowmeCallInfoStruct->call_back_real_length_A;
                 $model->call_back_real_length_B = $response->result->callBackFollowmeCallInfoStruct->call_back_real_length_B;
                 $model->call_back_admin_cost = $response->result->callBackFollowmeCallInfoStruct->call_back_cost;
-//                $model->call_back_record_URL_A = $response->result->callBackFollowmeCallInfoStruct->call_back_record_URL_A;
-//                $model->call_back_record_URL_B = $response->result->callBackFollowmeCallInfoStruct->call_back_record_URL_B;
+                $model->call_back_record_URL_A = $response->result->callBackFollowmeCallInfoStruct->call_back_record_URL_A;
+                $model->call_back_record_URL_B = $response->result->callBackFollowmeCallInfoStruct->call_back_record_URL_B;
                 $model->save();
             }
         }
