@@ -27,7 +27,6 @@ class AppAsset extends AssetBundle
         'plugins/colorpicker/bootstrap-colorpicker.min.css',
         'css/analytics.css'
     ];
-    public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
     public $js = [
         'plugins/jQuery/jquery-ui.min.js',
         'plugins/bootstrap/js/bootstrap.js',
@@ -45,4 +44,5 @@ class AppAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
+    public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
 }

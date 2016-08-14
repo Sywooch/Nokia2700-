@@ -1,6 +1,5 @@
 <?php
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 ?>
 
@@ -23,30 +22,30 @@ use yii\bootstrap\ActiveForm;
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="text" class="form-control" name="User[phone]" placeholder="Телефон">
+                        <input type="text" class="form-control" name="User[phone]" autocomplete="off" placeholder="+7(___)___-__-__">
                         <span class="glyphicon glyphicon-earphone form-control-feedback"></span>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="checkbox icheck">
-                                <label>
-                                    <center>
-                                        <input type="checkbox"> Я согласен(на) с <a href="#">Условиями конфиденциальности</a>
-                                    </center>
+                                <label class="text-center">
+                                    <input type="checkbox"> Я согласен(на) с <a href="#">Условиями конфиденциальности</a>
                                 </label>
                             </div>
                         </div>
-                        <div class="col-xs-12">
-                            <center>
-                                <?= Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-primary btn-block btn-flat']) ?>
-                            </center>
+                        <div class="col-xs-12 text-center">
+                            <?= Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-primary btn-block btn-flat']) ?>
                         </div>
                     </div>
                 <?php ActiveForm::end(); ?>
                 <br/>
-                <center><?= Html::a('Я уже зарегистрирован', ['/login']) ?></center>
-
+                <div class="text-center">
+                    <?= Html::a('Я уже зарегистрирован', ['/login']) ?>
+                </div>
             </div>
         </div>
     </div>
 </body>
+<script>
+    helper.setMask($("[name='User[phone]']")[0],'+7(999)999-99-99');
+</script>

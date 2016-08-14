@@ -6,10 +6,10 @@
  * Time: 22:36
  */
 
-$this->title = 'Партнёрская программа: Промо материалы';
+$this->title = 'Партнёрская программа';
 ?>
 <section class="content-header">
-    <h1>Промо материалы</h1>
+    <h1><?=$this->title?> <small>Промо материалы</small></h1>
 </section>
 <section class="content">
     <div class="row">

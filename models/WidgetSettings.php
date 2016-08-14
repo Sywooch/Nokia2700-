@@ -134,7 +134,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
             ->viaTable(WidgetSendedEmail::tableName(), ['widget_id' => 'widget_id']);  
     }
 
-    public function getCode($widget_code)
+    public static function getCode($widget_code)
     {
         print '<textarea style="width: 100%; height: 370px;" readonly>
             <script type="text/javascript">

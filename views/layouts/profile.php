@@ -136,7 +136,7 @@ AppAsset::register($this);
 							<i class="fa fa-bar-chart"></i> <span>Аналитика</span>
 						</a>
 					</li>
-					<?php $active = (Url::to(['']) == '/partners' || Url::to(['']) == '/partners/promo') ? 'active' : ''; ?>
+					<?php $active = (Url::to(['']) == '/partners/index' || Url::to(['']) == '/partners/promo') ? 'active' : ''; ?>
 					<li class="treeview <?=$active?>">
 						<a href="#">
 							<i class="fa fa-users"></i> <span>Партнёрка</span> <i class="fa fa-angle-left pull-right"></i>

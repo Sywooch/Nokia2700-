@@ -39,8 +39,11 @@ class ProfileController extends Controller
                             'widgets', 'history', 'add-widget',
                             'update-widget', 'get-widget-code',
                             'pay-with', 'paid', 'fail','paid-ik',
-                            'update-paid-ik', 'tarifs', 'sound', 'user-tarif', 'for-test'],                        'allow' => true,
-                        'roles' => ['@'],
+                            'update-paid-ik', 'tarifs', 'sound',
+                            'user-tarif', 'for-test', 'deletewidget'
+                        ],
+                        'allow' => true,
+                        'roles' => ['@']
                     ],
                 ],
             ],
@@ -57,9 +60,7 @@ class ProfileController extends Controller
         }
         if(!in_array($action->id, $this->publicActions)) return $this->redirect(Yii::$app->user->loginUrl);*/
 
-
-       Paymant::renewCache(Yii::$app->user->identity->id);
-
+        Paymant::renewCache(Yii::$app->user->id);
         $this->enableCsrfValidation = false;
         $this->layout = "@app/views/layouts/profile";
         return parent::beforeAction($action);
@@ -67,7 +68,8 @@ class ProfileController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $widgetSettings = WidgetSettings::find()->where(['user_id' => Yii::$app->user->id])->count();
+        return $this->render('index', ['widgetSettings' => $widgetSettings]);
     }
 
     public function actionForTest()
@@ -107,7 +109,7 @@ class ProfileController extends Controller
     public function actionPayHistory()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => PayHistory::find()->where('user_id='.Yii::$app->user->identity->id),
+            'query' => PayHistory::find()->where('user_id='.Yii::$app->user->id),
         ]);
         $dataProvider->setSort([
             'defaultOrder' => ['dateFormat' => SORT_DESC],
@@ -135,8 +137,15 @@ class ProfileController extends Controller
 
     public function actionWidgets()
     {
-        $result = WidgetSettings::find()->where('user_id='.Yii::$app->user->identity->id)->all();
+        $result = WidgetSettings::find()->where(['user_id' => Yii::$app->user->id])->all();
         return $this->render('widgets',['widgets' => $result]);
+    }
+
+    public function actionDeletewidget($id)
+    {
+        $result = WidgetSettings::findOne(['widget_id' => $id]);
+        $result->delete();
+        return $this->redirect('/profile/widgets');
     }
 
     public function actionUserTarif()
@@ -199,7 +208,7 @@ class ProfileController extends Controller
 //            die();
             $address = ['http://', 'https://'];
             $url = str_replace($address, '', Yii::$app->request->post('widget_site_url'));
-            $code = "user-".Yii::$app->user->identity->id."-url-".$url."-date-".time();
+            $code = "user-".Yii::$app->user->id."-url-".$url."-date-".time();
             $model->widget_key = md5($code);
             $model->widget_status = 1;
             $model->widget_site_url = $url;
@@ -236,23 +245,32 @@ class ProfileController extends Controller
                 $phones.=$postArray[$index].';';
             }
             $model->widget_phone_numbers=$phones;
-            $model->user_id = Yii::$app->user->identity->id;
+            $model->user_id = Yii::$app->user->id;
+            $model->widget_GMT = Yii::$app->request->post('widget_GMT');
+
             $work_time['monday']['start'] = $postArray['work-start-time-monday'];
             $work_time['monday']['end'] = $postArray['work-end-time-monday'];
+            $work_time['monday']['lunch'] = $postArray['work-lunch-time-monday'];
             $work_time['tuesday']['start'] = $postArray['work-start-time-tuesday'];
             $work_time['tuesday']['end'] = $postArray['work-end-time-tuesday'];
+            $work_time['tuesday']['lunch'] = $postArray['work-lunch-time-tuesday'];
             $work_time['wednesday']['start'] = $postArray['work-start-time-wednesday'];
             $work_time['wednesday']['end'] = $postArray['work-end-time-wednesday'];
+            $work_time['wednesday']['lunch'] = $postArray['work-lunch-time-wednesday'];
             $work_time['thursday']['start'] = $postArray['work-start-time-thursday'];
             $work_time['thursday']['end'] = $postArray['work-end-time-thursday'];
+            $work_time['thursday']['lunch'] = $postArray['work-lunch-time-thursday'];
             $work_time['friday']['start'] = $postArray['work-start-time-friday'];
             $work_time['friday']['end'] = $postArray['work-end-time-friday'];
+            $work_time['friday']['lunch'] = $postArray['work-lunch-time-friday'];
             $work_time['saturday']['start'] = $postArray['work-start-time-saturday'];
             $work_time['saturday']['end'] = $postArray['work-end-time-saturday'];
+            $work_time['saturday']['lunch'] = $postArray['work-lunch-time-saturday'];
             $work_time['sunday']['start'] = $postArray['work-start-time-sunday'];
             $work_time['sunday']['end'] = $postArray['work-end-time-sunday'];
+            $work_time['sunday']['lunch'] = $postArray['work-lunch-time-sunday'];
+
             $model->widget_work_time = json_encode($work_time);
-            $model->widget_GMT = Yii::$app->request->post('widget_GMT');
             $model->widget_sound = Yii::$app->request->post('widget_sound');
             ($_POST['WidgetSettings']['hand_turn_on']) ? $model->hand_turn_on = 1 : $model->hand_turn_on = 0;
             ($_POST['WidgetSettings']['utp_turn_on']) ? $model->utp_turn_on = 1 : $model->utp_turn_on = 0;
@@ -348,22 +366,31 @@ class ProfileController extends Controller
                 $phone.=$postArray[$index].';';
             }
             $model->widget_phone_numbers = $phone;
-            $model->user_id = Yii::$app->user->identity->id;
+            $model->user_id = Yii::$app->user->id;
             $model->widget_GMT = Yii::$app->request->post('widget_GMT');
+
             $work_time['monday']['start'] = $postArray['work-start-time-monday'];
             $work_time['monday']['end'] = $postArray['work-end-time-monday'];
+            $work_time['monday']['lunch'] = $postArray['work-lunch-time-monday'];
             $work_time['tuesday']['start'] = $postArray['work-start-time-tuesday'];
             $work_time['tuesday']['end'] = $postArray['work-end-time-tuesday'];
+            $work_time['tuesday']['lunch'] = $postArray['work-lunch-time-tuesday'];
             $work_time['wednesday']['start'] = $postArray['work-start-time-wednesday'];
             $work_time['wednesday']['end'] = $postArray['work-end-time-wednesday'];
+            $work_time['wednesday']['lunch'] = $postArray['work-lunch-time-wednesday'];
             $work_time['thursday']['start'] = $postArray['work-start-time-thursday'];
             $work_time['thursday']['end'] = $postArray['work-end-time-thursday'];
+            $work_time['thursday']['lunch'] = $postArray['work-lunch-time-thursday'];
             $work_time['friday']['start'] = $postArray['work-start-time-friday'];
             $work_time['friday']['end'] = $postArray['work-end-time-friday'];
+            $work_time['friday']['lunch'] = $postArray['work-lunch-time-friday'];
             $work_time['saturday']['start'] = $postArray['work-start-time-saturday'];
             $work_time['saturday']['end'] = $postArray['work-end-time-saturday'];
+            $work_time['saturday']['lunch'] = $postArray['work-lunch-time-saturday'];
             $work_time['sunday']['start'] = $postArray['work-start-time-sunday'];
             $work_time['sunday']['end'] = $postArray['work-end-time-sunday'];
+            $work_time['sunday']['lunch'] = $postArray['work-lunch-time-sunday'];
+
             $model->widget_work_time = json_encode($work_time);
             $model->widget_sound = Yii::$app->request->post('widget_sound');
             ($_POST['WidgetSettings']['hand_turn_on']) ? $model->hand_turn_on = 1 : $model->hand_turn_on = 0;

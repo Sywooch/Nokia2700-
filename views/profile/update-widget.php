@@ -1,14 +1,9 @@
 <?php
 use kartik\switchinput\SwitchInput;
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
-use app\models\User;
-use yii\grid\GridView;
-use yii\bootstrap\Tabs;
-use \app\models\WidgetTemplateNotification;
+use app\models\WidgetTemplateNotification;
 
-$this->registerJsFile('@web/plugins/bootstrap/js/bootstrap.min.js');
 $path = '/files/images/desktop/';
 $path2 = '/files/images/mobile/';
 $this->title = 'Изменить виджет';
@@ -455,49 +450,55 @@ $this->title = 'Изменить виджет';
           <br>
           <?php
           $work_time = json_decode($model->widget_work_time);
-//          print_r($work_time);
-//          die();
           ?>
           <table class="table table-striped">
             <tr>
               <th>День недели:</th>
               <th>Начало рабочего дня:</th>
               <th>Конец рабочего дня:</th>
+              <th>Обед:</th>
             </tr>
             <tr>
               <td>Понедельник</td>
               <td><input class="form-control" name="work-start-time-monday" type="text" placeholder="09:00" value="<?=$work_time->monday->start?>"></td>
               <td><input class="form-control" name="work-end-time-monday" type="text" placeholder="18:00" value="<?=$work_time->monday->end?>"></td>
+              <td><input class="form-control" name="work-lunch-time-monday" type="text" placeholder="13:00 - 14:00" value="<?=$work_time->monday->lunch?>"></td>
             </tr>
             <tr>
               <td>Вторник</td>
               <td><input class="form-control" name="work-start-time-tuesday" type="text" placeholder="09:00" value="<?=$work_time->tuesday->start?>"></td>
               <td><input class="form-control" name="work-end-time-tuesday" type="text" placeholder="18:00" value="<?=$work_time->tuesday->end?>"></td>
+              <td><input class="form-control" name="work-lunch-time-tuesday" type="text" placeholder="13:00 - 14:00" value="<?=$work_time->tuesday->lunch?>"></td>
             </tr>
             <tr>
               <td>Среда</td>
               <td><input class="form-control" name="work-start-time-wednesday" type="text" placeholder="09:00" value="<?=$work_time->wednesday->start?>"></td>
               <td><input class="form-control" name="work-end-time-wednesday" type="text" placeholder="18:00" value="<?=$work_time->wednesday->end?>"></td>
+              <td><input class="form-control" name="work-lunch-time-wednesday" type="text" placeholder="13:00 - 14:00" value="<?=$work_time->wednesday->lunch?>"></td>
             </tr>
             <tr>
               <td>Четверг</td>
               <td><input class="form-control" name="work-start-time-thursday" type="text" placeholder="09:00" value="<?=$work_time->thursday->start?>"></td>
               <td><input class="form-control" name="work-end-time-thursday" type="text" placeholder="18:00" value="<?=$work_time->thursday->end?>"></td>
+              <td><input class="form-control" name="work-lunch-time-thursday" type="text" placeholder="13:00 - 14:00" value="<?=$work_time->thursday->lunch?>"></td>
             </tr>
             <tr>
               <td>Пятница</td>
               <td><input class="form-control" name="work-start-time-friday" type="text" placeholder="09:00" value="<?=$work_time->friday->start?>"></td>
               <td><input class="form-control" name="work-end-time-friday" type="text" placeholder="18:00" value="<?=$work_time->friday->end?>"></td>
+              <td><input class="form-control" name="work-lunch-time-friday" type="text" placeholder="13:00 - 14:00" value="<?=$work_time->friday->lunch?>"></td>
             </tr>
             <tr>
               <td>Суббота</td>
               <td><input class="form-control" name="work-start-time-saturday" type="text" placeholder="09:00" value="<?=$work_time->saturday->start?>"></td>
               <td><input class="form-control" name="work-end-time-saturday" type="text" placeholder="18:00" value="<?=$work_time->saturday->end?>"></td>
+              <td><input class="form-control" name="work-lunch-time-saturday" type="text" placeholder="13:00 - 14:00" value="<?=$work_time->saturday->lunch?>"></td>
             </tr>
             <tr>
               <td>Воскресенье</td>
               <td><input class="form-control" name="work-start-time-sunday" type="text" placeholder="09:00" value="<?=$work_time->sunday->start?>"></td>
               <td><input class="form-control" name="work-end-time-sunday" type="text" placeholder="18:00" value="<?=$work_time->sunday->end?>"></td>
+              <td><input class="form-control" name="work-lunch-time-sunday" type="text" placeholder="13:00 - 14:00" value="<?=$work_time->sunday->lunch?>"></td>
             </tr>
           </table>
         </div>
@@ -687,18 +688,25 @@ $('.utp-form').draggable({
 helper.setMask($("[name='widget_phone_number_1']")[0],'+7(999)999-99-99');
 helper.setMask($("[name='work-start-time-monday']")[0],'99:99');
 helper.setMask($("[name='work-end-time-monday']")[0],'99:99');
+helper.setMask($("[name='work-lunch-time-monday']")[0],'99:99 - 99:99');
 helper.setMask($("[name='work-start-time-tuesday']")[0],'99:99');
 helper.setMask($("[name='work-end-time-tuesday']")[0],'99:99');
+helper.setMask($("[name='work-lunch-time-tuesday']")[0],'99:99 - 99:99');
 helper.setMask($("[name='work-start-time-wednesday']")[0],'99:99');
 helper.setMask($("[name='work-end-time-wednesday']")[0],'99:99');
+helper.setMask($("[name='work-lunch-time-wednesday']")[0],'99:99 - 99:99');
 helper.setMask($("[name='work-start-time-thursday']")[0],'99:99');
 helper.setMask($("[name='work-end-time-thursday']")[0],'99:99');
+helper.setMask($("[name='work-lunch-time-thursday']")[0],'99:99 - 99:99');
 helper.setMask($("[name='work-start-time-friday']")[0],'99:99');
 helper.setMask($("[name='work-end-time-friday']")[0],'99:99');
+helper.setMask($("[name='work-lunch-time-friday']")[0],'99:99 - 99:99');
 helper.setMask($("[name='work-start-time-saturday']")[0],'99:99');
 helper.setMask($("[name='work-end-time-saturday']")[0],'99:99');
+helper.setMask($("[name='work-lunch-time-saturday']")[0],'99:99 - 99:99');
 helper.setMask($("[name='work-start-time-sunday']")[0],'99:99');
 helper.setMask($("[name='work-end-time-sunday']")[0],'99:99');
+helper.setMask($("[name='work-lunch-time-sunday']")[0],'99:99 - 99:99');
 //
 $(".my-colorpicker").colorpicker();
 $('.color_theme_list__ul__item').eq(0).click(function(){

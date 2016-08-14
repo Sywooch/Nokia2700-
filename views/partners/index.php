@@ -4,10 +4,10 @@ use yii\widgets\ActiveForm;
 use yii\grid\GridView;
 use yii\helpers\Html;
 
-$this->title = 'Партнёрская программа: Общая информация';
+$this->title = 'Партнёрская программа';
 ?>
 <section class="content-header">
-    <h1>Общая информация</h1>
+    <h1><?=$this->title?> <small>Общая информация</small></h1>
 </section>
 <section class="content">
     <div class="row">
