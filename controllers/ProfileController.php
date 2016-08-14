@@ -56,7 +56,7 @@ class ProfileController extends Controller
         if (!Yii::$app->user->isGuest) {
             Paymant::renewCache(Yii::$app->user->id);
         }
-        
+
         $this->enableCsrfValidation = false;
         $this->layout = "@app/views/layouts/profile";
         return parent::beforeAction($action);
