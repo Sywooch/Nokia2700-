@@ -22,7 +22,7 @@ use yii\bootstrap\ActiveForm;
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        
+
                         <input type="text" class="form-control" name="User[phone]" autocomplete="off" placeholder="+7(___)___-__-__">
                         <span class="glyphicon glyphicon-earphone form-control-feedback"></span>
                     </div>
