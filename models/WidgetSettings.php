@@ -360,7 +360,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
                 $seconds = ($length%60 > 0 && $length%60 < 30) ? 1 : 0;
                 $model = WidgetPendingCalls::find()->where('callBackCall_id="'.$callBackCall_id.'"')->one();
                 $model->end_side = $end_side;
-                $model->call_back_cost = ($minutes+$seconds)*5;
+                $model->call_back_cost = Tarifs::payForCall($minutes+$seconds, $model->widget_id);
 //                $user = User::find()->join('INNER JOIN','widget_settings','widget_settings.user_id=users.user_id')->where('widget_settings.widget_id='.$model->widget_id)->one();
 //                $user->cache -= $model->call_back_cost;
 //                $user->save();

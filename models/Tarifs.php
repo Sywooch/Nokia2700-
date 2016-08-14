@@ -108,22 +108,26 @@ class Tarifs extends ActiveRecord
             ->where("user_id=$u_id");
         $rows = $query->all();
 
-        $row = $rows['0']['minute_price'];
+        if($rows['0']['minute_price'] != 0)
+        {
+            $row = $rows['0']['minute_price'];
 
-        $price_for_call = $call_duration*$row;
-        $order_num = 'call_with_'.$w_name;
+            $price_for_call = $call_duration*$row;
+            $order_num = 'call_with_'.$w_name;
 
-        $hist = new PayHistory;
-        $hist->id='';
-        $hist->payment = (integer)$price_for_call;
-        $hist->user_id = $u_id;
-        $hist->date = '';
-        $hist->order_num = $order_num;
-        $hist->type = 1;
-        $hist->status = 1;
-        $hist->save();
-        Paymant::renewCache($u_id);
-        return $hist;
+            $hist = new PayHistory;
+            $hist->id='';
+            $hist->payment = (integer)$price_for_call;
+            $hist->user_id = $u_id;
+            $hist->date = '';
+            $hist->order_num = $order_num;
+            $hist->type = 1;
+            $hist->status = 1;
+            $hist->save();
+            Paymant::renewCache($u_id);
+            return $price_for_call;
+        }
+       else return self::payAbonement($widget_id);
 
     }
 
