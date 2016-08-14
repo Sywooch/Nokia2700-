@@ -383,7 +383,7 @@
 
 	}
 	RobaxWidget.prototype.postMail=function(){
-		helper.get('//r.oblax.ru/widget/widget-call',{'key':this.settings.key,'phone':phone,'site_url':window.location.hostname,'protocol':window.location.protocol});
+		//helper.get('//r.oblax.ru/widget/widget-call',{'key':this.settings.key,'phone':phone,'site_url':window.location.hostname,'protocol':window.location.protocol});
 	}
 	RobaxWidget.prototype.postCall=function(phone){
 		var t=this;
