@@ -61,7 +61,13 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                             <tbody>
                             <tr>
                                 <td style="vertical-align: middle;">ID пользователя</td>
-                                <td><?=$id?></td>
+                                <td>
+                                    <?=$formUser->field($user, 'id')->label(false)->textInput([
+                                        'readonly'=>true,
+                                        'class'=> 'col-md-12 col-sm-12 col-xs-12',
+                                        'style' => 'border: none;padding-left: 0;'
+                                    ])?>
+                                </td>
                                 <td></td>
                             </tr>
                             <tr>
