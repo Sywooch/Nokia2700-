@@ -152,7 +152,7 @@ class ProfileController extends Controller
         $u_id = $tarifs['user_id'];
         $connection = Yii::$app->db;
         $connection->createCommand()->update('user_tarif',['tarif_id'=>$t_id], "user_id = $u_id")->execute();
-        return $this->render('index');
+        return $this->redirect('index');
 
     }
 
