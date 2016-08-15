@@ -544,9 +544,8 @@ class ProfileController extends Controller
 
     public function actionUpdateUser()
     {
-
         $user = $_POST['User'];
-        $to_save = User::findOne($user['id']);
+        $to_save = User::findOne(Yii::$app->user->id);
         $to_save->name = $user['name'];
         $to_save->email = $user['email'];
         $to_save->phone = $user['phone'];

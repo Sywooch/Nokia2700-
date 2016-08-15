@@ -80,7 +80,7 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                                     ])?>
                                 </td>
                                 <td>
-                                    <a id="name" onclick="myclick(this.id);"><span class='col-md-12 col-sm-12 col-xs-12'><i class="fa fa-edit"></i></span></a>
+                                    <a id="name" style="cursor: pointer;" onclick="myclick(this.id);"><span class='col-md-12 col-sm-12 col-xs-12'><i class="fa fa-edit"></i></span></a>
                                     <?= Html::a('<span class="col-md-12 col-sm-12 col-xs-12"><i class="fa fa-save"></i></span>','', ['class' => 'sub_link', 'id'=>"save_name", 'hidden'=>true])?>
                                 </td>
                             </tr>
@@ -94,7 +94,7 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                                     ])?>
                                 </td>
                                 <td>
-                                    <a id="email" onclick="myclick(this.id);"><span class='col-md-12 col-sm-12 col-xs-12'><i class="fa fa-edit"></i></span></a>
+                                    <a id="email" style="cursor: pointer;" onclick="myclick(this.id);"><span class='col-md-12 col-sm-12 col-xs-12'><i class="fa fa-edit"></i></span></a>
                                     <?= Html::a('<span class="col-md-12 col-sm-12 col-xs-12"><i class="fa fa-save"></i></span>','', ['class' => 'sub_link', 'id'=>"save_email", 'hidden'=>true])?>
                                 </td>
                             </tr>
@@ -108,7 +108,7 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                                     ])?>
                                 </td>
                                 <td>
-                                    <a id="phone" onclick="myclick(this.id);"><span class='col-md-12 col-sm-12 col-xs-12'><i class="fa fa-edit"></i></span></a>
+                                    <a id="phone" style="cursor: pointer;" onclick="myclick(this.id);"><span class='col-md-12 col-sm-12 col-xs-12'><i class="fa fa-edit"></i></span></a>
                                     <?= Html::a('<span class="col-md-12 col-sm-12 col-xs-12"><i class="fa fa-save"></i></span>','', ['class' => 'sub_link', 'id'=>"save_phone", 'hidden'=>true])?>
                                 </td>
                             </tr>
@@ -127,7 +127,7 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                                     ])?> руб.
                                 </td>
                                 <td>
-                                    <a id="cache_notification" onclick="myclick(this.id);"><span class='col-md-12 col-sm-12 col-xs-12'><i class="fa fa-edit"></i></span></a>
+                                    <a id="cache_notification" style="cursor: pointer;" onclick="myclick(this.id);"><span class='col-md-12 col-sm-12 col-xs-12'><i class="fa fa-edit"></i></span></a>
                                     <?= Html::a('<span class="col-md-12 col-sm-12 col-xs-12"><i class="fa fa-save"></i></span>','', ['class' => 'sub_link', 'id'=>"save_cache_notification", 'hidden'=>true])?>
                                 </td>
                             </tr>
