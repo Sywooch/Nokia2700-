@@ -67,108 +67,83 @@ class Paymant extends Model
         return $mod;
     }
 
-    protected static function cashForFirstPartners($u_id)
+    protected static function cashForFirstPartners($u_id, $ceche)
     {
         $query = new Query;
         $query->select('*')
             ->from('users')
-            ->where('partner = "'.$u_id.'"');
+            ->where('user_id = "'.$u_id.'" AND partner != 0');
         /*WHERE MONTH(`date`) = MONTH(NOW()) AND YEAR(`date`) = YEAR(NOW())*/
         $rows = $query->all();
 
-        $u_list = null;
-
-            foreach($rows as $r)
-            {
-                $u_list .= 'user_id="'.$r['user_id'].'" OR ';
-                self::cashForSecondPartners($r['user_id']);
-            }
-        $u_list = substr($u_list,0 , -4);
-
-
-        $query_2 = new Query;
-        $query_2->select('*')
-            ->from('pay_history')
-            ->where('MONTH(`date`) = MONTH(NOW()) AND YEAR(`date`) = YEAR(NOW()) AND '.$u_list.' AND type=0');
-        //WHERE MONTH(`date`) = MONTH(NOW()) AND YEAR(`date`) = YEAR(NOW())
-        $rows_2 = $query_2->all();
-        $sum = 0;
-
-        foreach($rows_2 as $rp)
+        if($rows['0']['partner'] != 0)
         {
-            $sum += $rp['paymant'];
+            $sum = $ceche;
+
+            $payment_to_first_partner =
+                [
+                    'user_id'=>$rows['0']['partner'],
+                    'partner'=>$u_id,
+                    'date'=> '',
+                    'first_partn_paid_sum'=>$sum,
+                    'paymant_for_first_part'=>$sum*0.3,
+                    'description'=>'Начисление бонуса 1-го порядка'
+                ];
+
+            $payment_to_second_partner = self::cashForSecondPartners($rows['0']['partner'], $ceche, $u_id);
+
+            $payment_to_partners ['payment_to_first_partner']=$payment_to_first_partner;
+
+            if($payment_to_second_partner != 0) $payment_to_partners ['payment_to_second_partner']=$payment_to_second_partner;
+
+
+            return $payment_to_partners;
         }
+        else return null;
 
-        $payment_for_month =
-            [
-                'user_id'=>$u_id,
-                'date'=> date('F Y'),
-                'count_first_referals'=>count($rows_2),
-                'first_referals_paid_sum'=>$sum,
-                'paymant_for_first_refer'=>$sum*0.3,
-                'description'=>'Начисление за рефералов 1-го порядка'
-            ];
-
-        return $payment_for_month;
     }
 
-    protected static function cashForSecondPartners($u_id)
+    protected static function cashForSecondPartners($u_id, $ceche, $partner_id)
     {
         $query = new Query;
         $query->select('*')
             ->from('users')
-            ->where('partner = "'.$u_id.'"');
+            ->where('user_id = "'.$u_id.'" AND partner != 0');
         /*WHERE MONTH(`date`) = MONTH(NOW()) AND YEAR(`date`) = YEAR(NOW())*/
         $rows = $query->all();
 
-        $u_list = null;
 
-        foreach($rows as $r)
+        if($rows['0']['partner'] != 0)
         {
-            $u_list .= 'user_id="'.$r['user_id'].'" OR ';
+            $sum = $ceche;
+
+            $payment_to_second_partner =
+                [
+                    'user_id'=>$rows['0']['partner'],
+                    'partner_of_partner'=>$partner_id,
+                    'partner'=>$u_id,
+                    'date'=> '',
+                    'first_partn_paid_sum'=>$sum,
+                    'paymant_for_second_part'=>$sum*0.1,
+                    'description'=>'Начисление бонуса 2-го порядка'
+                ];
+
+            return $payment_to_second_partner;
         }
-        $u_list = substr($u_list,0 , -4);
-
-
-        $query_2 = new Query;
-        $query_2->select('*')
-            ->from('pay_history')
-            ->where('MONTH(`date`) = MONTH(NOW()) AND YEAR(`date`) = YEAR(NOW()) AND '.$u_list.' AND type=0');
-        //WHERE MONTH(`date`) = MONTH(NOW()) AND YEAR(`date`) = YEAR(NOW())
-        $rows_2 = $query_2->all();
-
-        $sum = 0;
-        foreach($rows_2 as $rp)
+        else
         {
-            $sum += $rp['paymant'];
+            return 0;
         }
 
-        $payment_for_month =
-            [
-                'user_id'=>$u_id,
-                'date'=> date('F Y'),
-                'count_second_referals'=>count($rows_2),
-                'second_referals_paid_sum'=>$sum,
-                'paymant_for_second_refer'=>$sum*0.1,
-                'description'=>'Начисление за рефералов 2-го порядка'
-            ];
-
-
-        return $payment_for_month;
     }
 
-    public static function cacheForPartners()
+    public static function saveBonus($u_id, $ceche)
     {
-        $query = new Query;
-        $query->select('*')
-            ->from('users')
-            ->where('partner != "0"');
-        $rows = $query->all();
-        foreach($rows as $row)
+        $bonus = self::cashForFirstPartners($u_id, $ceche);
+        if(isset($bonus))
         {
-            self::cashForFirstPartners($row['user_id']);
+            
         }
-
     }
 
 }
