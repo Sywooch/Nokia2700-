@@ -32,7 +32,7 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
             <!-- Profile Image -->
             <div class="box box-primary">
                 <div class="box-body box-profile">
-                    <img class="profile-user-img img-responsive img-circle" src="/images/user2-160x160.jpg" alt="User profile picture">
+                    <img class="profile-user-img img-responsive" src="/images/profile.png" alt="User profile picture">
                     <h3 class="profile-username text-center"><?=$name?></h3>
                     <!--<p class="text-muted text-center">Software Engineer</p>-->
                     <ul class="list-group list-group-unbordered">

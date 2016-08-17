@@ -93,29 +93,31 @@ class WidgetController extends Controller
         $getArray = Yii::$app->request->get();
         if(isset($getArray['key']) && isset($getArray['site_url']) && isset($getArray['protocol']) && isset($getArray['template']))
         {
-//            print_r($getArray);
-//            die();
             $widget = WidgetSettings::find()->where("widget_key='".$getArray['key']."' AND widget_site_url='".$getArray['site_url']."'")->one();
-            /*print '<pre>';
-            print_r($widget);
-            print '</pre>';*/
             if(isset($widget)&&$widget->widget_status==1) {
                 $time_cache = json_decode($widget->widget_work_time);
 
                 $time['Monday']['start'] = $time_cache->monday->start;
                 $time['Monday']['end'] = $time_cache->monday->end;
+                $time['Monday']['lunch'] = $time_cache->monday->lunch;
                 $time['Tuesday']['start'] = $time_cache->tuesday->start;
                 $time['Tuesday']['end'] = $time_cache->tuesday->end;
+                $time['Tuesday']['lunch'] = $time_cache->tuesday->lunch;
                 $time['Wednesday']['start'] = $time_cache->wednesday->start;
                 $time['Wednesday']['end'] = $time_cache->wednesday->end;
+                $time['Wednesday']['lunch'] = $time_cache->wednesday->lunch;
                 $time['Thursday']['start'] = $time_cache->thursday->start;
                 $time['Thursday']['end'] = $time_cache->thursday->end;
+                $time['Thursday']['lunch'] = $time_cache->thursday->lunch;
                 $time['Friday']['start'] = $time_cache->friday->start;
                 $time['Friday']['end'] = $time_cache->friday->end;
+                $time['Friday']['lunch'] = $time_cache->friday->lunch;
                 $time['Saturday']['start'] = $time_cache->saturday->start;
                 $time['Saturday']['end'] = $time_cache->saturday->end;
+                $time['Saturday']['lunch'] = $time_cache->saturday->lunch;
                 $time['Sunday']['start'] = $time_cache->sunday->start;
                 $time['Sunday']['end'] = $time_cache->sunday->end;
+                $time['Sunday']['lunch'] = $time_cache->sunday->lunch;
 
                 $widget_json['widget_site_url'] = $widget->widget_site_url;
                 $widget_json['widget_button_color'] = $widget->widget_button_color;

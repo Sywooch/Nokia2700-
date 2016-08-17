@@ -3,6 +3,13 @@
 use yii\widgets\ActiveForm;
 use yii\grid\GridView;
 use yii\helpers\Html;
+use app\models\PartnerLink;
+
+$partnerLink = PartnerLink::findOne(['id_user' => Yii::$app->user->id]);
+$link = 'register?ref='.Yii::$app->user->id;
+if ($partnerLink) {
+    $link = $partnerLink->link;
+}
 
 $this->title = 'Партнёрская программа';
 ?>
@@ -14,10 +21,36 @@ $this->title = 'Партнёрская программа';
         <div class="col-xs-12">
             <div class="box box-primary">
                 <div class="box-body text-center">
-                    <h3>Партнёрская ссылка: <span class="text-primary">http://<?=$_SERVER['HTTP_HOST']?>/register?ref=<?=Yii::$app->user->id?></span></h3>
-                    <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal">Приглашение по Email</button>
-                    <!-- Modal -->
-                    <div id="myModal" class="modal fade" role="dialog">
+                    <h3>Партнёрская ссылка: <span class="text-primary">http://<?=$_SERVER['HTTP_HOST']?>/<?=$link?></span></h3>
+                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#linkModal">Изменить ссылку</button>
+                    <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#mailModal">Приглашение по Email</button>
+                    <!-- linkModal -->
+                    <div id="linkModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <?php $form = ActiveForm::begin([
+                                    'method' => 'post',
+                                    'action' => 'partners/changelink',
+                                ]); ?>
+                                <div class="modal-header text-left">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Изменить ссылку</h4>
+                                </div>
+                                <div class="modal-body text-left">
+                                    <p>Разрешнео использовать <b class="text-success">буквы латинского алфавита, цифры и символ</b> "<b class="text-success">_</b>":</p>
+                                    <input class="form-control" pattern="([A-Za-z0-9_])+" maxlength="64" name="link" required/>
+                                </div>
+                                <div class="modal-footer">
+                                    <?= Html::submitButton('Отправить', ['class' => 'btn btn-success']) ?>
+                                </div>
+                                <?php ActiveForm::end()?>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- mailModal -->
+                    <div id="mailModal" class="modal fade" role="dialog">
                         <div class="modal-dialog">
                             <!-- Modal content-->
                             <div class="modal-content">

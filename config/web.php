@@ -54,6 +54,7 @@ $config = [
                 'widget/listener/event.php' => 'widget/listener',
                 'login' => 'site/login',
                 'register' => 'site/register',
+
             ],
         ],
     ],

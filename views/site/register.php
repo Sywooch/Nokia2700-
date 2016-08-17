@@ -1,6 +1,8 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\widgets\MaskedInput;
+
 ?>
 
 <div class="hold-transition register-page">
@@ -22,16 +24,26 @@ use yii\bootstrap\ActiveForm;
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback" style="position: relative">
-                        <input type="text" style="padding-left: 45px;" class="form-control" name="User[phone]" autocomplete="off" placeholder="+7(___)___-__-__">
+                        <?=MaskedInput::widget([
+                            'name' => 'User[phone]',
+                            'mask' => '+7(999)999-99-99',
+                            'options' => [
+                                'class' => 'form-control widget_phone',
+                                'style' => 'padding-left: 45px',
+                                'autocomplete' => 'off',
+                                'data-required' => true,
+                                'placeholder' => '+7(___)___-__-__'
+                            ]
+                        ]);?>
                         <span class="glyphicon glyphicon-earphone form-control-feedback"></span>
                         <button class="flag-select dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             <i class="glyphicon bfh-flag-RU"></i><span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
-                            <li onclick="countryChange('RU');"><i class="glyphicon bfh-flag-RU"></i> Россия</li>
-                            <li onclick="countryChange('BY');"><i class="glyphicon bfh-flag-BY"></i> Белорусия</li>
-                            <li onclick="countryChange('UA');"><i class="glyphicon bfh-flag-UA"></i> Украина</li>
-                            <li onclick="countryChange('US');"><i class="glyphicon bfh-flag-US"></i> США</li>
+                            <li onclick="countryChange('RU', $(this));"><i class="glyphicon bfh-flag-RU"></i> Россия</li>
+                            <li onclick="countryChange('BY', $(this));"><i class="glyphicon bfh-flag-BY"></i> Белорусия</li>
+                            <li onclick="countryChange('UA', $(this));"><i class="glyphicon bfh-flag-UA"></i> Украина</li>
+                            <li onclick="countryChange('US', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>
                         </ul>
                     </div>
                     <div class="row">
@@ -56,31 +68,38 @@ use yii\bootstrap\ActiveForm;
     </div>
 </div>
 <script>
-helper.setMask($("[name='User[phone]']")[0],'+7(999)999-99-99');
-function countryChange(lang) {
+function countryChange(lang, element) {
+    ul = element.parent('ul');
+    id_button = ul.attr('aria-labelledby');
+    button = ul.siblings('button');
+    input = ul.siblings('input');
     switch (lang) {
         case 'RU': {
-            $('#dropdownMenu').html('<i class="glyphicon bfh-flag-RU"></i><span class="caret">');
-            $("[name='User[phone]']").attr('placeholder', '+7(___)___-__-__');
-            helper.setMask($("[name='User[phone]']")[0],'+7(999)999-99-99');
+            button.html('<i class="glyphicon bfh-flag-RU"></i><span class="caret">');
+            input.val('');
+            input.attr('placeholder', '+7(___)___-__-__');
+            input.inputmask('+7(999)999-99-99');
             break;
         }
         case 'BY': {
-            $('#dropdownMenu').html('<i class="glyphicon bfh-flag-BY"></i><span class="caret">');
-            $("[name='User[phone]']").attr('placeholder', '+375(___)___-__-__');
-            helper.setMask($("[name='User[phone]']")[0],'+375(999)999-99-99');
+            button.html('<i class="glyphicon bfh-flag-BY"></i><span class="caret">');
+            input.val('');
+            input.attr('placeholder', '+375(___)___-__-__');
+            input.inputmask('+375(999)999-99-99');
             break;
         }
         case 'UA': {
-            $('#dropdownMenu').html('<i class="glyphicon bfh-flag-UA"></i><span class="caret">');
-            $("[name='User[phone]']").attr('placeholder', '+380(___)___-__-__');
-            helper.setMask($("[name='User[phone]']")[0],'+380(999)999-99-99');
+            button.html('<i class="glyphicon bfh-flag-UA"></i><span class="caret">');
+            input.val('');
+            input.attr('placeholder', '+380(___)___-__-__');
+            input.inputmask('+380(999)999-99-99');
             break;
         }
         case 'US': {
-            $('#dropdownMenu').html('<i class="glyphicon bfh-flag-US"></i><span class="caret">');
-            $("[name='User[phone]']").attr('placeholder', '+1(___)___-__-__');
-            helper.setMask($("[name='User[phone]']")[0],'+1(999)999-99-99');
+            button.html('<i class="glyphicon bfh-flag-US"></i><span class="caret">');
+            input.val('');
+            input.attr('placeholder', '+1(___)___-__-__');
+            input.inputmask('+1(999)999-99-99');
             break;
         }
     }

@@ -26,16 +26,28 @@ $this->title = 'Звонки с виджетов';
 				'content' => 
 					GridView::widget([
 						'dataProvider' => $callProvider,
-						'summary' => 'Показано <b>{end}</b> из <b>{totalCount}</b> элементов.',
+						'summary' => 'Показано <b>{end}</b> из <b>{totalCount}</b> звонков.',
 				        'columns' => [
 				            'widget_id',
 				            'call_time',
 				            'phone',
 							'EndSide',
-							'waiting_period_A',
-							'waiting_period_B',
-							'call_back_record_URL_A',
-							'call_back_record_URL_B',
+                            [
+                                'attribute' => 'waiting_period_A',
+                                'header' => '<a href="/profile/history?sort=waiting_period_A" data-sort="waiting_period_A">Время ожидания<br>Менеджера</a>',
+                            ],
+                            [
+                                'attribute' => 'waiting_period_B',
+                                'header' => '<a href="/profile/history?sort=waiting_period_B" data-sort="waiting_period_B">Время ожидания<br>Клиента</a>',
+                            ],
+                            [
+                                'attribute' => 'call_back_record_URL_A',
+                                'header' => '<a href="/profile/history?sort=call_back_record_URL_A" data-sort="call_back_record_URL_A">Запись разговора<br>Менеджера</a>',
+                            ],
+                            [
+                                'attribute' => 'call_back_record_URL_B',
+                                'header' => '<a href="/profile/history?sort=call_back_record_URL_B" data-sort="call_back_record_URL_B">Запись разговора<br>Клиента</a>',
+                            ],
 				            'call_back_cost',
 				        ],
     			]),
@@ -46,7 +58,7 @@ $this->title = 'Звонки с виджетов';
 				'content' => 
 					GridView::widget([
 						'dataProvider' => $messageProvider,
-						'summary' => 'Показано <b>{end}</b> из <b>{totalCount}</b> элементов.',
+						'summary' => 'Показано <b>{end}</b> из <b>{totalCount}</b> сообщений.',
 				        'columns' => [
 				            'widget_id',
 				            'name',

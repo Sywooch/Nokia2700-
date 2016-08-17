@@ -58,31 +58,36 @@ AppAsset::register($this);
               				<!-- Menu Toggle Button -->
               				<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                 			<!-- The user image in the navbar-->
-                			<?=Html::img('@web'.'/images/user2-160x160.jpg',['class' => "user-image", 'alt' => 'User Image']); ?>
+                			<?=Html::img('@web'.'/images/profile.png',['class' => "user-image", 'alt' => 'User Image']); ?>
                 			<!-- <img src="/dist/img/user2-160x160.jpg" class="user-image" alt="User Image"> -->
                 			<!-- hidden-xs hides the username on small devices so only the image appears. -->
                 			<span class="hidden-xs user-name"><?=Yii::$app->user->identity->name?></span>
               				</a>
 	              			<ul class="dropdown-menu">
-			                <!-- The user image in the menu -->
-			                
-			                <!-- Menu Body -->
-			                <!--<li class="user-body">
-			                  <div class="row">
-			                    <div class="col-xs-4 text-center">
-			                      <a href="#">Followers</a>
-			                    </div>
-			                    <div class="col-xs-4 text-center">
-			                      <a href="#">Sales</a>
-			                    </div>
-			                    <div class="col-xs-4 text-center">
-			                      <a href="#">Friends</a>
-			                    </div>
-			                  </div>
-			                </li>-->
-			                <!-- Menu Footer-->
-								<?=Html::beginForm(['/logout'], 'post', ['class' => 'navbar-form'])
-								. Html::endForm() ?>
+			                	<!-- The user image in the menu -->
+								<li class="user-header" style="height: 145px;">
+									<img src="/images/profile.png" class="img-bordered" alt="User Image">
+
+									<p>
+										<?=Yii::$app->user->identity->name?>
+										<!--<small>Member since Nov. 2012</small>-->
+									</p>
+								</li>
+			                	<!-- Menu Body -->
+								<!--<li class="user-body">
+								  <div class="row">
+									<div class="col-xs-4 text-center">
+									  <a href="#">Followers</a>
+									</div>
+									<div class="col-xs-4 text-center">
+									  <a href="#">Sales</a>
+									</div>
+									<div class="col-xs-4 text-center">
+									  <a href="#">Friends</a>
+									</div>
+								  </div>
+								</li>-->
+			                	<!-- Menu Footer-->
 				                <li class="user-footer">
 				                  	<div class="pull-left">
 				                    	<a href="<?=Url::to('/profile');?>" class="btn btn-default btn-flat">Профиль</a>
@@ -133,7 +138,7 @@ AppAsset::register($this);
 					<?php $active = (Url::to(['']) == '/profile/analytics') ? 'active' : ''; ?>
 					<li class="<?=$active?>">
 						<a href="<?=Url::to('/profile/analytics');?>">
-							<i class="fa fa-bar-chart"></i> <span>Аналитика</span>
+							<i class="fa fa-area-chart"></i> <span>Аналитика</span>
 						</a>
 					</li>
 					<?php $active = (Url::to(['']) == '/partners/index' || Url::to(['']) == '/partners/promo') ? 'active' : ''; ?>
@@ -142,7 +147,7 @@ AppAsset::register($this);
 							<i class="fa fa-users"></i> <span>Партнёрка</span> <i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
-							<li><a href="<?=Url::to('/partners');?>" class=""><i class="fa fa-bar-chart"></i>Общая информация</a></li>
+							<li><a href="<?=Url::to('/partners');?>" class=""><i class="fa fa-ruble"></i>Общая информация</a></li>
 							<li><a href="<?=Url::to('/partners/promo');?>" class=""><i class="fa fa-image"></i>Промо материалы</a></li>
 							<li><a href="<?=Url::to('/partners/bonus-history');?>" class=""><i class="fa fa-line-chart"></i>Бонусный счет</a></li>
 						</ul>
@@ -155,9 +160,9 @@ AppAsset::register($this);
   		</div>
   		<footer class="main-footer">
 		    <div class="pull-right hidden-xs">
-		      <b>Version</b> 0.0.1
+		      <b>Version</b> 2.1.1
 		    </div>
-    		<strong>Авторское право находится за &copy; 2016 <a href="#creaters">SS and BR</a>.</strong> Все права сохранены.
+    		<strong>Авторское право находится за &copy; 2016 <a href="http://oblax.ru/">Oblax</a>.</strong> Все права сохранены.
   		</footer>
   	</div>
 <?php $this->endBody() ?>

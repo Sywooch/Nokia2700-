@@ -289,24 +289,36 @@
 		var dataJSON=JSON.parse(helper.get('//r.oblax.ru/widget/get-widget',{'action':'widget-get','key':param.key,'site_url':window.location.hostname,'protocol':window.location.protocol,'template':template}).replace(/\ufeff/g,''));
 		window.widget_key = param.key;
 
-		var css = d.createElement("link");
 		var colorTheme = dataJSON['theme_color'];
+
+		var css = d.createElement("link");
 		css.href="//r.oblax.ru/widget-front/WidGet.css";
-		css.type="text/css"; css.rel="stylesheet";
+		css.type="text/css";
+		css.rel="stylesheet";
+
 		d.getElementsByTagName("link")[0].parentNode.insertBefore(css, d.getElementsByTagName("link")[0]);
 		helper.cssQuery('body').appendChild(div);
 		helper.cssQuery('.robax').innerHTML+=helper.replaceAll(dataJSON['tmp'],dataJSON);
+		helper.setMask(helper.cssQuery('.robax-phone-input'),'+7(999)999-99-99');
+
 		var color = dataJSON['widget_button_color'];
 		document.getElementById("open-button").style.background = color;
-		helper.setMask(helper.cssQuery('.robax-phone-input'),'+7(999)999-99-99');
-		this.controller.open(dataJSON['widget-button-color']); this.controller.closed(); this.controller.phone(); this.controller.menu(); this.controller.phone_item(dataJSON);
+
+		this.controller.open(dataJSON['widget-button-color']);
+		this.controller.closed();
+		this.controller.phone();
+		this.controller.menu();
+		this.controller.phone_item(dataJSON);
+
 		for(var k in param){
 			t.settings[k]=param[k];
 		}
-		helper.cssQuery('.robax-widget-phone .robax-widget-item-button').onclick=function(){
+
+		helper.cssQuery('.robax-widget-phone .robax-widget-item-button').onclick = function() {
 			t.postCall(helper.cssQuery('.robax-widget-phone-form .robax-phone-input').value);
 			t.controller.timer();
 		}
+
 		var dc=new Date();
 		timeNow=dc.getHours()*60+dc.getMinutes();
 		dc=dataJSON['date']['work-start-time'];
@@ -343,7 +355,7 @@
 				}
 			});
 		}
-		if (typeof getCookie('__utmctr') !=="undefined") {
+		if (typeof getCookie('__utmctr') !== "undefined") {
 			$('#phone-h1').text(dataJSON['phone']['h1']);
 			$('#phone-div').text('Вы наверное ищите ' + getCookie('__utmctr') + '? Связать вас с менеджером?');
 		}
@@ -473,7 +485,8 @@
 				helper.cssQuery('.robax-item-now').style.display='none';
 				helper.cssQuery('.robax-later-data').value='false';
 			}
-			var date=new Date(Date.now() + 2592e5);var month=["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+			var date=new Date(Date.now() + 2592e5);
+				var month=["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
 			helper.cssQuery('.robax-later-sel__hold__day').innerHTML+='<li data-day="after-after-tomorrow">'+date.getDate()+' '+month[date.getMonth()]+'</li>';
 			var e=helper.cssQueryAll('.robax-later-sel__hold__day li'),i=0,n=e.length;
 			while(i<n){

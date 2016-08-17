@@ -5,10 +5,10 @@ namespace app\controllers;
 use app\models\Bonus;
 use app\models\BonusHistory;
 use app\models\Paymant;
+use app\models\PartnerLink;
 use app\models\User;
 use Yii;
 use yii\data\ActiveDataProvider;
-use yii\data\SqlDataProvider;
 use yii\filters\AccessControl;
 
 class PartnersController extends \yii\web\Controller
@@ -20,7 +20,9 @@ class PartnersController extends \yii\web\Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'sendmail', 'promo', 'bonus-history'],
+                        'actions' => [
+                            'index', 'sendmail', 'promo', 'changelink', 'bonus-history'
+                        ],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -80,6 +82,19 @@ class PartnersController extends \yii\web\Controller
         return $this->render('promo');
     }
 
+    public function actionLink($link)
+    {
+        if (Yii::$app->user->isGuest) {
+            if (isset($link)) {
+                $partnerLin = PartnerLink::findOne(['link' => $link]);
+                setcookie('ref', $partnerLin->id_user);
+                return $this->redirect(['/register']);
+            }
+        }
+
+        return $this->redirect('/register');
+    }
+
     public function actionSendmail()
     {
         if ($_POST) {
@@ -92,8 +107,9 @@ class PartnersController extends \yii\web\Controller
                 }
             }
 
+            $partnerLink = PartnerLink::findOne(['id_user' => Yii::$app->user->id]);
             $subject = "Приглашаем вас в robax!";
-            $link = 'http://'.$_SERVER['HTTP_HOST'].'/register?ref='.Yii::$app->user->id;
+            $link = 'http://'.$_SERVER['HTTP_HOST'].'/'.($partnerLink->link) ? $partnerLink->link : 'register?ref='.Yii::$app->user->id;
             $message =
                 '<html>
                     <head>
@@ -113,6 +129,25 @@ class PartnersController extends \yii\web\Controller
                 ->send();
 
         }
+
+        return $this->redirect('/partners');
+    }
+
+    public function actionChangelink()
+    {
+        if ($_POST) {
+            $partnerLink = PartnerLink::findOne(['id_user' => Yii::$app->user->id]);
+            if ($partnerLink) {
+                $partnerLink->link = $_POST['link'];
+                $partnerLink->save();
+            } else {
+                $partnerLink = new PartnerLink();
+                $partnerLink->id_user = Yii::$app->user->id;
+                $partnerLink->link = $_POST['link'];
+                $partnerLink->save();
+            }
+        }
+
         return $this->redirect('/partners');
     }
 

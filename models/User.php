@@ -220,7 +220,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $mrh_login = "oblax";
         $mrh_pass1 = "jo03SwqUJEtEGrVq946n";
-        $inv_id = Yii::$app->user->identity->id;
+        $inv_id = Yii::$app->user->id;
         $inv_desc = "Оплата робакса";
         $out_summ = $total;
         $shp_item = 1;

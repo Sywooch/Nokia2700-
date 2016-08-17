@@ -182,9 +182,12 @@ class ProfileController extends Controller
                 'EndSide' => [
                     'asc' => ['widget_pending_calls.end_side' => SORT_ASC],
                     'desc' => ['widget_pending_calls.end_side' => SORT_DESC],
+                    'default' => SORT_DESC
                 ],
                 'waiting_period_A',
                 'waiting_period_B',
+                'call_back_record_URL_A',
+                'call_back_record_URL_B',
                 'call_back_cost',
             ]
         ]);
@@ -457,15 +460,7 @@ class ProfileController extends Controller
 
     public function actionSound()
     {
-        $getUrlSound = WidgetSettings::getUrlSound(Yii::getAlias("@webroot/files/robaks.mp3"));
-        $result = $getUrlSound->result;
-        $statusURL = $result->statusURL;
-        $sendSound = WidgetSettings::sendSound(Yii::getAlias("@webroot/files/robaks.mp3"), $statusURL);
-
-        return $this->render('sound', [
-            'getUrlSound' => $getUrlSound,
-            'sendSound' => $sendSound,
-        ]);
+        return $this->render('sound');
     }
 
     public function actionPayWith()

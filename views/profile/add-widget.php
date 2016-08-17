@@ -2,6 +2,26 @@
 use kartik\switchinput\SwitchInput;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\widgets\MaskedInput;
+
+$this->registerCssFile("http://bootstrapformhelpers.com/assets/css/bootstrap-formhelpers.min.css");
+$this->registerCss("
+    .flag-select {
+        background: #fff;
+        border: none;
+        position: absolute;
+        top: 5px;
+        left: 1px;
+        z-index: 100;
+    }
+    .dropdown-menu {
+        min-width: 110px!important;
+        padding-left: 6px;
+    }
+    .dropdown-menu li {
+        cursor: pointer;
+    }
+");
 
 $this->title = 'Добавить виджет';
 ?>
@@ -182,16 +202,16 @@ $this->title = 'Добавить виджет';
 	  </div>
 	</div>
 	<div class="clear"></div>
-	<div class="bordered">
+	<!--<div class="bordered">
 		<label>УТП  </label><br>
         <div class="form-group">
             <div style="margin: 10px 0;">
                 <div style="display: inline-block;">
-                    <?echo $form->field($model, 'utp_turn_on')->widget(SwitchInput::classname(), [
+                    <?/*echo $form->field($model, 'utp_turn_on')->widget(SwitchInput::classname(), [
                         'options'=>[
                             'onchange'=>'openUtp();',
                         ]
-                    ])->label(false);?>
+                    ])->label(false);*/?>
                 </div>
                 <div style="display: inline-block">
                     <span style="margin: 0 15px;">уникальное торговое предложение, выводится при попытки уйти с сайта</span>
@@ -218,27 +238,33 @@ $this->title = 'Добавить виджет';
             <input name="widget-utp-form-left" style="display: none;"/>
             <input name="widget-utp-form-top" style="display: none;"/>
 		</div>
-	</div>
+	</div>-->
 	  <div class="bordered">
-		  <label>Черный список </label><small>(укажите номера, на которые виджет не будет звонить)</small>
+		  <label>Черный список </label> <small>(укажите номера, на которые виджет не будет звонить)</small>
 		  <br>
 		  <div id="black_list_block">
-			  <?php
-			  $blackList = explode(';', $model->black_list);
-			  $num = count($blackList)-1;
-			  unset($blackList[$num]);
-			  $count_black_list = count($blackList);
-			  for($i=1; $i<=$count_black_list; $i++)
-			  {
-				  echo '<span class="phone">Телефон №'.$i.'</span>
-						<div class="input-group">
-							<div class="input-group-addon">
-								<i class="fa fa-phone"></i>
-							</div>
-							<input type="text" class="form-control widget_phone" name="black_list_number_'.$i.'" placeholder="+7(___)___-__-__" data-required="true" value="'.$blackList[$i-1].'">
-						</div>';
-			  }
-			  ?>
+			  <span class="phone">Телефон № 1</span>
+			  <div class="input-group">
+				  <?=MaskedInput::widget([
+					  'name' => 'black_list_number_1',
+					  'mask' => '+7(999)999-99-99',
+					  'options' => [
+						  'class' => 'form-control widget_phone',
+                          'style' => 'padding-left: 45px',
+						  'data-required' => true,
+						  'placeholder' => '+7(___)___-__-__'
+					  ]
+				  ]);?>
+                  <button class="flag-select dropdown-toggle" type="button" id="dropdownMenu_1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      <i class="glyphicon bfh-flag-RU"></i><span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu_1">
+                      <li onclick="countryChange('RU', $(this));"><i class="glyphicon bfh-flag-RU"></i> Россия</li>
+                      <li onclick="countryChange('BY', $(this));"><i class="glyphicon bfh-flag-BY"></i> Белорусия</li>
+                      <li onclick="countryChange('UA', $(this));"><i class="glyphicon bfh-flag-UA"></i> Украина</li>
+                      <li onclick="countryChange('US', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>
+                  </ul>
+			  </div>
 		  </div>
 		  <br>
 		  <input type="hidden" name="count_black_list" value="<?=$count_black_list?>">
@@ -318,10 +344,25 @@ $this->title = 'Добавить виджет';
 		<div id="phones_block">
 			<span class="phone">Телефон №1 (определяется при звонке клиенту)</span>
 			<div class="input-group">
-				<div class="input-group-addon">
-					<i class="fa fa-phone"></i>
-				</div>
-				<input type="text" class="form-control widget_phone" name="widget_phone_number_1" placeholder="+7(___)___-__-__" data-required="true" value="<?=$model->widget_phone_number_1?>">
+				<?=MaskedInput::widget([
+					'name' => 'widget_phone_number_1',
+					'mask' => '+7(999)999-99-99',
+					'options' => [
+						'class' => 'form-control widget_phone',
+                        'style' => 'padding-left: 45px',
+						'data-required' => true,
+						'placeholder' => '+7(___)___-__-__'
+					]
+				]);?>
+                <button class="flag-select dropdown-toggle" type="button" id="dropdo2Menu_1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <i class="glyphicon bfh-flag-RU"></i><span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdown2Menu_1">
+                    <li onclick="countryChange('RU', $(this));"><i class="glyphicon bfh-flag-RU"></i> Россия</li>
+                    <li onclick="countryChange('BY', $(this));"><i class="glyphicon bfh-flag-BY"></i> Белорусия</li>
+                    <li onclick="countryChange('UA', $(this));"><i class="glyphicon bfh-flag-UA"></i> Украина</li>
+                    <li onclick="countryChange('US', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>
+                </ul>
 			</div>
 		</div>
 		<br>
@@ -385,49 +426,260 @@ $this->title = 'Добавить виджет';
 			<tr>
 				<th>День недели:</th>
 				<th>Начало рабочего дня:</th>
+				<th>Конец рабочего дня:</th>
 				<th>Обед:</th>
 			</tr>
 			<tr>
 				<td>Понедельник</td>
-				<td><input class="form-control" name="work-start-time-monday" type="text" placeholder="09:00"></td>
-				<td><input class="form-control" name="work-end-time-monday" type="text" placeholder="18:00"></td>
-				<td><input class="form-control" name="work-lunch-time-monday" type="text" placeholder="13:00 - 14:00"></td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-start-time-monday',
+						'mask' => '99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '09:00'
+						]
+					]);?>
+				</td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-end-time-monday',
+						'mask' => '99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '18:00'
+						]
+					]);?>
+				</td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-lunch-time-monday',
+						'mask' => '99:99 - 99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '13:00 - 14:00'
+						]
+					]);?>
+				</td>
 			</tr>
 			<tr>
 				<td>Вторник</td>
-				<td><input class="form-control" name="work-start-time-tuesday" type="text" placeholder="09:00"></td>
-				<td><input class="form-control" name="work-end-time-tuesday" type="text" placeholder="18:00"></td>
-				<td><input class="form-control" name="work-lunch-time-tuesday" type="text" placeholder="13:00 - 14:00"></td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-start-time-tuesday',
+						'mask' => '99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '09:00'
+						]
+					]);?>
+				</td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-end-time-tuesday',
+						'mask' => '99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '18:00'
+						]
+					]);?>
+				</td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-lunch-time-tuesday',
+						'mask' => '99:99 - 99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '13:00 - 14:00'
+						]
+					]);?>
+				</td>
 			</tr>
 			<tr>
 				<td>Среда</td>
-				<td><input class="form-control" name="work-start-time-wednesday" type="text" placeholder="09:00"></td>
-				<td><input class="form-control" name="work-end-time-wednesday" type="text" placeholder="18:00"></td>
-				<td><input class="form-control" name="work-lunch-time-wednesday" type="text" placeholder="13:00 - 14:00"></td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-start-time-wednesday',
+						'mask' => '99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '09:00'
+						]
+					]);?>
+				</td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-end-time-wednesday',
+						'mask' => '99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '18:00'
+						]
+					]);?>
+				</td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-lunch-time-wednesday',
+						'mask' => '99:99 - 99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '13:00 - 14:00'
+						]
+					]);?>
+				</td>
 			</tr>
 			<tr>
 				<td>Четверг</td>
-				<td><input class="form-control" name="work-start-time-thursday" type="text" placeholder="09:00"></td>
-				<td><input class="form-control" name="work-end-time-thursday" type="text" placeholder="18:00"></td>
-				<td><input class="form-control" name="work-lunch-time-thursday" type="text" placeholder="13:00 - 14:00"></td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-start-time-thursday',
+						'mask' => '99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '09:00'
+						]
+					]);?>
+				</td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-end-time-thursday',
+						'mask' => '99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '18:00'
+						]
+					]);?>
+				</td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-lunch-time-thursday',
+						'mask' => '99:99 - 99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '13:00 - 14:00'
+						]
+					]);?>
+				</td>
 			</tr>
 			<tr>
 				<td>Пятница</td>
-				<td><input class="form-control" name="work-start-time-friday" type="text" placeholder="09:00"></td>
-				<td><input class="form-control" name="work-end-time-friday" type="text" placeholder="18:00"></td>
-				<td><input class="form-control" name="work-lunch-time-friday" type="text" placeholder="13:00 - 14:00"></td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-start-time-friday',
+						'mask' => '99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '09:00'
+						]
+					]);?>
+				</td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-end-time-friday',
+						'mask' => '99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '18:00'
+						]
+					]);?>
+				</td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-lunch-time-friday',
+						'mask' => '99:99 - 99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '13:00 - 14:00'
+						]
+					]);?>
+				</td>
 			</tr>
 			<tr>
 				<td>Суббота</td>
-				<td><input class="form-control" name="work-start-time-saturday" type="text" placeholder="09:00"></td>
-				<td><input class="form-control" name="work-end-time-saturday" type="text" placeholder="18:00"></td>
-				<td><input class="form-control" name="work-lunch-time-saturday" type="text" placeholder="13:00 - 14:00"></td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-start-time-saturday',
+						'mask' => '99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '09:00'
+						]
+					]);?>
+				</td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-end-time-saturday',
+						'mask' => '99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '18:00'
+						]
+					]);?>
+				</td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-lunch-time-saturday',
+						'mask' => '99:99 - 99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '13:00 - 14:00'
+						]
+					]);?>
+				</td>
 			</tr>
 			<tr>
 				<td>Воскресенье</td>
-				<td><input class="form-control" name="work-start-time-sunday" type="text" placeholder="09:00"></td>
-				<td><input class="form-control" name="work-end-time-sunday" type="text" placeholder="18:00"></td>
-				<td><input class="form-control" name="work-lunch-time-sunday" type="text" placeholder="13:00 - 14:00"></td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-start-time-sunday',
+						'mask' => '99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '09:00'
+						]
+					]);?>
+				</td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-end-time-sunday',
+						'mask' => '99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '18:00'
+						]
+					]);?>
+				</td>
+				<td>
+					<?=MaskedInput::widget([
+						'name' => 'work-lunch-time-sunday',
+						'mask' => '99:99 - 99:99',
+						'options' => [
+							'class' => 'form-control',
+							'data-required' => true,
+							'placeholder' => '13:00 - 14:00'
+						]
+					]);?>
+				</td>
 			</tr>
 		</table>
 	</div>
@@ -544,11 +796,19 @@ $(".widget-left-position-mob").slider({
 	}
 });
 //Добавление телефона (чёрный список)
-var k = <?=$count_black_list?>;
+var k = 1;
 $('.blacklist_more').click(function(e){
     k++;
     e.preventDefault();
-	var BL_input = '<span class="phone">Телефон №'+k+'</span><div class="input-group"><div class="input-group-addon"><i class="fa fa-phone"></i> </div> <input type="text" class="form-control widget_phone" name="black_list_number_'+k+'" placeholder="+7(___)___-__-__" data-required="false"></div>';
+	var BL_input = '<span class="phone">Телефон №'+k+'</span><div class="input-group"><input type="text" style="padding-left: 45px;" class="form-control widget_phone" name="black_list_number_'+k+'" placeholder="+7(___)___-__-__" data-required="false">' +
+        '<button class="flag-select dropdown-toggle" type="button" id="dropdownMenu_'+k+'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="glyphicon bfh-flag-RU"></i><span class="caret"></span></button>' +
+        '<ul class="dropdown-menu" aria-labelledby="dropdownMenu_'+k+'">' +
+        '<li onclick="countryChange(\'RU\', $(this));"><i class="glyphicon bfh-flag-RU"></i> Россия</li>' +
+        '<li onclick="countryChange(\'BY\', $(this));"><i class="glyphicon bfh-flag-BY"></i> Белорусия</li>' +
+        '<li onclick="countryChange(\'UA\', $(this));"><i class="glyphicon bfh-flag-UA"></i> Украина</li>' +
+        '<li onclick="countryChange(\'US\', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>' +
+        '</ul>'+
+        '</div>';
 	$('#black_list_block').append(BL_input);
 	$("input[name='black_list_number_"+k+"']").inputmask("+7(999)999-99-99");
 	$('input[name="count_black_list"]').val(k);
@@ -567,7 +827,15 @@ var j = 1;
 $('.phone_more').click(function(e){
     j++;
     e.preventDefault();
-	var phone_input = '<span class="phone">Телефон №'+j+'</span><div class="input-group"><div class="input-group-addon"><i class="fa fa-phone"></i> </div> <input type="text" class="form-control widget_phone" name="widget_phone_number_'+j+'" placeholder="+7(___)___-__-__" data-required="false"></div>';
+	var phone_input = '<span class="phone">Телефон №'+j+'</span><div class="input-group"><input type="text" style="padding-left: 45px;" class="form-control widget_phone" name="widget_phone_number_'+j+'" placeholder="+7(___)___-__-__" data-required="false">' +
+        '<button class="flag-select dropdown-toggle" type="button" id="dropdown2Menu_'+j+'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="glyphicon bfh-flag-RU"></i><span class="caret"></span></button>' +
+        '<ul class="dropdown-menu" aria-labelledby="dropdown2Menu_'+j+'">' +
+        '<li onclick="countryChange(\'RU\', $(this));"><i class="glyphicon bfh-flag-RU"></i> Россия</li>' +
+        '<li onclick="countryChange(\'BY\', $(this));"><i class="glyphicon bfh-flag-BY"></i> Белорусия</li>' +
+        '<li onclick="countryChange(\'UA\', $(this));"><i class="glyphicon bfh-flag-UA"></i> Украина</li>' +
+        '<li onclick="countryChange(\'US\', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>' +
+        '</ul>'+
+        '</div>';
 	$('#phones_block').append(phone_input);
 	$("input[name='widget_phone_number_"+j+"']").inputmask("+7(999)999-99-99");
 	$('input[name="count_phones"]').val(j);
@@ -581,8 +849,8 @@ $('.pages_more').click(function(e){
     $('#pages_block').append(page_input);
     $('input[name="count_pages"]').val(l);
 });
-/*********************************/
-$(".utm-button-color").colorpicker().on('changeColor',function(){
+//Уникально торговое предложение
+/*$(".utm-button-color").colorpicker().on('changeColor',function(){
 	$('.utp-form .line button').css('background',$(this).val());
 });
 $('#url_utp_img').change(function(){
@@ -603,30 +871,7 @@ $('.utp-form').draggable({
     },
     containment: '.utp-exampl',
     scroll: false
-});
-// Mask`s
-helper.setMask($("[name='widget_phone_number_1']")[0],'+7(999)999-99-99');
-helper.setMask($("[name='work-start-time-monday']")[0],'99:99');
-helper.setMask($("[name='work-end-time-monday']")[0],'99:99');
-helper.setMask($("[name='work-lunch-time-monday']")[0],'99:99 - 99:99');
-helper.setMask($("[name='work-start-time-tuesday']")[0],'99:99');
-helper.setMask($("[name='work-end-time-tuesday']")[0],'99:99');
-helper.setMask($("[name='work-lunch-time-tuesday']")[0],'99:99 - 99:99');
-helper.setMask($("[name='work-start-time-wednesday']")[0],'99:99');
-helper.setMask($("[name='work-end-time-wednesday']")[0],'99:99');
-helper.setMask($("[name='work-lunch-time-wednesday']")[0],'99:99 - 99:99');
-helper.setMask($("[name='work-start-time-thursday']")[0],'99:99');
-helper.setMask($("[name='work-end-time-thursday']")[0],'99:99');
-helper.setMask($("[name='work-lunch-time-thursday']")[0],'99:99 - 99:99');
-helper.setMask($("[name='work-start-time-friday']")[0],'99:99');
-helper.setMask($("[name='work-end-time-friday']")[0],'99:99');
-helper.setMask($("[name='work-lunch-time-friday']")[0],'99:99 - 99:99');
-helper.setMask($("[name='work-start-time-saturday']")[0],'99:99');
-helper.setMask($("[name='work-end-time-saturday']")[0],'99:99');
-helper.setMask($("[name='work-lunch-time-saturday']")[0],'99:99 - 99:99');
-helper.setMask($("[name='work-start-time-sunday']")[0],'99:99');
-helper.setMask($("[name='work-end-time-sunday']")[0],'99:99');
-helper.setMask($("[name='work-lunch-time-sunday']")[0],'99:99 - 99:99');
+});*/
 //
 $(".my-colorpicker").colorpicker();
 $('.color_theme_list__ul__item').eq(0).click(function(){
@@ -640,6 +885,43 @@ $('.color_theme_list__ul__item').eq(1).click(function(){
     $("[name='widget_theme_color']").val(1);
 });
 //Функции
+function countryChange(lang, element) {
+    ul = element.parent('ul');
+    id_button = ul.attr('aria-labelledby');
+    button = ul.siblings('button');
+    input = ul.siblings('input');
+    switch (lang) {
+        case 'RU': {
+            button.html('<i class="glyphicon bfh-flag-RU"></i><span class="caret">');
+            input.val('');
+            input.attr('placeholder', '+7(___)___-__-__');
+            input.inputmask('+7(999)999-99-99');
+            break;
+        }
+        case 'BY': {
+            button.html('<i class="glyphicon bfh-flag-BY"></i><span class="caret">');
+            input.val('');
+            input.attr('placeholder', '+375(___)___-__-__');
+            input.inputmask('+375(999)999-99-99');
+            break;
+        }
+        case 'UA': {
+            button.html('<i class="glyphicon bfh-flag-UA"></i><span class="caret">');
+            input.val('');
+            input.attr('placeholder', '+380(___)___-__-__');
+            input.inputmask('+380(999)999-99-99');
+            break;
+        }
+        case 'US': {
+            button.html('<i class="glyphicon bfh-flag-US"></i><span class="caret">');
+            input.val('');
+            input.attr('placeholder', '+1(___)___-__-__');
+            input.inputmask('+1(999)999-99-99');
+            break;
+        }
+    }
+}
+
 function openMarks() {
     if ($('#openMarks').css('display') == 'none') {
         $('#openMarks').show();
