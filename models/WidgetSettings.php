@@ -147,7 +147,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
                     s.id=robax_widget;
                     s.type = "text/javascript";
                     s.async = true;
-                    s.src = "//test-robax.oblax.ru/widget-front/robax.js";
+                    s.src = "//r.oblax.ru/widget-front/robax.js";
                 if (w.opera == "[object Opera]") {
                     d.addEventListener("DOMContentLoaded", f, false);
                 } else { f(); }

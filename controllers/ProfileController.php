@@ -23,6 +23,7 @@ use app\models\WidgetSettings;
 use app\models\WidgetActionMarks;
 use app\models\WidgetTemplateNotification;
 use app\models\WidgetTemplateNotificationUsers;
+use yii\web\NotFoundHttpException;
 
 class ProfileController extends Controller
 {
