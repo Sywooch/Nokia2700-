@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\PartnerLink;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -98,6 +99,19 @@ class SiteController extends Controller
         return $this->render('register', [
             'model' => $model,
         ]);
+    }
+
+    public function actionLink($link)
+    {
+        if (Yii::$app->user->isGuest) {
+            if (isset($link)) {
+                $partnerLin = PartnerLink::findOne(['link' => $link]);
+                setcookie('ref', $partnerLin->id_user);
+                return $this->redirect(['/register?ref='.$partnerLin->id_user]);
+            }
+        }
+
+        return $this->redirect('/register');
     }
 
     public function actionActivate($code)

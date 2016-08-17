@@ -99,7 +99,7 @@ class User extends ActiveRecord implements IdentityInterface
         return $activation;
     }
 
-    public function activateUser($code)
+    public static function activateUser($code)
     {
         $user = User::find()->where("activation ='".$code."'")->one();
         $user->status = self::ACTIVATED;
@@ -114,7 +114,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function sendCode($email,$code)
     {
         $subject = "Благодарим вас за регистрацию на портале robax!";
-        $link = Url::to('/site/activate/',true).$code;
+        $link = Url::to('/activate/',true).$code;
         $message =
         '<html>
             <head>

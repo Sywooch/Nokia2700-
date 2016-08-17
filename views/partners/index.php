@@ -21,7 +21,7 @@ $this->title = 'Партнёрская программа';
         <div class="col-xs-12">
             <div class="box box-primary">
                 <div class="box-body text-center">
-                    <h3>Партнёрская ссылка: <span class="text-primary">http://<?=$_SERVER['HTTP_HOST']?>/<?=$link?></span></h3>
+                    <h3>Партнёрская ссылка: <span class="text-primary">http://<?=$_SERVER['HTTP_HOST']?>/r/<?=$link?></span></h3>
                     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#linkModal">Изменить ссылку</button>
                     <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#mailModal">Приглашение по Email</button>
                     <!-- linkModal -->

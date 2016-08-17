@@ -21,7 +21,8 @@ class PartnersController extends \yii\web\Controller
                 'rules' => [
                     [
                         'actions' => [
-                            'index', 'sendmail', 'promo', 'changelink', 'bonus-history'
+                            'index', 'sendmail', 'promo',
+                            'changelink', 'bonus-history',
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -80,19 +81,6 @@ class PartnersController extends \yii\web\Controller
     public function actionPromo()
     {
         return $this->render('promo');
-    }
-
-    public function actionLink($link)
-    {
-        if (Yii::$app->user->isGuest) {
-            if (isset($link)) {
-                $partnerLin = PartnerLink::findOne(['link' => $link]);
-                setcookie('ref', $partnerLin->id_user);
-                return $this->redirect(['/register']);
-            }
-        }
-
-        return $this->redirect('/register');
     }
 
     public function actionSendmail()

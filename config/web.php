@@ -48,13 +48,13 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'site/activate/<code:\w+>' => 'site/activate',
+                'activate/<code:\w+>' => 'site/activate',
                 'profile/update-widget/<id:\d+>' => 'profile/update-widget',
                 'profile/deletewidget/<id:\d+>' => 'profile/deletewidget',
+                'r/<link:\w+>' => 'site/link',
                 'widget/listener/event.php' => 'widget/listener',
-                'login' => 'site/login',
                 'register' => 'site/register',
-
+                'login' => 'site/login',
             ],
         ],
     ],
