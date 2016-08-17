@@ -89,7 +89,7 @@ class Paymant extends Model
                     'client_paid_sum'=>$sum,
                     'payment_for_part'=>$sum*0.3,
                     'type'=>0,
-                    'description'=>'Партнер c ID-'.$rows['0']['partner'].' получил бонус 1-го порядка за своего клиента с ID-'.$u_id
+                    'description'=>'Бонус 1-го порядка за своего клиента с ID-'.$u_id
                 ];
 
             $payment_to_second_partner = self::cashForSecondPartners($rows['0']['partner'], $ceche, $u_id);
@@ -128,7 +128,7 @@ class Paymant extends Model
                     'client_paid_sum'=>$sum,
                     'payment_for_part'=>$sum*0.1,
                     'type'=>1,
-                    'description'=>'Партнер c ID-'.$rows['0']['partner'].' получил бонус 2-го порядка за клиента с ID-'.$partner_id.' своего партнера с ID-'.$u_id
+                    'description'=>'Бонус 2-го порядка за клиента партнера (ID-'.$partner_id.') с ID-'.$u_id
                 ];
 
             return $payment_to_second_partner;

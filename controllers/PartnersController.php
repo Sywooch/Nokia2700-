@@ -156,6 +156,9 @@ class PartnersController extends \yii\web\Controller
         $dataProvider = new ActiveDataProvider([
             'query' => BonusHistory::find()->where('user_id='.Yii::$app->user->identity->id),
         ]);
+        $dataProviderDesc = new ActiveDataProvider([
+            'query' => Bonus::find()->where('partner_id ="'.Yii::$app->user->identity->id.'"')
+        ]);
         $dataProvider->setSort([
             'defaultOrder' => ['dateFormat' => SORT_DESC],
             'attributes' => [
@@ -175,8 +178,22 @@ class PartnersController extends \yii\web\Controller
                 ],
             ]
         ]);
+        $dataProviderDesc->setSort([
+            'defaultOrder' => ['dateFormat' => SORT_DESC],
+            'attributes' => [
+                'client',
+                'dateFormat' => [
+                    'asc' => ['pay_for_partners.date' => SORT_ASC],
+                    'desc' => ['pay_for_partners.date' => SORT_DESC],
+                ],
+                'client_paid_sum',
+                'payment',
+                'description' ,
+            ]
+        ]);
         return $this->render('bonus-history', [
             'dataProvider' => $dataProvider,
+            'dataProviderDesc' => $dataProviderDesc,
         ]);
     }
 

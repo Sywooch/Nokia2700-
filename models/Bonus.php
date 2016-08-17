@@ -56,11 +56,11 @@ class Bonus extends ActiveRecord
     {
         return [
             'partner_id' => 'Пользователь получающий бонус',
-            'client' => 'Клиент пользователя получающего бонус',
+            'client' => 'Клиент',
             'partner_of_partner' => 'Пользователь получающий бонус 2-го уровня',
             'date' => 'Дата',
-            'сдшуте_paid_sum'=>'Сума оплаты',
-            'payment'=>'Сумма бонуса',
+            'client_paid_sum'=>'Сума внесенная клиентом',
+            'payment'=>'Бонус',
             'dateFormat' => 'Дата',
             'description'=> 'Описание',
             'type'=>'Тип бонуса'
@@ -93,5 +93,11 @@ class Bonus extends ActiveRecord
         }
 
         return $mod;
+    }
+
+    public function getDateFormat()
+    {
+        $date = new \DateTime($this->date);
+        return $date->format('d.m.Y H:i:s');
     }
 }

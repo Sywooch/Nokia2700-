@@ -11,6 +11,9 @@ use app\models\User;
 use yii\grid\GridView;
 
 $this->title = 'Бонусный счет';
+
+$name = isset(Yii::$app->user->identity->name) ? Yii::$app->user->identity->name : '' ;
+$bonuses = isset(Yii::$app->user->identity->bonus) ? Yii::$app->user->identity->bonus : '' ;
 ?>
 
 <section class="content-header">
@@ -20,7 +23,24 @@ $this->title = 'Бонусный счет';
 <!-- Main content -->
 <section class="content">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-4">
+            <!-- Profile Image -->
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                    <img class="profile-user-img img-responsive" src="/images/profile.png" alt="User profile picture">
+                    <h3 class="profile-username text-center"><?=$name?></h3>
+                    <!--<p class="text-muted text-center">Software Engineer</p>-->
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item">
+                            <b>Бонусы</b> <a class="pull-right"><?=$bonuses?></a>
+                        </li>
+                    </ul>
+                    <a href="<?=Url::to('#');?>" class="btn btn-primary btn-block"><b>Вывести бонусы</b></a>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+        <div class="col-md-8">
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#activity" data-toggle="tab">Общая информация бонусного счета</a></li>
@@ -28,7 +48,16 @@ $this->title = 'Бонусный счет';
                 </ul>
                 <div class="tab-content" style="padding-bottom: 0;">
                     <div class="active tab-pane" id="activity">
-
+                        <?= GridView::widget([
+                            'dataProvider' => $dataProviderDesc,
+                            'columns' => [
+                                'client',
+                                'dateFormat',
+                                'client_paid_sum',
+                                'payment',
+                                'description',
+                            ],
+                        ]); ?>
                     </div>
                     <div class="tab-pane" id="bon-history">
                         <?= GridView::widget([

@@ -169,6 +169,7 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
 <script>
 function myclick(param){
     document.getElementById('user-'+param).readOnly=false;
+    document.getElementById(param).hidden=true;
     document.getElementById('save_'+param).hidden= false;
     $('#user-'+param).focus();
 }
