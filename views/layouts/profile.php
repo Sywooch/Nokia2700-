@@ -144,6 +144,7 @@ AppAsset::register($this);
 						<ul class="treeview-menu">
 							<li><a href="<?=Url::to('/partners');?>" class=""><i class="fa fa-bar-chart"></i>Общая информация</a></li>
 							<li><a href="<?=Url::to('/partners/promo');?>" class=""><i class="fa fa-image"></i>Промо материалы</a></li>
+							<li><a href="<?=Url::to('/partners/bonus-history');?>" class=""><i class="fa fa-line-chart"></i>Бонусный счет</a></li>
 						</ul>
 					</li>
         		</ul>

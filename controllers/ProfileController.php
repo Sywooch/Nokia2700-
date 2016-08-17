@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\Bonus;
+use app\models\BonusHistory;
 use app\models\Paymant;
 use Yii;
 use yii\db\ActiveQuery;
@@ -55,6 +57,7 @@ class ProfileController extends Controller
     {
         if (!Yii::$app->user->isGuest) {
             Paymant::renewCache(Yii::$app->user->id);
+            Bonus::updateBonusses(Yii::$app->user->id);
         }
 
         $this->enableCsrfValidation = false;

@@ -18,7 +18,7 @@ $this->title = 'История баланса';
 </section>
 
 <section class="content">
-	<?= GridView::widget([
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
             'id',

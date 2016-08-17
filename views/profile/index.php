@@ -17,6 +17,7 @@ $user = User::findIdentity(Yii::$app->user->id);
 
 $name = isset(Yii::$app->user->identity->name) ? Yii::$app->user->identity->name : '' ;
 $cache = isset(Yii::$app->user->identity->cache) ? Yii::$app->user->identity->cache : '' ;
+$bonuses = isset(Yii::$app->user->identity->bonus) ? Yii::$app->user->identity->bonus : '' ;
 $id = isset(Yii::$app->user->id) ? Yii::$app->user->id : '' ;
 $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->user->identity->create_at) : new DateTime();
 ?>

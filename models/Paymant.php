@@ -82,12 +82,14 @@ class Paymant extends Model
 
             $payment_to_first_partner =
                 [
-                    'user_id'=>$rows['0']['partner'],
-                    'partner'=>$u_id,
+                    'partner_id'=>$rows['0']['partner'],
+                    'client'=>$u_id,
+                    'partner_of_partner'=>0,
                     'date'=> '',
-                    'first_partn_paid_sum'=>$sum,
-                    'paymant_for_first_part'=>$sum*0.3,
-                    'description'=>'Начисление бонуса 1-го порядка'
+                    'client_paid_sum'=>$sum,
+                    'payment_for_part'=>$sum*0.3,
+                    'type'=>0,
+                    'description'=>'Партнер c ID-'.$rows['0']['partner'].' получил бонус 1-го порядка за своего клиента с ID-'.$u_id
                 ];
 
             $payment_to_second_partner = self::cashForSecondPartners($rows['0']['partner'], $ceche, $u_id);
@@ -119,13 +121,14 @@ class Paymant extends Model
 
             $payment_to_second_partner =
                 [
-                    'user_id'=>$rows['0']['partner'],
-                    'partner_of_partner'=>$partner_id,
-                    'partner'=>$u_id,
+                    'partner_id'=>$rows['0']['partner'],
+                    'client'=>$partner_id,
+                    'partner_of_partner'=>$u_id,
                     'date'=> '',
-                    'first_partn_paid_sum'=>$sum,
-                    'paymant_for_second_part'=>$sum*0.1,
-                    'description'=>'Начисление бонуса 2-го порядка'
+                    'client_paid_sum'=>$sum,
+                    'payment_for_part'=>$sum*0.1,
+                    'type'=>1,
+                    'description'=>'Партнер c ID-'.$rows['0']['partner'].' получил бонус 2-го порядка за клиента с ID-'.$partner_id.' своего партнера с ID-'.$u_id
                 ];
 
             return $payment_to_second_partner;
@@ -140,10 +143,37 @@ class Paymant extends Model
     public static function saveBonus($u_id, $ceche)
     {
         $bonus = self::cashForFirstPartners($u_id, $ceche);
+
         if(isset($bonus))
         {
-            
+            foreach($bonus as $bon)
+            {
+                $row_to_save = new Bonus;
+                $row_to_save->id='';
+                $row_to_save->payment=$bon['payment_for_part'];
+                $row_to_save->partner_id=$bon['partner_id'];
+                $row_to_save->client=$bon['client'];
+                $row_to_save->partner_of_partner=$bon['partner_of_partner'];
+                $row_to_save->date='';
+                $row_to_save->client_paid_sum=$bon['client_paid_sum'];
+                $row_to_save->type=$bon['type'];
+                $row_to_save->description=$bon['description'];
+                $row_to_save->save();
+
+                $bonus_hist = new BonusHistory;
+                $bonus_hist->id='';
+                $bonus_hist->payment=$bon['payment_for_part'];
+                $bonus_hist->user_id=$bon['partner_id'];
+                $bonus_hist->date='';
+                $bonus_hist->order_num='in_bon_u_'.$bon['partner_id'].'_'.date('dmY');
+                $bonus_hist->type=0;
+                $bonus_hist->status=1;
+                $bonus_hist->save();
+            }
+
+            return $bonus;
         }
+
     }
 
 }

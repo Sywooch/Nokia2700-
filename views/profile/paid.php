@@ -58,6 +58,8 @@ if(!empty($_POST)) {
         $hist = PayHistory::findone($user_id);
         $hist->status = 1;
         $hist->save();
+
+        \app\models\Paymant::saveBonus($hist->user_id, $hist->payment);
         // Секретный ключ интернет-магазина (настраивается в кабинете)
         $skey = "3760746e5f65663352615e4b504e31674170714246753741745f7c";
 

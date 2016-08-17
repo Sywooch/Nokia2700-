@@ -47,7 +47,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['name', 'email', 'pass', 'phone'], 'required'],
             [['create_at'], 'safe'],
-            [['cache', 'cache_notification'], 'integer'],
+            [['cache', 'cache_notification', 'bonus'], 'integer'],
             [['status'], 'integer'],
             [['name'], 'string', 'max' => 50],
             [['email', 'pass', 'password_hash', 'password_token'], 'string', 'max' => 120],
@@ -70,6 +70,7 @@ class User extends ActiveRecord implements IdentityInterface
             'password_token' => 'Password Token',
             'create_at' => 'Дата Регистрации',
             'cache' => 'Cache',
+            'bonus' => 'Bonus',
             'phone' => 'Phone',
             'activation' => 'Activation',
             'status' => 'Status',

@@ -57,6 +57,7 @@ if(!empty($_POST)) {
             $hist = PayHistory::findone($user_id);
             $hist->status = 1;
             $hist->save();
+            \app\models\Paymant::saveBonus($hist->user_id, $hist->payment);
         }
         //            $pArr = $_POST;
         //          /*  echo "<pre>";

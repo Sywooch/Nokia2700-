@@ -2,6 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\Bonus;
+use app\models\BonusHistory;
+use app\models\Paymant;
 use app\models\User;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -17,7 +20,7 @@ class PartnersController extends \yii\web\Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'sendmail', 'promo'],
+                        'actions' => ['index', 'sendmail', 'promo', 'bonus-history'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -28,6 +31,11 @@ class PartnersController extends \yii\web\Controller
 
     public function beforeAction($action)
     {
+        if (!Yii::$app->user->isGuest) {
+            Paymant::renewCache(Yii::$app->user->id);
+            Bonus::updateBonusses(Yii::$app->user->id);
+        }
+
         $this->enableCsrfValidation = false;
         $this->layout = "@app/views/layouts/profile";
         return parent::beforeAction($action);
@@ -106,6 +114,35 @@ class PartnersController extends \yii\web\Controller
 
         }
         return $this->redirect('/partners');
+    }
+
+    public function actionBonusHistory()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => BonusHistory::find()->where('user_id='.Yii::$app->user->identity->id),
+        ]);
+        $dataProvider->setSort([
+            'defaultOrder' => ['dateFormat' => SORT_DESC],
+            'attributes' => [
+                'order_num',
+                'dateFormat' => [
+                    'asc' => ['bonus_history.date' => SORT_ASC],
+                    'desc' => ['bonus_history.date' => SORT_DESC],
+                ],
+                'payment',
+                'typeFormat' => [
+                    'asc' => ['bonus_history.type' => SORT_ASC],
+                    'desc' => ['bonus_history.type' => SORT_DESC],
+                ],
+                'payStatus' => [
+                    'asc' => ['bonus_history.status' => SORT_ASC],
+                    'desc' => ['bonus_history.status' => SORT_DESC],
+                ],
+            ]
+        ]);
+        return $this->render('bonus-history', [
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     function validateEmail($email) {
