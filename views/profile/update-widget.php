@@ -134,7 +134,7 @@ $this->title = 'Изменить виджет';
               ])->label(false);?>
             </div>
             <div style="display: inline-block">
-              <span style="margin: 0 15px;">уникальное торговое предложение, выводится при попытки уйти с сайта</span>
+              <span style="margin: 0 15px;">если настройка выключена, то виджет автоматически настраивает поведенческие факторы под ваш сайт.</span>
             </div>
           </div>
         </div>
@@ -329,7 +329,7 @@ $this->title = 'Изменить виджет';
         </div>
       </div>
         <div class="bordered">
-            <label>Настройки сообщений виджета для клиента</label>
+            <label>Настройки сообщений виджета</label>
             <br>
             <?if ($widgetTemplateUsers) {
                 foreach ($widgetTemplateUsers as $key => $value) {?>
