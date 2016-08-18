@@ -71,7 +71,7 @@ class WidgetController extends Controller
         $catch->action = $getArray['event'];
         $catch->website = $getArray['site_url'];
         $catch->time = isset($getArray['time']) ? $getArray['time'] : 0;
-        $catch->date = date('Y-m-d');
+        $catch->date = ''/*date('Y-m-d G:i:s')*/;
         header('Access-Control-Allow-Origin: ' . $getArray['protocol'] . '//' . $getArray['site_url']);
         if($catch->save()) {
             die('ok');
@@ -269,13 +269,14 @@ class WidgetController extends Controller
         $getArray = Yii::$app->request->get();
         $key = $getArray['key'];
         $phone = $getArray['phone'];
+        $event = $getArray['event'];
         $time = '';
         $site_url = $getArray['site_url'];
         $widget=WidgetSettings::getJSONWidget($key, $site_url);
         $model = new WidgetSettings();
         if(is_array($widget)&&$phone!='undefined'){
             header('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
-            die($model->widgetCall($key,$site_url,$phone));
+            die($model->widgetCall($key,$site_url,$phone, $event));
         } else throw new \Exception('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
     }
 

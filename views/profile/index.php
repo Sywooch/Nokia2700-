@@ -54,6 +54,7 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#activity" data-toggle="tab">Общая информация</a></li>
                     <li class=""><a href="#tarif" data-toggle="tab">Текущий тарифный план</a></li>
+                    <li class=""><a href="#notification" data-toggle="tab">Настройки уведомлений</a></li>
                 </ul>
                 <div class="tab-content" style="padding-bottom: 0;">
                     <div class="active tab-pane" id="activity">
@@ -81,8 +82,8 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                                     ])?>
                                 </td>
                                 <td>
-                                    <a id="name" style="cursor: pointer;" onclick="myclick(this.id);"><span class='col-md-12 col-sm-12 col-xs-12'><i class="fa fa-edit"></i></span></a>
-                                    <?= Html::a('<span class="col-md-12 col-sm-12 col-xs-12"><i class="fa fa-save"></i></span>','', ['class' => 'sub_link', 'id'=>"save_name", 'hidden'=>true])?>
+                                    <a id="name" style="cursor: pointer;" onclick="myclick(this.id);"><span class='col-md-12 col-sm-12 col-xs-12'><i class="fa fa-edit" style="font-size: 30px;"></i></span></a>
+                                    <?= Html::a('<span class="col-md-12 col-sm-12 col-xs-12"><i class="fa fa-save" style="font-size: 30px;"></i></span>','', ['class' => 'sub_link', 'id'=>"save_name", 'hidden'=>true])?>
                                 </td>
                             </tr>
                             <tr>
@@ -95,8 +96,8 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                                     ])?>
                                 </td>
                                 <td>
-                                    <a id="email" style="cursor: pointer;" onclick="myclick(this.id);"><span class='col-md-12 col-sm-12 col-xs-12'><i class="fa fa-edit"></i></span></a>
-                                    <?= Html::a('<span class="col-md-12 col-sm-12 col-xs-12"><i class="fa fa-save"></i></span>','', ['class' => 'sub_link', 'id'=>"save_email", 'hidden'=>true])?>
+                                    <a id="email" style="cursor: pointer;" onclick="myclick(this.id);"><span class='col-md-12 col-sm-12 col-xs-12'><i class="fa fa-edit" style="font-size: 30px;"></i></span></a>
+                                    <?= Html::a('<span class="col-md-12 col-sm-12 col-xs-12"><i class="fa fa-save" style="font-size: 30px;"></i></span>','', ['class' => 'sub_link', 'id'=>"save_email", 'hidden'=>true])?>
                                 </td>
                             </tr>
                             <tr>
@@ -109,28 +110,14 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                                     ])?>
                                 </td>
                                 <td>
-                                    <a id="phone" style="cursor: pointer;" onclick="myclick(this.id);"><span class='col-md-12 col-sm-12 col-xs-12'><i class="fa fa-edit"></i></span></a>
-                                    <?= Html::a('<span class="col-md-12 col-sm-12 col-xs-12"><i class="fa fa-save"></i></span>','', ['class' => 'sub_link', 'id'=>"save_phone", 'hidden'=>true])?>
+                                    <a id="phone" style="cursor: pointer;" onclick="myclick(this.id);"><span class='col-md-12 col-sm-12 col-xs-12'><i class="fa fa-edit" style="font-size: 30px;"></i></span></a>
+                                    <?= Html::a('<span class="col-md-12 col-sm-12 col-xs-12"><i class="fa fa-save" style="font-size: 30px;"></i></span>','', ['class' => 'sub_link', 'id'=>"save_phone", 'hidden'=>true])?>
                                 </td>
                             </tr>
                             <tr>
                                 <td style="vertical-align: middle;">Дата создания</td>
                                 <td><?=$date->format('d.m.Y H:i:s')?></td>
                                 <td></td>
-                            </tr>
-                            <tr>
-                                <td style="vertical-align: middle;">Уведомить меня если сумма на счету меньше :</td>
-                                <td>
-                                    <?=$formUser->field($user, 'cache_notification')->label(false)->textInput([
-                                        'readonly'=>true,
-                                        'class'=> 'col-md-6 col-sm-6 col-xs-6',
-                                        'style' => 'border: none;padding-left: 0;'
-                                    ])?> руб.
-                                </td>
-                                <td>
-                                    <a id="cache_notification" style="cursor: pointer;" onclick="myclick(this.id);"><span class='col-md-12 col-sm-12 col-xs-12'><i class="fa fa-edit"></i></span></a>
-                                    <?= Html::a('<span class="col-md-12 col-sm-12 col-xs-12"><i class="fa fa-save"></i></span>','', ['class' => 'sub_link', 'id'=>"save_cache_notification", 'hidden'=>true])?>
-                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -143,9 +130,6 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                             <div class="box box-widget widget-user-2">
                                 <!-- Add the bg color to the header using any of the bg-* classes -->
                                 <div class="widget-user-header bg-light-blue">
-                                    <div class="widget-user-image">
-                                        <i class="icon ion-ios-telephone-outline"></i>
-                                    </div>
                                     <!-- /.widget-user-image -->
                                     <h3 class="widget-user-username"><? echo $cur_tarif['tarif_name']?></h3>
                                 </div>
@@ -160,6 +144,28 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                             </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="tab-pane" id="notification">
+                        <? $formUser = ActiveForm::begin(['action'=>'/profile/update-user'])?>
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td style="vertical-align: middle;">Уведомить меня если сумма на счету меньше :</td>
+                                <td>
+                                    <?=$formUser->field($user, 'cache_notification')->label(false)->textInput([
+                                        'readonly'=>true,
+                                        'class'=> 'col-md-6 col-sm-6 col-xs-6',
+                                        'style' => 'border: none;padding-left: 0;'
+                                    ])?> руб.
+                                </td>
+                                <td>
+                                    <a id="cache_notification" style="cursor: pointer;" onclick="myclick(this.id);"><i class="fa fa-edit col-md-12 col-sm-12 col-xs-12" style="font-size: 30px;"></i></a>
+                                    <?= Html::a('<span class="fa fa-save col-md-12 col-sm-12 col-xs-12" style="font-size: 30px;"></span>','', ['class' => 'sub_link', 'id'=>"save_cache_notification", 'hidden'=>true])?>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <? ActiveForm::end()?>
                     </div>
                 </div>
             </div>

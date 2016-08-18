@@ -56,6 +56,21 @@ class Tarifs extends ActiveRecord
     }
 
 
+    public static function setDefaultTarif($u_id)
+    {
+        $query = new Query;
+        $query->select('*')
+            ->from('user_tarif')
+            ->where('user_id ="'.$u_id.'"');
+        $u_tarif = $query->all();
+
+        if($u_tarif == null)
+        {
+            $connection = Yii::$app->db->createCommand();
+            $connection->insert('user_tarif',['user_id' => $u_id])->execute();
+        }
+    }
+
     public static function getUserTarif($u_id)
     {
         if(isset($u_id))

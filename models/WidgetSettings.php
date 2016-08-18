@@ -267,11 +267,11 @@ class WidgetSettings extends \yii\db\ActiveRecord
         } else return false;
     }
 
-    public function widgetCall($key,$url,$phone)
+    public function widgetCall($key,$url,$phone, $megaEvent)
     {
         $widget=$this->getJSONWidget($key,$url);
         if(is_array($widget)){
-            $callback=$this->makeCallBackCallFollowMe($widget,$this->cutNumber($phone),$url);
+            $callback=$this->makeCallBackCallFollowMe($widget,$this->cutNumber($phone),$url, $megaEvent);
             if($callback){
                 //all is good
             } else {
@@ -281,7 +281,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
         } else return 'error';/*$this->error['widget_not_found'];*/
     }
 
-    public function makeCallBackCallFollowMe($widget, $phone, $url)
+    public function makeCallBackCallFollowMe($widget, $phone, $url, $megaEvent)
     {
         if($this->checkCallbackBalance($widget['user_id'])){
 
@@ -332,7 +332,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
             if (!is_bool($response)){
                 if(isset($response->result->callBackCall_id)){
                     $callBackCall_id = $response->result->callBackCall_id;
-                    $this->saveCall($widget['widget_id'],$phone,$callBackCall_id,1);
+                    $this->saveCall($widget['widget_id'],$phone,$callBackCall_id,1, $megaEvent);
                 }
             }
             return true;
@@ -446,13 +446,14 @@ class WidgetSettings extends \yii\db\ActiveRecord
         ];
     }
 
-    public function saveCall($w_id,$phone,$callBackCall_id,$status)
+    public function saveCall($w_id,$phone,$callBackCall_id,$status, $megaEvent)
     {
         $model = new WidgetPendingCalls();
         $model->widget_id = $w_id;
         $model->phone = $phone;
         $model->status = $status;
         $model->callBackCall_id = $callBackCall_id;
+        $model->catching_event = $megaEvent;
         $model->save();
     }
 

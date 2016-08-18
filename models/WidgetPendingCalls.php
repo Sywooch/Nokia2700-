@@ -24,6 +24,7 @@ use \yii\db\Query;
  * @property double $call_back_admin_cost
  * @property string $call_back_currency
  * @property string $test_info
+ * @property string $catching_event
  */
 class WidgetPendingCalls extends \yii\db\ActiveRecord
 {
@@ -46,7 +47,7 @@ class WidgetPendingCalls extends \yii\db\ActiveRecord
             [['call_time'], 'safe'],
             [['call_back_cost' , 'call_back_admin_cost'], 'number'],
             [['test_info'], 'string'],
-            [['phone'], 'string', 'max' => 45],
+            [['phone','catching_event'], 'string', 'max' => 45],
             [['callBackCall_id'], 'string', 'max' => 150],
             [['end_side'], 'string', 'max' => 50],
             [['call_back_record_URL_A', 'call_back_record_URL_B'], 'string', 'max' => 255],
@@ -75,6 +76,7 @@ class WidgetPendingCalls extends \yii\db\ActiveRecord
             'waiting_period_B' => 'Время ожи-я Кли-а',
             'call_back_record_URL_A' => 'Запись Мен-а',
             'call_back_record_URL_B' => 'Запись Кли-а',
+            'catching_event' => 'Поведенческий фактор',
         ];
     }
 

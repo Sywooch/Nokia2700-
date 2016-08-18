@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Bonus;
 use app\models\BonusHistory;
 use app\models\Paymant;
+use app\models\Tarifs;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\Connection;
@@ -59,6 +60,7 @@ class ProfileController extends Controller
         if (!Yii::$app->user->isGuest) {
             Paymant::renewCache(Yii::$app->user->id);
             Bonus::updateBonusses(Yii::$app->user->id);
+            Tarifs::setDefaultTarif(Yii::$app->user->id);
         }
 
         $this->enableCsrfValidation = false;
@@ -154,8 +156,23 @@ class ProfileController extends Controller
         $tarifs = $postArray['Tarifs'];
         $t_id = $tarifs['id'];
         $u_id = $tarifs['user_id'];
-        $connection = Yii::$app->db;
-        $connection->createCommand()->update('user_tarif',['tarif_id'=>$t_id], "user_id = $u_id")->execute();
+
+        $query = new Query;
+        $query->select('*')
+            ->from('user_tarif')
+            ->where('user_id ="'.$u_id.'"');
+        $u_tarif = $query->all();
+
+        $connection = Yii::$app->db->createCommand();
+        if($u_tarif != null)
+        {
+            $connection->update('user_tarif',['tarif_id'=>$t_id], "user_id = $u_id")->execute();
+        }
+        else
+        {
+            $connection->insert('user_tarif',['tarif_id'=>$t_id, 'user_id' => $u_id])->execute();
+        }
+
         return $this->redirect('index');
 
     }
