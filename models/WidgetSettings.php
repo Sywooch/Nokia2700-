@@ -139,15 +139,15 @@ class WidgetSettings extends \yii\db\ActiveRecord
         print '<textarea style="width: 100%; height: 370px;" readonly>
             <script type="text/javascript">
             (function (d, w) {
-                var robax_widget="robax-"+'.$widget_code.';
+                var robax_widget="robax-'.$widget_code.'";
                 var n = d.getElementsByTagName("script")[0],
                     s = d.createElement("script"),
-                    c = function () {w["robax_widget"+robax_widget]=new RobaxWidget({id:robax_widget,key:'.$widget_code.',w:w});},
+                    c = function () {w["robax_widget"+robax_widget]=new RobaxWidget({id:robax_widget,key: "'.$widget_code.'",w:w});},
                     f = function () {n.parentNode.insertBefore(s, n); d.getElementById(robax_widget).onload=c;};
                     s.id=robax_widget;
                     s.type = "text/javascript";
                     s.async = true;
-                    s.src = "//r.oblax.ru/widget-front/robax.js";
+                    s.src = "//'.$_SERVER['HTTP_HOST'].'/widget-front/robax.js";
                 if (w.opera == "[object Opera]") {
                     d.addEventListener("DOMContentLoaded", f, false);
                 } else { f(); }
@@ -241,9 +241,9 @@ class WidgetSettings extends \yii\db\ActiveRecord
                 "item-text" => "не в офисе. Но в выбранное время Вам перезвонят. _"
             );
             $widget_json['date'] = array(
-                "today" => "сегодня",
-                "tomorrow" => "завтра",
-                "after-tomorrow" => "послезавтра",
+                "today" => "Сегодня",
+                "tomorrow" => "Завтра",
+                "after-tomorrow" => "Послезавтра",
                 "work-start-time" => $time[date('l')]['start'],
                 "work-end-time" => $time[date('l')]['end'],
                 "gmt" => $widget->widget_GMT

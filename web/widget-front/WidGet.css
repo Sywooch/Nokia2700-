@@ -96,14 +96,49 @@
     width:100%;
     min-height:80px;
 }
-.robax-widget-item-button {width: 100%; font-size: 18px; font-weight: 300; color: #fff; background:#787878; background-color: rgba(0, 0, 0, .5); border-radius: 7px; padding: 17px 0; text-align: center; margin-top: 10px; margin-bottom: 8%; cursor: pointer; float: left; -webkit-transition: all .2s cubic-bezier(.19, 1, .22, 1); transition: all .2s cubic-bezier(.19, 1, .22, 1);}
+.robax-widget-item-button {
+    width: 104%;
+    font-size: 18px;
+    font-weight: 300;
+    color: #fff;
+    background: rgba(120, 120, 120, 1);
+    border-radius: 7px;
+    padding: 17px 0;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 8%;
+    cursor: pointer;
+    float: left;
+    -webkit-transition: all .2s cubic-bezier(.19, 1, .22, 1);
+    transition: all .2s cubic-bezier(.19, 1, .22, 1);
+}
 .robax-widget-item-button:hover {background:#606060; background-color: rgba(0, 0, 0, .6);}
 
-.robax-widget-phone-form {width: 100%; height: 37px; background:#D8D8D8; background-color: rgba(0, 0, 0, .1);  border-radius: 5px; overflow: hidden; padding: 5px 0;}
-.robax-country-box:hover .robax-phone-type-list {display: block;}
+.robax-widget-phone-form {
+    width: 100%;
+    height: 29px;
+    background:#D8D8D8;
+    background-color: rgba(0, 0, 0, .1);
+    border-radius: 5px;
+    padding: 5px 5px;
+}
+/*.robax-country-box:hover .robax-phone-type-list {display: block;}*/
 .robax-country-box {width: 40px; height: 29px; background: #D9D9D9; position: absolute; text-align: right;}
 .robax-country-box i {font-size: 9pt; vertical-align: -4px; display: inline-block;}
-.robax-phone-input {background: none !important; outline: 0; border: 1px solid transparent !important; height: inherit; font-size: 18px; float: left; box-shadow: none; letter-spacing: normal; line-height: 1.4; padding: 0 6px 0 40px !important; margin: 0 !important; height: 29px; font-family: Roboto !important;}
+.robax-phone-input {
+    background: none !important;
+    outline: 0;
+    border: 1px solid transparent !important;
+    font-size: 18px;
+    float: left;
+    box-shadow: none;
+    letter-spacing: normal;
+    line-height: 1.4;
+    padding: 0 6px 0 40px !important;
+    margin: 0 !important;
+    height: 29px;
+    font-family: Roboto!important;
+}
 
 .robax-flag {width: 20px; background-image: url('http://test-robax.oblax.ru/widget-front/img/flags.png'); vertical-align: -6px; margin-left: 4px;}
 .robax-flag.ru {height: 14px; background-position: -4295px 0;}
@@ -112,10 +147,19 @@
 .robax-flag.us {height: 11px; background-position: -5241px 0;}
 
 .robax-later {position: relative; width: 250px;}
-.robax-later__day, .robax-later__hour {background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAANCAYAAAHnMM+TAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDozODk4QjFENTVEQjZFMzExQUEyQUFEMEJFMzY1ODc0QSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpCRjk2RjNDOTdFM0MxMUU0QTM5QkI2NEE5ODYzRDgzMyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCRjk2RjNDODdFM0MxMUU0QTM5QkI2NEE5ODYzRDgzMyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjUxNDQ4NDZGMUM3QUU0MTFCRUQyRjZDNDVBMUI2OUFEIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjM4OThCMUQ1NURCNkUzMTFBQTJBQUQwQkUzNjU4NzRBIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+1xkLHQAAAKNJREFUeNpi+P//PwMIMDFAgCJAAIEISTATIIAYYHJgYSgHLAUQQGDEyMgIpvmQtTPApQACCKZBDIi5gFgH3Ug4gOlFUQkQQMhmOaDr9ITabQMWBHKskB0EE2RAFwRZZMWAA6Caic12gABjBBNQ86BBoQLk/wL5ASh3HG451AgpoKQn1FPIGkEetIIrRJJgQFOI4nKiABNUB4rVSEAHFgREewYAFIJKxFVBjnwAAAAASUVORK5CYII=) 95% 50% no-repeat rgba(0, 0, 0, .1); border-radius: 5px; position: relative; font-size: 15px; margin: 0 0 7px; padding: 6px 1px 6px 4px; width: 102px; display: inline-block;}
+.robax-later__day, .robax-later__hour {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAANCAYAAAHnMM+TAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDozODk4QjFENTVEQjZFMzExQUEyQUFEMEJFMzY1ODc0QSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpCRjk2RjNDOTdFM0MxMUU0QTM5QkI2NEE5ODYzRDgzMyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCRjk2RjNDODdFM0MxMUU0QTM5QkI2NEE5ODYzRDgzMyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjUxNDQ4NDZGMUM3QUU0MTFCRUQyRjZDNDVBMUI2OUFEIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjM4OThCMUQ1NURCNkUzMTFBQTJBQUQwQkUzNjU4NzRBIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+1xkLHQAAAKNJREFUeNpi+P//PwMIMDFAgCJAAIEISTATIIAYYHJgYSgHLAUQQGDEyMgIpvmQtTPApQACCKZBDIi5gFgH3Ug4gOlFUQkQQMhmOaDr9ITabQMWBHKskB0EE2RAFwRZZMWAA6Caic12gABjBBNQ86BBoQLk/wL5ASh3HG451AgpoKQn1FPIGkEetIIrRJJgQFOI4nKiABNUB4rVSEAHFgREewYAFIJKxFVBjnwAAAAASUVORK5CYII=) 95% 50% no-repeat rgba(0, 0, 0, .1);
+    border-radius: 5px;
+    position: relative;
+    font-size: 15px;
+    margin: 0 0 7px;
+    padding: 6px 1px 6px 4px;
+    width: 105px;
+    display: inline-block;
+}
 .robax-later__day .robax-later-sel {width: 142px; margin-left: -71px; z-index: 7;}
-.robax-later__day:hover .robax-later-sel {display: block;}
-.robax-later__hour:hover .robax-later-sel {display: block;}
+/*.robax-later__day:hover .robax-later-sel {display: block;}
+.robax-later__hour:hover .robax-later-sel {display: block;}*/
 .robax-later__hour {background-position: 92% 50%;}
 .robax-later__hour .robax-later-sel {width: 85px; margin-left: -32px;}
 .robax-later__sep {padding: 6px 6px;width: auto;}
@@ -236,4 +280,80 @@
 .robax-widget-form-mobile input[name="phone"] {display: none!important;}
 .robax-widget-item-button-mobile {
     padding: 10px 0!important;
+}
+
+.flag-select {
+    cursor: pointer;
+    outline: none;
+    background: none;
+    border: none;
+    position: absolute;
+    top: 9px;
+    left: 1px;
+    z-index: 100;
+}
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 4px solid;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+}
+.open>.dropdown-menu {
+    display: block;
+}
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+.dropdown-menu li {
+    cursor: pointer!important;
+    padding: 5px 5px;
+}
+.dropdown-menu li:hover {
+    background-color: #D8D8D8;
+}
+
+.button-wg {
+    border: none;
+    background: none;
+    outline: none;
+    width: 100%;
+    top: 0;
+    left: 0;
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
 }

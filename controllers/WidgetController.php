@@ -128,6 +128,7 @@ class WidgetController extends Controller
                 $widget_json['widget_goal'] = $widget->widget_name;
                 $widget_json['widget_yandex_metrika'] = $widget->widget_yandex_metrika;
                 $widget_json['widget_google_metrika'] = $widget->widget_google_metrika;
+                $widget_json['widget_sound'] = $widget->widget_sound;
 
                 $widget_json["buttons"] = array(
                     "post" => "Жду звонка!",
@@ -179,11 +180,13 @@ class WidgetController extends Controller
                     "item-text" => "не в офисе. Но в выбранное время Вам перезвонят. _"
                 );
                 $widget_json['date'] = array(
-                    "today" => "сегодня",
-                    "tomorrow" => "завтра",
-                    "after-tomorrow" => "послезавтра",
+                    "today" => "Сегодня",
+                    "tomorrow" => "Завтра",
+                    "after-tomorrow" => "Послезавтра",
                     "work-start-time" => $time[date('l')]['start'],
                     "work-end-time" => $time[date('l')]['end'],
+                    "day" => date('l'),
+                    "time" => $time,
                     "gmt" => $widget->widget_GMT
                 );
                 $template = $getArray['template'] == 'desktop' ? 'WidGet.html' : 'WidGetMob.html';
