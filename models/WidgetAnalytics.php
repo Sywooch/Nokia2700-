@@ -140,26 +140,26 @@ class WidgetAnalytics extends Model
 
         if(isset($w_id))
         {
-          /*  $query->select ('*')
+            $query->select ('*')
                 ->from('widget_pending_calls')
                 ->join('LEFT JOIN', 'widget_catching', 'widget_pending_calls.catching_event=widget_catching.id')
                 ->join('LEFT JOIN', 'widget_settings', 'widget_catching.website=widget_settings.widget_site_url')
                 ->where('action = "'.$acttype.'" AND widget_settings.widget_id="'.$w_id.'"')
-                ->groupBy('widget_catching.ip');*/
+                ->groupBy('widget_catching.ip');
         }
         else
         {
-         /*   $query->select ('*')
+            $query->select ('*')
                 ->from('widget_pending_calls')
                 ->join('LEFT JOIN', 'widget_catching', 'widget_pending_calls.catching_id=widget_catching.id')
                 ->join('LEFT JOIN', 'widget_settings', 'widget_catching.website=widget_settings.widget_site_url')
                 ->where('action = "'.$acttype.'"')
-                ->groupBy('widget_catching.ip');*/
+                ->groupBy('widget_catching.ip');
 
         }
 
-/*        $catched = ($query->all());
-        return count($catched);*/
+        $catched = ($query->all());
+        return count($catched);
     }
 
     public static function countConv($w_id)

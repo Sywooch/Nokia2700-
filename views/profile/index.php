@@ -56,9 +56,9 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                     <li class=""><a href="#tarif" data-toggle="tab">Текущий тарифный план</a></li>
                     <li class=""><a href="#notification" data-toggle="tab">Настройки уведомлений</a></li>
                 </ul>
+                <? $formUser = ActiveForm::begin(['action'=>'/profile/update-user'])?>
                 <div class="tab-content" style="padding-bottom: 0;">
                     <div class="active tab-pane" id="activity">
-                        <? $formUser = ActiveForm::begin(['action'=>'/profile/update-user'])?>
                         <table class="table">
                             <tbody>
                             <tr>
@@ -121,7 +121,6 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                             </tr>
                             </tbody>
                         </table>
-                        <? ActiveForm::end()?>
                     </div>
                     <div class="tab-pane" id="tarif">
                         <div class="row">
@@ -146,7 +145,6 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                         </div>
                     </div>
                     <div class="tab-pane" id="notification">
-                        <? $formUser = ActiveForm::begin(['action'=>'/profile/update-user'])?>
                         <table class="table">
                             <tbody>
                             <tr>
@@ -165,9 +163,9 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                             </tr>
                             </tbody>
                         </table>
-                        <? ActiveForm::end()?>
                     </div>
                 </div>
+                <? ActiveForm::end()?>
             </div>
         </div>
     </div>

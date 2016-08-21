@@ -30,7 +30,7 @@ AppAsset::register($this);
 	<div class="wrapper">
 		<header class="main-header">
     		<!-- Logo -->
-    		<a href="/" class="logo">
+    		<a href="/dashboard" class="logo">
       		<!-- mini logo for sidebar mini 50x50 pixels -->
       		<span class="logo-mini"><b>R</b></span>
       		<!-- logo for regular state and mobile devices -->
@@ -141,7 +141,7 @@ AppAsset::register($this);
 							<i class="fa fa-area-chart"></i> <span>Аналитика</span>
 						</a>
 					</li>
-					<?php $active = (Url::to(['']) == '/partners/index' || Url::to(['']) == '/partners/promo') ? 'active' : ''; ?>
+					<?php $active = (Url::to(['']) == '/partners/index' || Url::to(['']) == '/partners/promo' || Url::to(['']) == '/partners/bonus-history') ? 'active' : ''; ?>
 					<li class="treeview <?=$active?>">
 						<a href="#">
 							<i class="fa fa-users"></i> <span>Партнёрка</span> <i class="fa fa-angle-left pull-right"></i>

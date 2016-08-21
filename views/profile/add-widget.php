@@ -2,6 +2,7 @@
 use kartik\switchinput\SwitchInput;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use app\models\WidgetTemplateNotification;
 use yii\widgets\MaskedInput;
 
 $this->registerCssFile("http://bootstrapformhelpers.com/assets/css/bootstrap-formhelpers.min.css");
@@ -23,6 +24,8 @@ $this->registerCss("
     }
 ");
 
+$path = '/files/images/desktop/';
+$path2 = '/files/images/mobile/';
 $this->title = 'Добавить виджет';
 ?>
 
@@ -107,100 +110,98 @@ $this->title = 'Добавить виджет';
 	  </div>
 	</div>
 	<div class="clear"></div>
-	<div class="bordered">
-	  <label>Настройки поведенческих факторов</label><br>
-        <div style="margin: 10px 0;">
-            <div style="display: inline-block;">
-                <?echo $form->field($model, 'hand_turn_on')->widget(SwitchInput::classname(), [
-                    'options'=>[
-                        'onchange'=>'openMarks();',
-                    ]
-                ])->label(false);?>
-            </div>
-            <div style="display: inline-block">
-                <span style="margin: 0 15px;">уникальное торговое предложение, выводится при попытки уйти с сайта</span>
-            </div>
-        </div>
-	  <div id="openMarks" class="marks-body" style="display: none;">
-		<?php
-		$items = [
-			0 => '0 баллов',
-			1 => '1 балл',
-			2 => '2 балла',
-			3 => '3 балла',
-			4 => '4 балла',
-			5 => '5 баллов',
-			6 => '6 баллов',
-			7 => '7 баллов',
-			8 => '8 баллов',
-			9 => '9 баллов',
-			10 => '10 баллов',
-		];
-		?>
-		<table>
-		  <tr>
-			<td style="padding-right:10px">Переход на другую страницу</td>
-			<td style="padding-right:15px"><?=Html::dropDownList('other_page',0,$items);?></td>
-			<td>Посещение более 3х страниц сайта</td>
-			<td><?=Html::dropDownList('sitepage3_activity',0,$items);?></td>
-		  </tr>
-		  <tr>
-			<td>Скролл вниз(за 100% страницы)</td>
-			<td><?=Html::dropDownList('scroll_down',0,$items);?></td>
-			<td>Дольше среднего времени на сайте</td>
-			<td><?=Html::dropDownList('more_avgtime',0,$items);?></td>
-		  </tr>
-		  <tr>
-			<td>Активность на сайте более 40 сек.</td>
-			<td><?=Html::dropDownList('active_more40',0,$items);?></td>
-			<td>За каждые 30 сек., после 1 мин.</td>
-			<td><?=Html::dropDownList('moretime_after1min',0,$items);?></td>
-		  </tr>
-		  <tr>
-			<td>Интенсивность движения мышки</td>
-			<td><?=Html::dropDownList('mouse_intencivity',0,$items);?></td>
-			<td>Взаимодействие с формами</td>
-			<td><?=Html::dropDownList('form_activity',0,$items);?></td>
-		  </tr>
-		  <tr>
-			<td style="padding-right:10px"></td>
-			<td></td>
-			<td style="padding-right:10px">Поведение, похожее на других клиентов</td>
-			<td><?=Html::dropDownList('client_activity',0,$items);?></td>
-		  </tr>
-		</table><br>
+	  <div class="bordered">
+		  <label>Настройка поведенческих факторов</label><br>
+		  <div class="form-group">
+			  <div style="margin: 10px 0;">
+				  <div style="display: inline-block;">
+					  <?echo $form->field($model, 'hand_turn_on')->widget(SwitchInput::classname(), [
+						  'options'=>[
+							  'onchange'=>'openMarks();',
+						  ]
+					  ])->label(false);?>
+				  </div>
+				  <div style="display: inline-block">
+					  <span style="margin: 0 15px;">если настройка выключена, то виджет автоматически настраивает поведенческие факторы под ваш сайт.</span>
+				  </div>
+			  </div>
+		  </div>
+		  <div id="openMarks" class="marks-body" <?= ($model->hand_turn_on)? 'style="display: block;':'style="display: none;'?>">
+		  <?$items = [
+			  0 => '0 баллов',
+			  1 => '1 балл',
+			  2 => '2 балла',
+			  3 => '3 балла',
+			  4 => '4 балла',
+			  5 => '5 баллов',
+			  6 => '6 баллов',
+			  7 => '7 баллов',
+			  8 => '8 баллов',
+			  9 => '9 баллов',
+			  10 => '10 баллов',
+		  ];?>
+		  <table>
+			  <tr>
+				  <td style="padding-right:10px">Переход на другую страницу</td>
+				  <td style="padding-right:15px"><?=Html::dropDownList('other_page',$marks->other_page,$items);?></td>
+				  <td>Посещение более 3х страниц сайта</td>
+				  <td><?=Html::dropDownList('sitepage3_activity',$items[$marks->sitepage3_activity],$items);?></td>
+			  </tr>
+			  <tr>
+				  <td>Скролл вниз(за 100% страницы)</td>
+				  <td><?=Html::dropDownList('scroll_down',$marks->scroll_down,$items);?></td>
+				  <td>Дольше среднего времени на сайте</td>
+				  <td><?=Html::dropDownList('more_avgtime',$marks->more_avgtime,$items);?></td>
+			  </tr>
+			  <tr>
+				  <td>Активность на сайте более 40 сек.</td>
+				  <td><?=Html::dropDownList('active_more40',$marks->active_more40,$items);?></td>
+				  <td>За каждые 30 сек., после 1 мин.</td>
+				  <td><?=Html::dropDownList('moretime_after1min',$marks->moretime_after1min,$items);?></td>
+			  </tr>
+			  <tr>
+				  <td>Интенсивность движения мышки</td>
+				  <td><?=Html::dropDownList('mouse_intencivity',$marks->mouse_intencivity,$items);?></td>
+				  <td>Взаимодействие с формами</td>
+				  <td><?=Html::dropDownList('form_activity',$marks->form_activity,$items);?></td>
+			  </tr>
+			  <tr>
+				  <td style="padding-right:10px"></td>
+				  <td></td>
+				  <td style="padding-right:10px">Поведение, похожее на других клиентов</td>
+				  <td><?=Html::dropDownList('client_activity',$marks->client_activity,$items);?></td>
+			  </tr>
+		  </table>
 		  <label>Посещение конкретной страницы или раздела сайта</label>
 		  <br>
 		  <div id="pages_block">
-			  <span class="phone">Ccылка на страницу</span>
-			  <div class="input-group">
-				  <div class="input-group-addon">
-					  <i class="fa fa-link"></i>
-				  </div>
-				  <input type="text" class="form-control" name="site_page_1" placeholder="URL" value="">
-			  </div>
-				  <select class="form-control" name="select_site_page_1">
-					  <option value="0">0 баллов</option>
-					  <option value="1">1 балл</option>
-					  <option value="2">2 балла</option>
-					  <option value="3">3 балла</option>
-					  <option value="4">4 балла</option>
-					  <option value="5">5 баллов</option>
-					  <option value="6">6 баллов</option>
-					  <option value="7">7 баллов</option>
-					  <option value="8">8 баллов</option>
-					  <option value="9">9 баллов</option>
-					  <option value="10">10 баллов</option>
-				  </select>
+			  <?php
+			  $sitePageList = json_decode($marks->site_pages_list);
+			  $sitePageList = explode(';', $marks->site_pages_list);
+			  $num = count($sitePageList)-1;
+			  unset($sitePageList[$num]);
+			  $count_site_pages = count($sitePageList);
+			  for($i=1; $i<=$count_site_pages; $i++)
+			  {
+				  $values = explode('*',$sitePageList[$i-1]);
+				  echo '<span class="phone">Cсылка №'.$i.'</span>
+                <div class="input-group">
+                <div class="input-group-addon">
+                <i class="fa fa-link"></i>
+                </div>
+                <input type="text" class="form-control widget_url" name="site_page_'.$i.'" data-required="true" value="'.$values[0].'"></div>'
+					  .Html::dropDownList('select_site_page_'.$i,$values[1],$items,['class' => 'form-control']).'<br>';
+			  }
+			  ?>
 		  </div>
 		  <br>
-		  <input type="hidden" name="count_pages" value="1">
+		  <input type="hidden" name="count_pages" value="<?=$count_site_pages?>">
 		  <div class="input-group">
-			  <button class="pages_more btn">Добавить еще одну страницу</button>
+			  <button class="sitepage_more btn">Добавить еще одну страницу</button>
 		  </div>
 		  <br>
 	  </div>
-	</div>
+	  </div>
 	<div class="clear"></div>
 	<!--<div class="bordered">
 		<label>УТП  </label><br>
@@ -239,48 +240,67 @@ $this->title = 'Добавить виджет';
             <input name="widget-utp-form-top" style="display: none;"/>
 		</div>
 	</div>-->
-	  <div class="bordered">
-		  <label>Черный список </label> <small>(укажите номера, на которые виджет не будет звонить)</small>
-		  <br>
-		  <div id="black_list_block">
-			  <span class="phone">Телефон № 1</span>
-			  <div class="input-group">
-				  <?=MaskedInput::widget([
-					  'name' => 'black_list_number_1',
-					  'mask' => '+7(999)999-99-99',
-					  'options' => [
-						  'class' => 'form-control widget_phone',
-                          'style' => 'padding-left: 45px',
-						  'data-required' => true,
-						  'placeholder' => '+7(___)___-__-__'
-					  ]
-				  ]);?>
-                  <button class="flag-select dropdown-toggle" type="button" id="dropdownMenu_1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                      <i class="glyphicon bfh-flag-RU"></i><span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu_1">
-                      <li onclick="countryChange('RU', $(this));"><i class="glyphicon bfh-flag-RU"></i> Россия</li>
-                      <li onclick="countryChange('BY', $(this));"><i class="glyphicon bfh-flag-BY"></i> Белорусия</li>
-                      <li onclick="countryChange('UA', $(this));"><i class="glyphicon bfh-flag-UA"></i> Украина</li>
-                      <li onclick="countryChange('US', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>
-                  </ul>
-			  </div>
-		  </div>
-		  <br>
-		  <input type="hidden" name="count_black_list" value="<?=$count_black_list?>">
-		  <div class="input-group">
-			  <button class="blacklist_more btn">Добавить еще один номер</button>
-		  </div>
-		  <br>
-	  </div>
+	<div class="bordered">
+		<label>Черный список </label> <small>(укажите номера, на которые виджет не будет звонить)</small>
+		<br>
+		<div id="black_list_block">
+			<?php
+			$blackList = explode(';', $model->black_list);
+			$num = count($blackList)-1;
+			unset($blackList[$num]);
+			$count_black_list = count($blackList);
+			for($i=1; $i<=$count_black_list; $i++)
+			{?>
+				<span class="phone">Телефон №<?=$i?></span>
+				<div class="input-group">
+					<?=MaskedInput::widget([
+						'name' => 'black_list_number_'.$i,
+						'value' => $blackList[$i-1],
+						'mask' => '+7(999)999-99-99',
+						'options' => [
+							'class' => 'form-control widget_phone',
+							'style' => 'padding-left: 45px;',
+							'data-required' => true,
+							'placeholder' => '+7(___)___-__-__'
+						]
+					]);?>
+					<button class="flag-select dropdown-toggle" type="button" id="dropdownMenu_<?=$i?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						<?php
+						$flag = 'RU';
+						$phone = explode('(', $blackList[$i-1])[0];
+						switch ($phone) {
+							case '+7' : $flag = 'RU';break;
+							case '+375' : $flag = 'BY';break;
+							case '+380' : $flag = 'UA';break;
+							case '+1' : $flag = 'US';break;
+						}
+						?>
+						<i class="glyphicon bfh-flag-<?=$flag?>"></i><span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenu_<?=$i?>">
+						<li onclick="countryChange('RU', $(this));"><i class="glyphicon bfh-flag-RU"></i> Россия</li>
+						<li onclick="countryChange('BY', $(this));"><i class="glyphicon bfh-flag-BY"></i> Белорусия</li>
+						<li onclick="countryChange('UA', $(this));"><i class="glyphicon bfh-flag-UA"></i> Украина</li>
+						<li onclick="countryChange('US', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>
+					</ul>
+				</div>
+			<?}?>
+		</div>
+		<br>
+		<input type="hidden" name="count_black_list" value="<?=$count_black_list?>">
+		<div class="input-group">
+			<button class="blacklist_more btn">Добавить еще один номер</button>
+		</div>
+		<br>
+	</div>
 	<div class="bordered">
 		<label>Настройки Цели </label><small>(помогут ослеживать конверсию виджета, инструкция)</small>
 		<br>
 		<div class="form-group">
-				<input class="form-control" name="widget_name" type="text" placeholder="Имя Цели">
+			<input class="form-control" name="widget_name" type="text" placeholder="Имя Цели" value="<?$model->widget_name?>">
 		</div>
 		<div class="form-group">
-				<input class="form-control" name="widget_yandex_metrika" type="text" placeholder="Идентификатор счётчика Yandex Metrika">
+			<input class="form-control" name="widget_yandex_metrika" type="text" placeholder="Yandex Metrika" value="<?$model->widget_yandex_metrika?>">
 		</div>
 		<div class="form-group">
 			<div style="margin: 10px 0;">
@@ -288,404 +308,491 @@ $this->title = 'Добавить виджет';
 					<?echo $form->field($model, 'widget_google_metrika')->widget(SwitchInput::classname(), [])->label(false);?>
 				</div>
 				<div style="display: inline-block">
-                    <span style="margin: 0 15px;">Если на сайте подключено <b>Google Analytics</b></span></div>
+					<span style="margin: 0 15px;">Если на сайте подключено <b>Google Analytics</b></span></div>
 			</div>
 		</div>
 	</div>
 	<div class="bordered">
-		<label>Настройки сообщений виджета для клиента</label>
+		<label>Настройки сообщений виджета</label>
 		<br>
-		<?foreach ($widgetTemplate as $key => $value) {?>
-			<div>
-				<div style="display: inline-block;">
-					<?echo SwitchInput::widget([
-						'name'=>'template[change]['.$value['id_template'].']',
-						'value'=>0,
-						'options'=>[
-							'onchange'=>'openBlock('.$value['id_template'].');',
-						]
-					]);?>
+		<?if ($widgetTemplateUsers) {
+			foreach ($widgetTemplateUsers as $key => $value) {?>
+				<div>
+					<div style="display: inline-block;">
+						<?echo SwitchInput::widget([
+							'name'=>'template[change]['.$value['id_template'].']',
+							'value'=>$value['status'] ? 1 : 0,
+							'options'=>[
+								'onchange'=>'openBlock('.$value['id_template'].');',
+							]
+						]);?>
+					</div>
+					<div style="display: inline-block;">
+						<?$widetTemplate = WidgetTemplateNotification::findOne(['id_template' => $value['id_template']]);?>
+						<span style="margin: 0 15px;"><?=$widetTemplate->name?></span>
+					</div>
+					<div id="openBlock-<?=$value['id_template']?>" style="<?=$value['status'] ? 'display: block;' : 'display: none;'?>margin-bottom: 30px;">
+						<?if ($value['param']) {?>
+							<div class="form-group">
+								<span>Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][]" min="0" max="60" value="<?=$value['param']?>"/>
+							</div>
+						<?} else {?>
+							<input type="text" style="display: none;" name="template[param][]"/>
+						<?}?>
+						<textarea name="template[description][]" class="form-control"><?=$value['description']?></textarea>
+						<input type="text" style="display: none;" name="template[id][]" value="<?=$value['id_template']?>"/>
+					</div>
 				</div>
-				<div style="display: inline-block;">
-					<span><?=$value['name']?></span>
+			<?}
+		} else {
+			foreach ($widgetTemplate as $key => $value) {?>
+				<div>
+					<div style="display: inline-block;">
+						<?echo SwitchInput::widget([
+							'name'=>'template[change]['.$value['id_template'].']',
+							'value'=>0,
+							'options'=>[
+								'onchange'=>'openBlock('.$value['id_template'].');',
+							],
+						]);?>
+					</div>
+					<div style="display: inline-block;">
+						<span style="margin: 0 15px;"><?=$value['name']?></span>
+					</div>
+					<div id="openBlock-<?=$value['id_template']?>" style="display: none;margin-bottom: 30px;">
+						<?if ($value['param']) {?>
+							<div class="form-group">
+								<span>Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][]" min="0" max="60" value="<?=$value['param']?>"/>
+							</div>
+						<?} else {?>
+							<input type="text" style="display: none;" name="template[param][]"/>
+						<?}?>
+						<textarea name="template[description][]" class="form-control"><?=$value['description']?></textarea>
+						<input type="text" style="display: none;" name="template[id][]" value="<?=$value['id_template']?>"/>
+					</div>
 				</div>
-				<div id="openBlock-<?=$value['id_template']?>" style="display: none;margin-bottom: 30px;">
-					<?if ($value['param']) {?>
-						<div class="form-group">
-                            <span style="margin: 0 15px;">Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][]" min="0" max="60" value="<?=$value['param']?>"/>
-						</div>
-					<?} else {?>
-						<input type="text" style="display: none;" name="template[param][]?>]"/>
-					<?}?>
-					<textarea name="template[description][]" class="form-control"><?=$value['description']?></textarea>
-					<input type="text" style="display: none;" name="template[id][]" value="<?=$value['id_template']?>"/>
-				</div>
-			</div>
-		<?}?>
+			<?}
+		}?>
 	</div>
 	<div class="bordered">
 		<label>Настройки уведомлений</label>
 		<br>
 		<div id="emails_block">
-			<span class="phone">Ваша эл-почта</span>
-			<div class="input-group">
-				<div class="input-group-addon">
-					<b>@</b>
+			<?php
+			$mails = explode(';', $model->widget_user_email);
+			$num = count($mails)-1;
+			unset($mails[$num]);
+			$count_mails = count($mails);
+			for($i=1; $i<=$count_mails; $i++)
+			{?>
+				<span class="phone">Ваша эл-почта</span>
+				<div class="input-group">
+					<div class="input-group-addon">
+						<b>@</b>
+					</div>
+					<input type="text" class="form-control" name="widget_user_email_<?=$i?>" placeholder="Email" data-required="true" value="<?=$mails[$i-1]?>">
 				</div>
-				<input type="text" class="form-control" name="widget_user_email_1" placeholder="Email" data-required="true" value="<?$model->widget_user_email?>">
-			</div>
+			<?}
+			?>
 		</div>
 		<br>
-		<input type="hidden" name="count_emails" value="1">
+		<input type="hidden" name="count_emails" value="<?=$count_mails?>">
 		<div class="input-group">
 			<button class="email_more btn">Добавить еще один email</button>
 		</div>
 		<br>
 		<div id="phones_block">
-			<span class="phone">Телефон №1 (определяется при звонке клиенту)</span>
-			<div class="input-group">
-				<?=MaskedInput::widget([
-					'name' => 'widget_phone_number_1',
-					'mask' => '+7(999)999-99-99',
-					'options' => [
-						'class' => 'form-control widget_phone',
-                        'style' => 'padding-left: 45px',
-						'data-required' => true,
-						'placeholder' => '+7(___)___-__-__'
-					]
-				]);?>
-                <button class="flag-select dropdown-toggle" type="button" id="dropdo2Menu_1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <i class="glyphicon bfh-flag-RU"></i><span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdown2Menu_1">
-                    <li onclick="countryChange('RU', $(this));"><i class="glyphicon bfh-flag-RU"></i> Россия</li>
-                    <li onclick="countryChange('BY', $(this));"><i class="glyphicon bfh-flag-BY"></i> Белорусия</li>
-                    <li onclick="countryChange('UA', $(this));"><i class="glyphicon bfh-flag-UA"></i> Украина</li>
-                    <li onclick="countryChange('US', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>
-                </ul>
-			</div>
+			<?php
+			$phones = explode(';', $model->widget_phone_numbers);
+			$num = count($phones)-1;
+			unset($phones[$num]);
+			$count_phones = count($phones);
+			for($i=1; $i<=$count_phones; $i++)
+			{?>
+				<span class="phone">Телефон №<?=$i?> (определяется при звонке клиенту)</span>
+				<div class="input-group">
+					<?=MaskedInput::widget([
+						'name' => 'widget_phone_number_'.$i,
+						'value' => $phones[$i-1],
+						'mask' => '+7(999)999-99-99',
+						'options' => [
+							'class' => 'form-control widget_phone',
+							'style' => 'padding-left: 45px;',
+							'data-required' => true,
+							'placeholder' => '+7(___)___-__-__'
+						]
+					]);?>
+					<button class="flag-select dropdown-toggle" type="button" id="dropdown2Menu_<?=$i?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						<?php
+						$flag = 'RU';
+						$phone = explode('(', $phones[$i-1])[0];
+						switch ($phone) {
+							case '+7' : $flag = 'RU';break;
+							case '+375' : $flag = 'BY';break;
+							case '+380' : $flag = 'UA';break;
+							case '+1' : $flag = 'US';break;
+						}
+						?>
+						<i class="glyphicon bfh-flag-<?=$flag?>"></i><span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" aria-labelledby="dropdown2Menu_<?=$i?>">
+						<li onclick="countryChange('RU', $(this));"><i class="glyphicon bfh-flag-RU"></i> Россия</li>
+						<li onclick="countryChange('BY', $(this));"><i class="glyphicon bfh-flag-BY"></i> Белорусия</li>
+						<li onclick="countryChange('UA', $(this));"><i class="glyphicon bfh-flag-UA"></i> Украина</li>
+						<li onclick="countryChange('US', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>
+					</ul>
+				</div>
+			<?}?>
 		</div>
 		<br>
-		<input type="hidden" name="count_phones" value="1">
+		<input type="hidden" name="count_phones" value="<?=$count_phones?>">
 		<div class="input-group">
 			<button class="phone_more btn">Добавить еще один номер телефона</button>
 		</div>
 	</div>
 	<div class="bordered">
 		<div class="form-group">
-	  <label>Настройки времени</label><br>
-	  <div class="line-time">
-	  <label>Часовой пояс(GMT):</label>
-	  <select class="form-control" name="widget_GMT">
-		<option value="-12">-12</option>
-		<option value="-11">-11</option>
-		<option value="-10">-10</option>
-		<option value="-9">-9</option>
-		<option value="-8">-8</option>
-		<option value="-7">-7</option>
-		<option value="-6">-6</option>
-		<option value="-5">-5</option>
-		<option value="-4:30">-4:30</option>
-		<option value="-4">-4</option>
-		<option value="-3:30">-3:30</option>
-		<option value="-3">-3</option>
-		<option value="-2">-2</option>
-		<option value="-1">-1</option>
-		<option value="0">+0</option>
-		<option value="1">+1</option>
-		<option value="2">+2</option>
-		<option value="3" selected="selected">+3</option>
-		<option value="3:30">+3:30</option>
-		<option value="4">+4</option>
-		<option value="4:30">+4:30</option>
-		<option value="5">+5</option>
-		<option value="5:30">+5:30</option>
-		<option value="5:45">+5:45</option>
-		<option value="6">+6</option>
-		<option value="6:30">+6:30</option>
-		<option value="7">+7</option>
-		<option value="8">+8</option>
-		<option value="8:30">+8:30</option>
-		<option value="8:45">+8:45</option>
-		<option value="9">+9</option>
-		<option value="9:30">+9:30</option>
-		<option value="10">+10</option>
-		<option value="10:30">+10:30</option>
-		<option value="11">+11</option>
-		<option value="11:30">+11:30</option>
-		<option value="12">+12</option>
-		<option value="12:45">+12:45</option>
-		<option value="13">+13</option>
-		<option value="13:45">+13:45</option>
-		<option value="14">+14</option>
-	  </select>
-	  </div>
-		<br>
-		<br>
-		<table class="table table-striped">
-			<tr>
-				<th>День недели:</th>
-				<th>Начало рабочего дня:</th>
-				<th>Конец рабочего дня:</th>
-				<th>Обед:</th>
-			</tr>
-			<tr>
-				<td>Понедельник</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-start-time-monday',
-						'mask' => '99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '09:00'
-						]
-					]);?>
-				</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-end-time-monday',
-						'mask' => '99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '18:00'
-						]
-					]);?>
-				</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-lunch-time-monday',
-						'mask' => '99:99 - 99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '13:00 - 14:00'
-						]
-					]);?>
-				</td>
-			</tr>
-			<tr>
-				<td>Вторник</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-start-time-tuesday',
-						'mask' => '99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '09:00'
-						]
-					]);?>
-				</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-end-time-tuesday',
-						'mask' => '99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '18:00'
-						]
-					]);?>
-				</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-lunch-time-tuesday',
-						'mask' => '99:99 - 99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '13:00 - 14:00'
-						]
-					]);?>
-				</td>
-			</tr>
-			<tr>
-				<td>Среда</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-start-time-wednesday',
-						'mask' => '99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '09:00'
-						]
-					]);?>
-				</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-end-time-wednesday',
-						'mask' => '99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '18:00'
-						]
-					]);?>
-				</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-lunch-time-wednesday',
-						'mask' => '99:99 - 99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '13:00 - 14:00'
-						]
-					]);?>
-				</td>
-			</tr>
-			<tr>
-				<td>Четверг</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-start-time-thursday',
-						'mask' => '99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '09:00'
-						]
-					]);?>
-				</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-end-time-thursday',
-						'mask' => '99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '18:00'
-						]
-					]);?>
-				</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-lunch-time-thursday',
-						'mask' => '99:99 - 99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '13:00 - 14:00'
-						]
-					]);?>
-				</td>
-			</tr>
-			<tr>
-				<td>Пятница</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-start-time-friday',
-						'mask' => '99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '09:00'
-						]
-					]);?>
-				</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-end-time-friday',
-						'mask' => '99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '18:00'
-						]
-					]);?>
-				</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-lunch-time-friday',
-						'mask' => '99:99 - 99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '13:00 - 14:00'
-						]
-					]);?>
-				</td>
-			</tr>
-			<tr>
-				<td>Суббота</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-start-time-saturday',
-						'mask' => '99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '09:00'
-						]
-					]);?>
-				</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-end-time-saturday',
-						'mask' => '99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '18:00'
-						]
-					]);?>
-				</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-lunch-time-saturday',
-						'mask' => '99:99 - 99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '13:00 - 14:00'
-						]
-					]);?>
-				</td>
-			</tr>
-			<tr>
-				<td>Воскресенье</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-start-time-sunday',
-						'mask' => '99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '09:00'
-						]
-					]);?>
-				</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-end-time-sunday',
-						'mask' => '99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '18:00'
-						]
-					]);?>
-				</td>
-				<td>
-					<?=MaskedInput::widget([
-						'name' => 'work-lunch-time-sunday',
-						'mask' => '99:99 - 99:99',
-						'options' => [
-							'class' => 'form-control',
-							'data-required' => true,
-							'placeholder' => '13:00 - 14:00'
-						]
-					]);?>
-				</td>
-			</tr>
-		</table>
+			<label>Настройки рабочего времени</label><br>
+			<div class="line-time">
+				<label>Часовой пояс(GMT):</label>
+				<select class="form-control" name="widget_GMT">
+					<option value="-12">-12</option>
+					<option value="-11">-11</option>
+					<option value="-10">-10</option>
+					<option value="-9">-9</option>
+					<option value="-8">-8</option>
+					<option value="-7">-7</option>
+					<option value="-6">-6</option>
+					<option value="-5">-5</option>
+					<option value="-4:30">-4:30</option>
+					<option value="-4">-4</option>
+					<option value="-3:30">-3:30</option>
+					<option value="-3">-3</option>
+					<option value="-2">-2</option>
+					<option value="-1">-1</option>
+					<option value="0">+0</option>
+					<option value="1">+1</option>
+					<option value="2">+2</option>
+					<option value="3" selected="selected">+3</option>
+					<option value="3:30">+3:30</option>
+					<option value="4">+4</option>
+					<option value="4:30">+4:30</option>
+					<option value="5">+5</option>
+					<option value="5:30">+5:30</option>
+					<option value="5:45">+5:45</option>
+					<option value="6">+6</option>
+					<option value="6:30">+6:30</option>
+					<option value="7">+7</option>
+					<option value="8">+8</option>
+					<option value="8:30">+8:30</option>
+					<option value="8:45">+8:45</option>
+					<option value="9">+9</option>
+					<option value="9:30">+9:30</option>
+					<option value="10">+10</option>
+					<option value="10:30">+10:30</option>
+					<option value="11">+11</option>
+					<option value="11:30">+11:30</option>
+					<option value="12">+12</option>
+					<option value="12:45">+12:45</option>
+					<option value="13">+13</option>
+					<option value="13:45">+13:45</option>
+					<option value="14">+14</option>
+				</select>
+			</div>
+			<br>
+			<br>
+			<?php
+			$work_time = json_decode($model->widget_work_time);
+			?>
+			<table class="table table-striped">
+				<tr>
+					<th>День недели:</th>
+					<th>Начало рабочего дня:</th>
+					<th>Конец рабочего дня:</th>
+					<th>Обед:</th>
+				</tr>
+				<tr>
+					<td>Понедельник</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-start-time-monday',
+							'value' => $work_time->monday->start,
+							'mask' => '99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '09:00'
+							]
+						]);?>
+					</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-end-time-monday',
+							'value' => $work_time->monday->end,
+							'mask' => '99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '18:00'
+							]
+						]);?>
+					</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-lunch-time-monday',
+							'value' => $work_time->monday->lunch,
+							'mask' => '99:99 - 99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '13:00 - 14:00'
+							]
+						]);?>
+					</td>
+				</tr>
+				<tr>
+					<td>Вторник</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-start-time-tuesday',
+							'value' => $work_time->tuesday->start,
+							'mask' => '99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '09:00'
+							]
+						]);?>
+					</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-end-time-tuesday',
+							'value' => $work_time->tuesday->end,
+							'mask' => '99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '18:00'
+							]
+						]);?>
+					</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-lunch-time-tuesday',
+							'value' => $work_time->tuesday->lunch,
+							'mask' => '99:99 - 99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '13:00 - 14:00'
+							]
+						]);?>
+					</td>
+				</tr>
+				<tr>
+					<td>Среда</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-start-time-wednesday',
+							'value' => $work_time->wednesday->start,
+							'mask' => '99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '09:00'
+							]
+						]);?>
+					</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-end-time-wednesday',
+							'value' => $work_time->wednesday->end,
+							'mask' => '99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '18:00'
+							]
+						]);?>
+					</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-lunch-time-wednesday',
+							'value' => $work_time->wednesday->lunch,
+							'mask' => '99:99 - 99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '13:00 - 14:00'
+							]
+						]);?>
+					</td>
+				</tr>
+				<tr>
+					<td>Четверг</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-start-time-thursday',
+							'value' => $work_time->thursday->start,
+							'mask' => '99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '09:00'
+							]
+						]);?>
+					</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-end-time-thursday',
+							'value' => $work_time->thursday->end,
+							'mask' => '99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '18:00'
+							]
+						]);?>
+					</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-lunch-time-thursday',
+							'value' => $work_time->thursday->lunch,
+							'mask' => '99:99 - 99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '13:00 - 14:00'
+							]
+						]);?>
+					</td>
+				</tr>
+				<tr>
+					<td>Пятница</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-start-time-friday',
+							'value' => $work_time->friday->start,
+							'mask' => '99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '09:00'
+							]
+						]);?>
+					</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-end-time-friday',
+							'value' => $work_time->friday->end,
+							'mask' => '99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '18:00'
+							]
+						]);?>
+					</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-lunch-time-friday',
+							'value' => $work_time->friday->lunch,
+							'mask' => '99:99 - 99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '13:00 - 14:00'
+							]
+						]);?>
+					</td>
+				</tr>
+				<tr>
+					<td>Суббота</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-start-time-saturday',
+							'value' => $work_time->saturday->start,
+							'mask' => '99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '09:00'
+							]
+						]);?>
+					</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-end-time-saturday',
+							'value' => $work_time->saturday->end,
+							'mask' => '99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '18:00'
+							]
+						]);?>
+					</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-lunch-time-saturday',
+							'value' => $work_time->saturday->lunch,
+							'mask' => '99:99 - 99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '13:00 - 14:00'
+							]
+						]);?>
+					</td>
+				</tr>
+				<tr>
+					<td>Воскресенье</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-start-time-sunday',
+							'value' => $work_time->sunday->start,
+							'mask' => '99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '09:00'
+							]
+						]);?>
+					</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-end-time-sunday',
+							'value' => $work_time->sunday->end,
+							'mask' => '99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '18:00'
+							]
+						]);?>
+					</td>
+					<td>
+						<?=MaskedInput::widget([
+							'name' => 'work-lunch-time-sunday',
+							'value' => $work_time->sunday->lunch,
+							'mask' => '99:99 - 99:99',
+							'options' => [
+								'class' => 'form-control',
+								'data-required' => true,
+								'placeholder' => '13:00 - 14:00'
+							]
+						]);?>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</div>
+	<div class="line-time">
+		<?= Html::submitButton('Сохранить', ['class' => 'btn btn-block btn-success btn-lg']) ?>
 	</div>
-	<div class="line-time"><?= Html::submitButton('Сохранить', ['class' => 'btn btn-block btn-success btn-lg']) ?></div>
-  </div>
+	<div class="line-time">
+		<?= Html::button('Отменить', ['class' => 'btn btn-block btn-danger btn-lg']) ?>
+	</div>
   <?php ActiveForm::end(); ?>
 <script type="text/javascript">
 //---------

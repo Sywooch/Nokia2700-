@@ -71,7 +71,7 @@ class WidgetController extends Controller
         $catch->action = $getArray['event'];
         $catch->website = $getArray['site_url'];
         $catch->time = isset($getArray['time']) ? $getArray['time'] : 0;
-        $catch->date = ''/*date('Y-m-d G:i:s')*/;
+        $catch->date = date('Y-m-d G:i:s');
         header('Access-Control-Allow-Origin: ' . $getArray['protocol'] . '//' . $getArray['site_url']);
         if($catch->save()) {
             die('ok');

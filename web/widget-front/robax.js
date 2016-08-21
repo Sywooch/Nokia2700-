@@ -399,7 +399,6 @@
 	}
 	RobaxWidget.prototype.postCall=function(phone){
 		var megaEvent = document.getElementById("megaEvent").value;
-		if(megaEvent == null) megaEvent = 'robax_button_pressed';
 		var t=this;
 		t.settings.PhonePosted=true;
 		helper.get('//r.oblax.ru/widget/widget-call',{'key':this.settings.key,'phone':phone,'event':megaEvent,'site_url':window.location.hostname,'protocol':window.location.protocol},function(r){if(t.dataJSON['widget_yandex_metrika'])window["yaCounter" + t.dataJSON['widget_yandex_metrika']].reachGoal(t.dataJSON['widget_name'],{'phone':phone,'url':window.location.hostname+window.location.pathname});if(window.ga&&t.dataJSON['widget_google_metrika']) window.ga("send", "event", t.dataJSON['widget_name'], 'phone-'+phone+'-url-'+window.location.hostname+window.location.pathname);});
@@ -407,9 +406,9 @@
 	RobaxWidget.prototype.controller = {
 		open:function(){
 			helper.cssQuery('.robax-widget-open-button, .robax-widget-open-button-mobile').onclick=function(){
-				var audio = new Audio(); // Создаём новый элемент Audio
+				/*var audio = new Audio(); // Создаём новый элемент Audio
 				audio.src = 'http://r.oblax.ru/widget-front/open_1.mp3'; // Указываем путь к звуку "клика"
-				audio.autoplay = true; // Автоматически запускаем
+				audio.autoplay = true; // Автоматически запускаем*/
 				helper.cssQuery('.overlay').setAttribute("style","display:block;");
 				helper.cssQuery('.robax-widget, .robax-widget-mobile').setAttribute("style","right:0;");
 			}
@@ -648,7 +647,7 @@ function getPoints(event, plus_points)
 				});
 			}
 		});
-		document.getElementById('megaEvent').value='"'+event+'"';
+		document.getElementById('megaEvent').setAttribute('value','"'+event+'"');
 		window.points = 0;
 
 	}

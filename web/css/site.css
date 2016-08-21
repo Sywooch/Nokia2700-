@@ -49,11 +49,11 @@ a.asc:after, a.desc:after {
 }
 
 a.asc:after {
-    content: /*"\e113"*/ "\e151";
+    content: /*"\e113"*/ /*"\e151"*/ "\e155";
 }
 
 a.desc:after {
-    content: /*"\e114"*/ "\e152";
+    content: /*"\e114"*/ /*"\e152"*/ "\e156";
 }
 
 .sort-numerical a.asc:after {
@@ -90,8 +90,6 @@ a.desc:after {
     margin: 0 0 15px 0;
 }
 
-.analytics-table {
-    :thead{
+.analytics-table thead{
         background-color: #3c8dbc;
-    }
 }

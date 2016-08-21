@@ -50,6 +50,7 @@ $bonuses = isset(Yii::$app->user->identity->bonus) ? Yii::$app->user->identity->
                     <div class="active tab-pane" id="activity">
                         <?= GridView::widget([
                             'dataProvider' => $dataProviderDesc,
+                            'emptyText'=>'Нам очень жаль. Пока нет оплат от Ваших клиентов. <i class="fa fa-thumbs-o-down"></i>',
                             'columns' => [
                                 'client',
                                 'dateFormat',
@@ -62,6 +63,7 @@ $bonuses = isset(Yii::$app->user->identity->bonus) ? Yii::$app->user->identity->
                     <div class="tab-pane" id="bon-history">
                         <?= GridView::widget([
                             'dataProvider' => $dataProvider,
+                            'emptyText'=>'Нам очень жаль. У Вас пока нет бонусов. <i class="fa fa-thumbs-o-down"></i>',
                             'columns' => [
                                 'order_num',
                                 'dateFormat',

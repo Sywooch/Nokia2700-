@@ -45,7 +45,7 @@ class ProfileController extends Controller
                             'pay-with', 'paid', 'fail','paid-ik',
                             'update-paid-ik', 'tarifs', 'sound',
                             'user-tarif', 'for-test', 'deletewidget',
-                            'update-user'
+                            'update-user', 'dashboard'
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -295,8 +295,8 @@ class ProfileController extends Controller
             ($_POST['WidgetSettings']['hand_turn_on']) ? $model->hand_turn_on = 1 : $model->hand_turn_on = 0;
             ($_POST['WidgetSettings']['utp_turn_on']) ? $model->utp_turn_on = 1 : $model->utp_turn_on = 0;
             $model->widget_utp_form_position = $_POST['widget-utp-form-top'].$_POST['widget-utp-form-left'];
-            $model->utm_button_color = Yii::$app->request->post('utm-button-color');
-            $model->utp_img_url = Yii::$app->request->post('utp-img-url');
+//            $model->utm_button_color = Yii::$app->request->post('utm-button-color');
+//            $model->utp_img_url = Yii::$app->request->post('utp-img-url');
             if($model->save()) {
                 $this->renameFileScreen($model->widget_id, $url, 1);
                 $marks->widget_id = $model->widget_id;
@@ -414,7 +414,7 @@ class ProfileController extends Controller
             $model->widget_work_time = json_encode($work_time);
             $model->widget_sound = Yii::$app->request->post('widget_sound');
             ($_POST['WidgetSettings']['hand_turn_on']) ? $model->hand_turn_on = 1 : $model->hand_turn_on = 0;
-            ($_POST['WidgetSettings']['utp_turn_on']) ? $model->utp_turn_on = 1 : $model->utp_turn_on = 0;
+            /*($_POST['WidgetSettings']['utp_turn_on']) ? $model->utp_turn_on = 1 : $model->utp_turn_on = 0;*/
             $model->widget_utp_form_position = $_POST['widget-utp-form-top'].$_POST['widget-utp-form-left'];
             $model->utm_button_color = Yii::$app->request->post('utm-button-color');
             $model->utp_img_url = Yii::$app->request->post('utp-img-url');
