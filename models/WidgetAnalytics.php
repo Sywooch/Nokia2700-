@@ -52,7 +52,7 @@ class WidgetAnalytics extends Model
     public static function getCatchAnalytics($w_id=null)
     {
         $acttypes = array('active_more40', 'moretime_after1min', 'more_avgtime','other_page', 'scroll_down',
-            'mouse_intencivity', 'sitepage3_activity', 'form_activity', 'client_activity');
+            'mouse_intencivity', 'sitepage3_activity', 'form_activity', 'robax_button_clicked');
 
         $acts = array(
             'active_more40'=>'<i class="fa fa-hourglass-o"></i>Более 40с. на сайте',
@@ -63,7 +63,7 @@ class WidgetAnalytics extends Model
             'mouse_intencivity'=>'<i class="fa fa-mouse-pointer"></i>Активность мыши',
             'sitepage3_activity'=>'<i class="fa fa-file-word-o"></i>Посещение более 3-х страниц',
             'form_activity'=>'<i class="fa fa-commenting-o"></i>Взаимодействие с формами',
-            'client_activity'=>'<i class="fa fa-hand-pointer-o"></i>Нажатие на кнопку');
+            'robax_button_clicked'=>'<i class="fa fa-hand-pointer-o"></i>Нажатие на кнопку');
 
         $analyt = array();
         foreach($acttypes as $act)
@@ -80,7 +80,7 @@ class WidgetAnalytics extends Model
             {
                 $catched = self::getCatchedWId($act, $w_id);
                 $shown = self::getShownWId($act, $w_id);
-                ($shown != 0 || $catched != 0) ? $conver = (integer)($catched*100/$shown) : $conver = 0;
+                ($shown != 0) ? $conver = (integer)($catched*100/$shown) : $conver = 0;
                 $analyt[$act] = array('name'=>$acts[$act], 'shown'=>$shown, 'catch'=>$catched, 'conversion'=>$conver );
             }
 
@@ -108,15 +108,15 @@ class WidgetAnalytics extends Model
                 ->from('widget_catching')
                 ->join('INNER JOIN', 'widget_settings','widget_settings.widget_site_url=widget_catching.website')
                 ->where('`action` = "'.$acttype.'" AND widget_settings.widget_id="'.$w_id.'" AND widget_settings.user_id = "'.Yii::$app->user->identity->id.'"')
-                ->groupBy('widget_catching.date');
+                /*->groupBy('widget_catching.date')*/;
         }
         elseif(isset($w_id))
         {
             $query->select('action')
                 ->from('widget_catching')
                 ->join('INNER JOIN', 'widget_settings','widget_settings.widget_site_url=widget_catching.website')
-                ->where('`action` = "close_page" AND widget_settings.widget_id="'.$w_id.'" AND widget_settings.user_id = "'.Yii::$app->user->identity->id.'"')
-                ->groupBy('widget_catching.date');
+                ->where('`action` != "close_page" AND widget_settings.widget_id="'.$w_id.'" AND widget_settings.user_id = "'.Yii::$app->user->identity->id.'"')
+                /*->groupBy('widget_catching.date')*/;
         }
         else
         {
@@ -124,8 +124,7 @@ class WidgetAnalytics extends Model
                 ->from('widget_catching')
                 ->join('INNER JOIN', 'widget_settings','widget_settings.widget_site_url=widget_catching.website')
                 ->where('action= "'.$acttype.'" AND widget_settings.user_id = "'.Yii::$app->user->identity->id.'"')
-                ->groupBy('widget_catching.date');
-
+                /*->groupBy('widget_catching.date')*/;
         }
 
         $shown = count($query->all());
@@ -142,19 +141,19 @@ class WidgetAnalytics extends Model
         {
             $query->select ('*')
                 ->from('widget_pending_calls')
-                ->join('LEFT JOIN', 'widget_catching', 'widget_pending_calls.catching_event=widget_catching.id')
-                ->join('LEFT JOIN', 'widget_settings', 'widget_catching.website=widget_settings.widget_site_url')
-                ->where('action = "'.$acttype.'" AND widget_settings.widget_id="'.$w_id.'"')
-                ->groupBy('widget_catching.ip');
+                /*->join('LEFT JOIN', 'widget_catching', 'widget_pending_calls.catching_event=widget_catching.id')
+                ->join('LEFT JOIN', 'widget_settings', 'widget_catching.website=widget_settings.widget_site_url')*/
+                ->where('catching_event = "'.$acttype.'" AND widget_id="'.$w_id.'"')
+                /*->groupBy('widget_catching.ip')*/;
         }
         else
         {
             $query->select ('*')
                 ->from('widget_pending_calls')
-                ->join('LEFT JOIN', 'widget_catching', 'widget_pending_calls.catching_id=widget_catching.id')
-                ->join('LEFT JOIN', 'widget_settings', 'widget_catching.website=widget_settings.widget_site_url')
-                ->where('action = "'.$acttype.'"')
-                ->groupBy('widget_catching.ip');
+               /* ->join('LEFT JOIN', 'widget_catching', 'widget_pending_calls.catching_id=widget_catching.id')
+                ->join('LEFT JOIN', 'widget_settings', 'widget_catching.website=widget_settings.widget_site_url')*/
+                ->where('catching_event = "'.$acttype.'"')
+                /*->groupBy('widget_catching.ip')*/;
 
         }
 
@@ -166,7 +165,7 @@ class WidgetAnalytics extends Model
     {
         $convercion = array();
         $acttypes = array('active_more40', 'moretime_after1min', 'more_avgtime','other_page', 'scroll_down',
-            'mouse_intencivity', 'sitepage3_activity', 'form_activity', 'client_activity');
+            'mouse_intencivity', 'sitepage3_activity', 'form_activity', 'robax_button_clicked', 'robax_button_clicked');
         foreach ($acttypes as $act)
         {
             $convercion[$act] = (self::getShownWId(null,$w_id)!=0)?(integer)((self::getCatchedWId($act, $w_id))*100/(self::getShownWId(null,$w_id))):0;

@@ -14,6 +14,7 @@ $postArray = Yii::$app->request->post('Paymant');
 $order = User::getOrderNum(Yii::$app->user->identity->id);
 $userinfo = Yii::$app->user->identity;
 
+
 /*echo "<pre>";
 print_r(User::getOrderNum(Yii::$app->user->identity->id));
 echo "</pre>";*/

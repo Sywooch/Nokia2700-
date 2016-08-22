@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Bonus;
 use app\models\BonusHistory;
+use app\models\PartnerCashRequest;
 use app\models\Paymant;
 use app\models\PartnerLink;
 use app\models\User;
@@ -22,7 +23,8 @@ class PartnersController extends \yii\web\Controller
                     [
                         'actions' => [
                             'index', 'sendmail', 'promo',
-                            'changelink', 'bonus-history',
+                            'changelink', 'bonus-history', 'bonus-out',
+                            'bon-to-cache',
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -164,6 +166,10 @@ class PartnersController extends \yii\web\Controller
                     'asc' => ['bonus_history.status' => SORT_ASC],
                     'desc' => ['bonus_history.status' => SORT_DESC],
                 ],
+                'description' => [
+                    'asc' => ['bonus_history.description' => SORT_ASC],
+                    'desc' => ['bonus_history.description' => SORT_DESC],
+                ],
             ]
         ]);
         $dataProviderDesc->setSort([
@@ -183,6 +189,50 @@ class PartnersController extends \yii\web\Controller
             'dataProvider' => $dataProvider,
             'dataProviderDesc' => $dataProviderDesc,
         ]);
+    }
+
+    function actionBonusOut()
+    {
+        return $this->render('bonus-out');
+    }
+
+    function actionBonToCache()
+    {
+
+        /*echo "<pre>";
+        print_r($_POST);
+        echo "</pre>";
+
+        echo "<pre>";
+        print_r(Yii::$app->user->id);
+        echo "</pre>";*/
+
+        $bonus_hist = new BonusHistory;
+        $bonus_hist->id='';
+        $bonus_hist->payment=$_POST['Paymant']['bonsum'];
+        $bonus_hist->user_id=Yii::$app->user->id;
+        $bonus_hist->date='';
+        $bonus_hist->order_num='out_bon_u_'.Yii::$app->user->id.'_'.date('dmYHis');
+        $bonus_hist->type=1;
+        $bonus_hist->status=0;
+        ($_POST['Paymant']['bonpaywith'] == 'myCache') ?
+            $desc = 'Перевести на основной счет':
+            $desc = 'Вывести на эл. кошелек';
+        $bonus_hist->description= $desc;
+        $bonus_hist->save();
+
+        $requestCash = new PartnerCashRequest;
+        $requestCash->request_id='';
+        $requestCash->user_id=Yii::$app->user->id;
+        $requestCash->request_message='';
+        $requestCash->request_sum=$_POST['Paymant']['bonsum'];;
+        $requestCash->request_date='';
+        $requestCash->request_status=0;
+        $requestCash->request_method=$desc;
+        $requestCash->request_cart_id='0';
+        $requestCash->save();
+        
+        return $this->redirect('/partners/bonus-history');
     }
 
     function validateEmail($email) {

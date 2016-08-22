@@ -12,6 +12,7 @@ use yii\helpers\Html;
  * @property integer $payment
  * @property integer $user_id
  * @property string $date
+ * @property string $description
  * @property integer $order_num
  * @property integer $type
  */
@@ -33,7 +34,7 @@ class BonusHistory extends \yii\db\ActiveRecord
         return [
             [['payment', 'user_id', 'order_num', 'type'], 'required'],
             [['payment', 'user_id', 'type', 'status'], 'integer'],
-            ['order_num', 'string'],
+            [['order_num','description'], 'string'],
             [['date'], 'safe'],
         ];
     }
@@ -53,7 +54,8 @@ class BonusHistory extends \yii\db\ActiveRecord
             'typeFormat' => 'Тип',
             'dateFormat' => 'Дата',
             'payStatus' => 'Статус выполнения',
-            'status' => 'Статус оплаты'
+            'status' => 'Статус оплаты',
+            'description' => 'Описание'
         ];
     }
 

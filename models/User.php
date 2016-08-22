@@ -19,6 +19,7 @@ use yii\helpers\Url;
  * @property string $password_token
  * @property string $create_at
  * @property integer $cache
+ * @property integer $bonus
  * @property string $phone
  * @property string $activation
  * @property integer $status

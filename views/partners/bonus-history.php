@@ -35,7 +35,7 @@ $bonuses = isset(Yii::$app->user->identity->bonus) ? Yii::$app->user->identity->
                             <b>Бонусы</b> <a class="pull-right"><?=$bonuses?></a>
                         </li>
                     </ul>
-                    <a href="<?=Url::to('#');?>" class="btn btn-primary btn-block"><b>Вывести бонусы</b></a>
+                    <a href="<?=Url::to('bonus-out');?>" class="btn btn-primary btn-block"><b>Вывести бонусы</b></a>
                 </div>
                 <!-- /.box-body -->
             </div>
@@ -70,6 +70,7 @@ $bonuses = isset(Yii::$app->user->identity->bonus) ? Yii::$app->user->identity->
                                 'typeFormat',
                                 'payment',
                                 'payStatus',
+                                'description'
                             ],
                         ]); ?>
                     </div>

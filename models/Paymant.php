@@ -9,8 +9,15 @@
 namespace app\models;
 
 
+use Yii;
 use yii\base\Model;
 use yii\db\Query;
+use yii\validators\Validator;
+
+/**
+ * @param string $attribute the attribute currently being validated
+ * @param mixed $params the value of the "params" given in the rule
+ */
 
 class Paymant extends Model
 {
@@ -18,14 +25,24 @@ class Paymant extends Model
     public $summ;
     public $paywith;
 
+    public $bonsum;
+    public $bonpaywith;
+
+    public $servicename;
+    public $idinservise;
+
     public function rules()
     {
         return [
-            ['summ', 'required', 'message'=>'Ведите желаемую сумму оплаты.'],
-            ['paywith', 'required', 'message'=>'Выберите из списка сервис оплаты.'],
-            /*['user_id', 'required', 'message'=>'Ведите желаемую сумму оплаты.'],*/
-            ['summ', 'double'],
-            ['paywith', 'string'],
+            [['summ'], 'required', 'message'=>'Ведите желаемую сумму оплаты.'],
+            [['paywith'], 'required', 'message'=>'Выберите из списка сервис оплаты.'],
+            [['servicename'], 'required', 'message'=>'Укажите сервис оплаты.'],
+            [['bonpaywith'], 'required', 'message'=>'Выберите из списка желаемый способ получения.'],
+            [['idinservise'], 'required', 'message'=>'Ведите номер кошелька на который перевести суму.'],
+            [['bonsum'], 'required', 'message'=>'Ведите желаемую сумму.'],
+            [['summ', ], 'double'],
+            [['bonsum'], 'compare', 'compareValue' => Yii::$app->user->identity->bonus, 'operator' => '<', 'message'=>'Вееденная сума превышает остаток на бонусном счету'],
+            [['paywith','bonpaywith','idinservise','servicename'], 'string'],
             /*['user_id', 'integer'],*/
         ];
     }
@@ -176,4 +193,15 @@ class Paymant extends Model
 
     }
 
+    public function bonusValidate($attribute, $params)
+    {
+        echo Yii::$app->user->identity->getId();
+        if( $this->$attribute)
+        {
+
+            $this->addError($attribute, 'Вееденная сума превышает остаток на бонусном счету');
+        }
+    }
+
 }
+
