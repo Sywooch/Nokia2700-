@@ -231,7 +231,7 @@ class PartnersController extends \yii\web\Controller
         $requestCash->request_method=$desc;
         $requestCash->request_cart_id='0';
         $requestCash->save();
-        
+
         return $this->redirect('/partners/bonus-history');
     }
 
