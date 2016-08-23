@@ -65,7 +65,7 @@
                     </ul>
                     <input class="" type="text" hidden id="megaEvent"/>
                 </div>
-                <div class="robax-widget-item-button">
+                <div class="robax-widget-item-button btn-call">
                     <{buttons.post}>
                 </div>
                 <div class="robax-timer" id="robax-timer">
@@ -98,13 +98,13 @@
                     <{mail.item-text}>
                 </div>
                 <form class="robax-widget-form">
-                    <textarea placeholder="Напишите вопрос" name="question"></textarea>
-                    <input type="text" name="email" value="" placeholder="Ваш E-mail (для ответа)" />
-                    <input type="text" name="phone" value="" placeholder="Ваш телефон (по желанию)" />
-                    <div class="robax-widget-item-button">
-                        <{buttons.post-form}>
-                    </div>
+                    <textarea placeholder="Напишите вопрос" name="question" class="form-question"></textarea>
+                    <input type="text" name="email" class="form-mail" placeholder="Ваш E-mail (для ответа)" />
+                    <input type="text" name="phone" class="form-phone" placeholder="Ваш телефон (по желанию)" />
                 </form>
+                <div class="robax-widget-item-button btn-mail">
+                    <{buttons.post-form}>
+                </div>
             </div>
         </div>
         <div class="robax-widget-bottom">

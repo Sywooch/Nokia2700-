@@ -190,6 +190,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
             $widget_json['position'] = $widget->widget_position;
             $widget_json['position_mobile'] = $widget->widget_position_mobile;
             $widget_json['theme_color'] = $widget->widget_theme_color;
+            $widget_json['widget_user_email'] = $widget->widget_user_email;
             $widget_json['widget_settings'] = $widget->widget_settings;
             $widget_json["buttons"] = array(
                 "post" => "Жду звонка!",
@@ -267,17 +268,48 @@ class WidgetSettings extends \yii\db\ActiveRecord
         } else return false;
     }
 
-    public function widgetCall($key,$url,$phone, $megaEvent)
+    public function widgetCall($url, $phone, $megaEvent, $widget)
     {
-        $widget=$this->getJSONWidget($key,$url);
         if(is_array($widget)){
-            $callback=$this->makeCallBackCallFollowMe($widget,$this->cutNumber($phone),$url, $megaEvent);
+            $callback=$this->makeCallBackCallFollowMe($widget, $this->cutNumber($phone), $url, $megaEvent);
             if($callback){
                 //all is good
             } else {
                 //all is shit
             }
             return true;
+        } else return 'error';/*$this->error['widget_not_found'];*/
+    }
+
+    public function widgetMail($url, $question, $phone, $mail, $widget)
+    {
+        if(is_array($widget)){
+            $WidgetSendedEmail = new WidgetSendedEmail();
+            $WidgetSendedEmail->widget_id = $widget['widget_id'];
+            $WidgetSendedEmail->email = $mail;
+            $WidgetSendedEmail->message = $question;
+            $WidgetSendedEmail->phone = $phone;
+            $WidgetSendedEmail->save();
+
+            $subject = 'Письмо отправлено через Robaks!';
+            $message =
+                '<html>
+                        <head>
+                            <title>Письмо отправлено через Robaks!</title>
+                        </head>
+                        <body>
+                            <p>'.$url.'</p>
+                            <p>'.$question.'</p>
+                            <p>'.$phone.'</p>
+                            <p>'.$mail.'</p>
+                        </body>
+                    </html>';
+            Yii::$app->mailer->compose()
+                ->setTo($widget['widget_user_email'])
+                ->setFrom('robax@oblax.ru')
+                ->setSubject($subject)
+                ->setHtmlBody($message)
+                ->send();
         } else return 'error';/*$this->error['widget_not_found'];*/
     }
 
@@ -332,7 +364,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
             if (!is_bool($response)){
                 if(isset($response->result->callBackCall_id)){
                     $callBackCall_id = $response->result->callBackCall_id;
-                    $this->saveCall($widget['widget_id'],$phone,$callBackCall_id,1, $megaEvent);
+                    $this->saveCall($widget['widget_id'], $phone, $callBackCall_id, 1, $megaEvent);
                 }
             }
             return true;
@@ -380,7 +412,8 @@ class WidgetSettings extends \yii\db\ActiveRecord
                 $model->call_back_record_URL_A = $response->result->callBackFollowmeCallInfoStruct->call_back_record_URL_A;
                 $model->call_back_record_URL_B = $response->result->callBackFollowmeCallInfoStruct->call_back_record_URL_B;
                 $model->save();
-
+                //////////////////////////////////
+                $WidgetSettings = WidgetSettings::findOne(["widget_id" => $model->widget_id]);
                 $subject = 'Уведомление об успешно звонке Robaks!';
                 $message =
                     '<html>
@@ -392,7 +425,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
                         </body>
                     </html>';
                 Yii::$app->mailer->compose()
-                    ->setTo($model->widget_user_email_1)
+                    ->setTo($WidgetSettings->widget_user_email)
                     ->setFrom('robax@oblax.ru')
                     ->setSubject($subject)
                     ->setHtmlBody($message)

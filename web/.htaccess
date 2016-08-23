@@ -1,3 +1,4 @@
+Options +FollowSymLinks
 RewriteEngine on
 
 #RewriteCond %{HTTPS} off

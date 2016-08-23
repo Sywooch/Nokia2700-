@@ -5,15 +5,8 @@ namespace app\controllers;
 use app\models\WidgetCatching;
 use Yii;
 use yii\db\Query;
-use yii\filters\AccessControl;
-use yii\data\ActiveDataProvider;
-use yii\data\SqlDataProvider;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use app\models\User;
-use app\models\PayHistory;
-use app\models\WidgetSendedEmail;
-use app\models\WidgetPendingCalls;
+use yii\requirements\YiiRequirementChecker;
 use app\models\WidgetSettings;
 use app\models\WidgetActionMarks;
 
@@ -273,13 +266,28 @@ class WidgetController extends Controller
         $key = $getArray['key'];
         $phone = $getArray['phone'];
         $event = $getArray['event'];
-        $time = '';
         $site_url = $getArray['site_url'];
-        $widget=WidgetSettings::getJSONWidget($key, $site_url);
+        $widget = WidgetSettings::getJSONWidget($key, $site_url);
         $model = new WidgetSettings();
         if(is_array($widget)&&$phone!='undefined'){
             header('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
-            die($model->widgetCall($key,$site_url,$phone, $event));
+            die($model->widgetCall($site_url, $phone, $event, $widget));
+        } else throw new \Exception('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
+    }
+
+    public function actionWidgetMail()
+    {
+        $getArray = Yii::$app->request->get();
+        $question = $getArray['question'];
+        $phone = $getArray['phone'];
+        $mail = $getArray['mail'];
+        $key = $getArray['key'];
+        $site_url = $getArray['site_url'];
+        $widget = WidgetSettings::getJSONWidget($key, $site_url);
+        $model = new WidgetSettings();
+        if(is_array($widget) && $question != 'undefined' && $phone != 'undefined' && $mail != 'undefined'){
+            header('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
+            die($model->widgetMail($site_url, $question, $phone, $mail, $widget));
         } else throw new \Exception('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
     }
 

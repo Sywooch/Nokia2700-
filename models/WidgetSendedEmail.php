@@ -10,7 +10,7 @@ use \yii\db\Query;
  *
  * @property integer $widget_id
  * @property integer $id
- * @property string $name
+ * @property string $phone
  * @property string $email
  * @property string $message
  */
@@ -32,7 +32,7 @@ class WidgetSendedEmail extends \yii\db\ActiveRecord
         return [
             [['widget_id', 'id', 'email'], 'required'],
             [['widget_id', 'id'], 'integer'],
-            [['name'], 'string', 'max' => 45],
+            [['phone'], 'string', 'max' => 45],
             [['email'], 'string', 'max' => 100],
             [['message'], 'string', 'max' => 2000],
         ];
@@ -46,7 +46,7 @@ class WidgetSendedEmail extends \yii\db\ActiveRecord
         return [
             'widget_id' => 'Номер виджета',
             'id' => 'ID',
-            'name' => 'Имя',
+            'phone' => 'Телефон',
             'email' => 'Почта',
             'message' => 'Сообщение',
         ];

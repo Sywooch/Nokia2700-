@@ -183,8 +183,21 @@
 .robax-item-later-link:hover,.robax-item-later-now:hover {cursor: pointer; color: #000; opacity: 1;}
 
 
-.robax-widget-form {}
-.robax-widget-form textarea, .robax-widget-form input {outline: 0; top: auto; left: auto; padding: 6px 10px !important; margin: 0 0 7px !important; border: 1px solid transparent !important; border-radius: 5px; width: 210px; height: inherit; background-color: rgba(0, 0, 0, .1) !important; float: left; box-sizing: content-box; box-shadow: none;}
+.robax-widget-form textarea, .robax-widget-form input {
+    outline: 0;
+    top: auto;
+    left: auto;
+    padding: 6px 10px!important;
+    margin: 0 0 7px!important;
+    border: 1px solid transparent!important;
+    border-radius: 5px;
+    width: 229px;
+    height: inherit;
+    background-color: rgba(0, 0, 0, .1)!important;
+    float: left;
+    box-sizing: content-box;
+    box-shadow: none;
+}
 
 .robax-timer {margin: 0 auto; width: 150px; clear: both; margin-bottom: 26%; font-family: Roboto !important;}
 .robax-timer .robax-numbs span, .robax-d {float: left; display: block; font-weight: 100; font-size: 40px; -webkit-transition: all .2s cubic-bezier(.19, 1, .22, 1); transition: all .2s cubic-bezier(.19, 1, .22, 1); font-family: Roboto !important;}
