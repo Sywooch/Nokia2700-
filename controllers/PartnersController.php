@@ -166,7 +166,7 @@ class PartnersController extends \yii\web\Controller
                     'asc' => ['bonus_history.status' => SORT_ASC],
                     'desc' => ['bonus_history.status' => SORT_DESC],
                 ],
-                'description' => [
+                'description'=> [
                     'asc' => ['bonus_history.description' => SORT_ASC],
                     'desc' => ['bonus_history.description' => SORT_DESC],
                 ],
@@ -182,7 +182,10 @@ class PartnersController extends \yii\web\Controller
                 ],
                 'client_paid_sum',
                 'payment',
-                'description' ,
+                'description'=> [
+                    'asc' => ['pay_for_partners.description' => SORT_ASC],
+                    'desc' => ['pay_for_partners.description' => SORT_DESC],
+                ],
             ]
         ]);
         return $this->render('bonus-history', [

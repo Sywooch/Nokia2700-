@@ -52,7 +52,7 @@ class WidgetAnalytics extends Model
     public static function getCatchAnalytics($w_id=null)
     {
         $acttypes = array('active_more40', 'moretime_after1min', 'more_avgtime','other_page', 'scroll_down',
-            'mouse_intencivity', 'sitepage3_activity', 'form_activity', 'robax_button_clicked');
+            'mouse_intencivity', 'sitepage3_activity', 'form_activity', /*'robax_button_clicked'*/);
 
         $acts = array(
             'active_more40'=>'<i class="fa fa-hourglass-o"></i>Более 40с. на сайте',
@@ -63,7 +63,8 @@ class WidgetAnalytics extends Model
             'mouse_intencivity'=>'<i class="fa fa-mouse-pointer"></i>Активность мыши',
             'sitepage3_activity'=>'<i class="fa fa-file-word-o"></i>Посещение более 3-х страниц',
             'form_activity'=>'<i class="fa fa-commenting-o"></i>Взаимодействие с формами',
-            'robax_button_clicked'=>'<i class="fa fa-hand-pointer-o"></i>Нажатие на кнопку');
+            'client_activity'=>'<i class="fa fa-hand-pointer-o"></i>Нажатие на кнопку',
+            /*'robax_button_clicked'=>'<i class="fa fa-hand-pointer-o"></i>Нажатие на кнопку'*/);
 
         $analyt = array();
         foreach($acttypes as $act)
@@ -165,7 +166,7 @@ class WidgetAnalytics extends Model
     {
         $convercion = array();
         $acttypes = array('active_more40', 'moretime_after1min', 'more_avgtime','other_page', 'scroll_down',
-            'mouse_intencivity', 'sitepage3_activity', 'form_activity', 'robax_button_clicked', 'robax_button_clicked');
+            'mouse_intencivity', 'sitepage3_activity', 'form_activity', 'client_activity');
         foreach ($acttypes as $act)
         {
             $convercion[$act] = (self::getShownWId(null,$w_id)!=0)?(integer)((self::getCatchedWId($act, $w_id))*100/(self::getShownWId(null,$w_id))):0;

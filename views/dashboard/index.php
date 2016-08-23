@@ -9,8 +9,9 @@ use app\models\WidgetSendedEmail;
     <div class="row">
         <div class="col-md-12 col-sm-12">
             <div class="nav-tabs-custom">
-               <!-- <ul class="nav nav-tabs">
+                <!--<ul class="nav nav-tabs">
                     <li class="active"><a href="#analytics" data-toggle="tab">Статистика</a></li>
+                    <li class=""><a href="#chart_div" data-toggle="tab">Статистика</a></li>
                 </ul>-->
                 <div class="tab-content">
                     <div class="active tab-pane" id="analytics">
@@ -61,6 +62,9 @@ use app\models\WidgetSendedEmail;
                             </div>
                          </div>
                     </div>
+                   <!-- <div class="tab-pane" id="chart_div">
+
+                    </div>-->
                 </div>
             </div>
         </div>
