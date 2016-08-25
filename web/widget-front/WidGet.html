@@ -25,10 +25,8 @@
         </div>
         <div class="robax-widget-items">
             <div class="robax-widget-phone robax-widget-active robax-widget-item">
-                <h1 id="phone-h1"><{phone.h1}></h1>
-                <div id="phone-div" class="robax-widget-item-text">
-                    <{phone.item-text}>
-                </div>
+                <h1 id="phone-h1"></h1>
+                <div id="phone-div" class="robax-widget-item-text"></div>
                 <h1 id="widget-msg-h1" style="display:none"><{widget-msg.h1}></h1>
                 <div id="widget-msg-div" style="display:none" class="robax-widget-item-text">
                     <{widget-msg.item-text}>
@@ -83,6 +81,19 @@
                 </div>
                 <div class="robax-item-later"><span class="robax-item-later-link"><{phone.later-text}></span></div>
                 <div class="robax-item-now" style="display:none;"><span class="robax-item-later-now"><{phone.now-text}></span></div>
+                <div class="rate">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </div>
+                <div class="rate-form">
+                    <textarea placeholder="Напишите отзыв" name="form-review" class="form-review"></textarea>
+                    <div class="robax-widget-item-button btn-review">
+                        <{buttons.post-form}>
+                    </div>
+                </div>
             </div>
             <div class="robax-widget-msg robax-widget-item">
                 <h1><{widget-msg.h1}></h1>

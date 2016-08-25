@@ -259,7 +259,6 @@ class WidgetController extends Controller
         }
     }
 
-
     public function actionWidgetCall()
     {
         $getArray = Yii::$app->request->get();
@@ -269,7 +268,7 @@ class WidgetController extends Controller
         $site_url = $getArray['site_url'];
         $widget = WidgetSettings::getJSONWidget($key, $site_url);
         $model = new WidgetSettings();
-        if(is_array($widget)&&$phone!='undefined'){
+        if(is_array($widget) && $phone != 'undefined'){
             header('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
             die($model->widgetCall($site_url, $phone, $event, $widget));
         } else throw new \Exception('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
@@ -288,6 +287,35 @@ class WidgetController extends Controller
         if(is_array($widget) && $question != 'undefined' && $phone != 'undefined' && $mail != 'undefined'){
             header('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
             die($model->widgetMail($site_url, $question, $phone, $mail, $widget));
+        } else throw new \Exception('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
+    }
+
+    public function actionWidgetReview()
+    {
+        $getArray = Yii::$app->request->get();
+        $key = $getArray['key'];
+        $review = $getArray['review'];
+        $starCount = $getArray['starCount'];
+        $site_url = $getArray['site_url'];
+        $callbackID = $getArray['callbackID'];
+        $widget = WidgetSettings::getJSONWidget($key, $site_url);
+        $model = new WidgetSettings();
+        if(is_array($widget) && ($review != 'undefined' && $starCount != 'undefined' && $callbackID != 'undefined')){
+            header('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
+            die($model->widgetReview($review, $starCount, $callbackID, $widget));
+        } else throw new \Exception('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
+    }
+
+    public function actionGetCallback()
+    {
+        $getArray = Yii::$app->request->get();
+        $key = $getArray['key'];
+        $site_url = $getArray['site_url'];
+        $widget = WidgetSettings::getJSONWidget($key, $site_url);
+        $model = new WidgetSettings();
+        if(is_array($widget)){
+            header('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
+            die($model->widgetGetCallbackId($widget));
         } else throw new \Exception('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
     }
 

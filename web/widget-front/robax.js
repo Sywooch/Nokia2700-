@@ -1,4 +1,4 @@
-var hostWidget = "robax.dev";
+var hostWidget = "r.oblax.ru", helperMask, callbackID;
 (function(w,d){
     var helper={};
     var widgetsound = 0;
@@ -19,13 +19,17 @@ var hostWidget = "robax.dev";
             return navigator.userAgent.match(/IEMobile/i);
         },
         iFrameMobile: function() {
-            return $('html').width() <= 678 ? true : false;
+            return (helper.cssQuery("html").width <= 678);
         },
         any: function() {
             return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows()) || isMobile.iFrameMobile();
         }
     };
-    helper.ObjectLength=function(o){
+    helperMask = helper;
+    /**
+     * @return {number}
+     */
+    helper.ObjectLength = function(o){
         var s = 0, k;
         for (k in o) {
             if (o.hasOwnProperty(k)) s++;
@@ -33,7 +37,10 @@ var hostWidget = "robax.dev";
         return s;
     };
     //My typeof. For WHY? IS UNDERSTEND THAT IS A OBJECT AND THAT IS A ARRAY.
-    helper.ObjectType=function(e){
+    /**
+     * @return {string}
+     */
+    helper.ObjectType = function(e){
         var t=Object.prototype.toString.call(e),r='';
         if(/\[object HTML([a-zA-Z]+)Element\]/.test(t)) r=t.match(/\[object HTML([a-zA-Z]+)Element\]/)[1].toLowerCase();
         else if(/\[object ([a-zA-Z]+)\]/.test(t)) r=t.match(/\[object ([a-zA-Z]+)\]/)[1].toLowerCase();
@@ -42,13 +49,12 @@ var hostWidget = "robax.dev";
             else r=typeof(e);
         }
         return r;
-    }
-    helper.isHTML=function (e){
+    };
+    helper.isHTML = function (e){
         var t=Object.prototype.toString.call(e);
-        if(/\[object HTML([a-zA-Z]+)\]/.test(t)) return true;
-        else return false;
-    }
-    helper.get=function (p,o,s,b,m){
+        return !!/\[object HTML([a-zA-Z]+)\]/.test(t);
+    };
+    helper.get = function (p,o,s,b,m){
         var xhttp= new XMLHttpRequest();
         var url=p+"?";
         if(o||o!=""){
@@ -72,14 +78,14 @@ var hostWidget = "robax.dev";
         if(s){
             xhttp.onreadystatechange = function () {
                 if(xhttp.readyState==4) s(xhttp.responseText,xhttp.readyState);
-            }
+            };
             xhttp.send(null);
         }else{
             xhttp.send(null);
             return xhttp.responseText;
         }
-    }
-    helper.post=function (p,o,s,b,m){
+    };
+    helper.post = function (p,o,s,b,m){
         var xhttp= new XMLHttpRequest();
         var body="";
         var response,redy;
@@ -103,14 +109,14 @@ var hostWidget = "robax.dev";
         if(s){
             xhttp.onreadystatechange = function () {
                 if(xhttp.readyState==4) s(xhttp.responseText,xhttp.readyState);
-            }
+            };
             xhttp.send(body);
         }else{
             xhttp.send(body);
             return xhttp.responseText;
         }
-    }
-    helper.replaceAll=function (t,o){
+    };
+    helper.replaceAll = function (t,o){
         var i=0, n=helper.ObjectLength(o), HTML=t,r=new RegExp("(<{\\S+}>)","g"),a=[],b=[],TypeCache='',c,ca,z,zn;
         //loop start
         do
@@ -133,29 +139,527 @@ var hostWidget = "robax.dev";
             });
             i++;
         }
-        while(i<=n)
+        while(i<=n);
         //loop end
         return HTML;
-    }
-    helper.addClass=function (el, cls) {
+    };
+    helper.addClass = function (el, cls) {
         el.className += " "+cls;
-    }
-    helper.removeClass=function (el, cls) {
+    };
+    helper.removeClass = function (el, cls) {
         var re = new RegExp('(\\s|^)' + cls + '(\\s|$)');
         el.className = el.className.replace(re, ' ');
-    }
-    helper.parseHourse=function (t){
+    };
+    helper.parseHourse = function (t){
         var h=t/60,m=t%60;
         return Math.ceil(h)+':'+(m<10?m+'0':m);
-    }
-    helper.cssQuery=function (q){
+    };
+    helper.cssQuery = function (q){
         return document.querySelector(q);
-    }
-    helper.cssQueryAll=function (q){
+    };
+    helper.cssQueryAll = function (q){
         return document.querySelectorAll(q);
-    }
-    RobaxWidget=function(param){
-        var t=this;
+    };
+    helper.getTime = function(day, dataJSON, strDay) {
+        switch (day) {
+            case "Monday": {
+                if (strDay == "Сегодня") {
+                    return dataJSON["date"]["time"]["Monday"];
+                } else if (strDay == "Завтра") {
+                    return dataJSON["date"]["time"]["Tuesday"];
+                } else if (strDay == "Послезавтра") {
+                    return dataJSON["date"]["time"]["Wednesday"];
+                } else if (strDay == "Послепослезавтра") {
+                    return dataJSON["date"]["time"]["Thursday"];
+                }
+                break;
+            }
+            case "Tuesday": {
+                if (strDay == "Сегодня") {
+                    return dataJSON["date"]["time"]["Tuesday"];
+                } else if (strDay == "Завтра") {
+                    return dataJSON["date"]["time"]["Wednesday"];
+                } else if (strDay == "Послезавтра") {
+                    return dataJSON["date"]["time"]["Thursday"];
+                } else if (strDay == "Послепослезавтра") {
+                    return dataJSON["date"]["time"]["Friday"];
+                }
+                break;
+            }
+            case "Wednesday": {
+                if (strDay == "Сегодня") {
+                    return dataJSON["date"]["time"]["Wednesday"];
+                } else if (strDay == "Завтра") {
+                    return dataJSON["date"]["time"]["Thursday"];
+                } else if (strDay == "Послезавтра") {
+                    return dataJSON["date"]["time"]["Friday"];
+                } else if (strDay == "Послепослезавтра") {
+                    return dataJSON["date"]["time"]["Saturday"];
+                }
+                break;
+            }
+            case "Thursday": {
+                if (strDay == "Сегодня") {
+                    return dataJSON["date"]["time"]["Thursday"];
+                } else if (strDay == "Завтра") {
+                    return dataJSON["date"]["time"]["Tuesday"];
+                } else if (strDay == "Послезавтра") {
+                    return dataJSON["date"]["time"]["Friday"];
+                } else if (strDay == "Послепослезавтра") {
+                    return dataJSON["date"]["time"]["Saturday"];
+                }
+                break;
+            }
+            case "Friday": {
+                if (strDay == "Сегодня") {
+                    return dataJSON["date"]["time"]["Friday"];
+                } else if (strDay == "Завтра") {
+                    return dataJSON["date"]["time"]["Saturday"];
+                } else if (strDay == "Послезавтра") {
+                    return dataJSON["date"]["time"]["Sunday"];
+                } else if (strDay == "Послепослезавтра") {
+                    return dataJSON["date"]["time"]["Monday"];
+                }
+                break;
+            }
+            case "Saturday": {
+                if (strDay == "Сегодня") {
+                    return dataJSON["date"]["time"]["Saturday"];
+                } else if (strDay == "Завтра") {
+                    return dataJSON["date"]["time"]["Sunday"];
+                } else if (strDay == "Послезавтра") {
+                    return dataJSON["date"]["time"]["Monday"];
+                } else if (strDay == "Послепослезавтра") {
+                    return dataJSON["date"]["time"]["Tuesday"];
+                }
+                break;
+            }
+            case "Sunday": {
+                if (strDay == "Сегодня") {
+                    return dataJSON["date"]["time"]["Sunday"];
+                } else if (strDay == "Завтра") {
+                    return dataJSON["date"]["time"]["Monday"];
+                } else if (strDay == "Послезавтра") {
+                    return dataJSON["date"]["time"]["Tuesday"];
+                } else if (strDay == "Послепослезавтра") {
+                    return dataJSON["date"]["time"]["Wednesday"];
+                }
+                break;
+            }
+        }
+
+        return null;
+    };
+    helper.setTime = function (dataTime) {
+        var s=Number(dataTime['start'].split(':')[0])*60+Number(dataTime['start'].split(':')[1]),
+            e=Number(dataTime['end'].split(':')[0])*60+Number(dataTime['end'].split(':')[1]),
+            m=e-s,
+            i=0,
+            html='';
+        while (i<=m) {
+            if (i == (m - dataTime['end'].split(':')[1])) {
+                html+='<li data-time="'+dataTime['end']+'">'+dataTime['end']+'</li>';
+                i=i+60;
+            } else if (i == 0) {
+                html+='<li data-time="'+dataTime['start']+'">'+dataTime['start']+'</li>';
+                i=i+60;
+            } else {
+                html+='<li data-time="'+helper.parseHourse(s+i)+'">'+helper.parseHourse(s+i)+'</li>';
+                i=i+60;
+            }
+        }
+        helper.cssQuery('.robax-later__hour-val').innerHTML=dataTime['start'];
+        helper.cssQuery('.robax-later-sel__hold__hour').innerHTML=html;
+        var e=helper.cssQueryAll('.robax-later__hour li'),i=0,n=e.length;
+        while(i<n){
+            e[i].onclick = function(){
+                helper.cssQuery('.robax-later-data-hour').value=this.getAttribute("data-day");
+                helper.cssQuery('.robax-later__hour-val').innerHTML=this.innerHTML;
+            };
+            i++;
+        }
+    };
+    helper.setMask = function(I, M) {
+        function R(s) {
+            return new RegExp('('+s.replace(/\(/g,'\\(').replace(/\)/g,'\\)').replace(/\//g,'\\/').replace(/9/g,'\\d').replace(/a/g,'[a-zР°-СЏС‘]').replace(/\*/g,'[a-zР°-СЏС‘0-9]')+')','gi')
+        }
+        function N(c,j,x) {
+            for(var k=0,s='';k<L;k++)s+=$[k]||c||'_';
+            I.value=s;
+            x?0:I.sC(!j?i:0)
+        }
+        function D(e,p,i) {
+            p=I.gC();
+            if (p[0]==p[1]) {
+                if(e)p[1]++;
+                else p[0]--
+            }
+            for(i=p[0];i<p[1];i++)
+                if(!S[i]&&$[i]){
+                    $[i]=0;
+                    j--
+                }
+            return p
+        }
+        function V(){
+            setTimeout(function(k){
+                if (R(M).test(I.value)) {
+                    I.value=RegExp.$1;
+                    $=I.value.split('');
+                    for(k=j=0;k<L;k++)if(!S[k])j++
+                }
+                else N()
+            },0)
+        }
+        function P(c){
+            if (c<35&&c!=8||c==45) return 1;
+            switch(c){
+                case 8:		i=D()[0]; return 0;
+                case 46:	i=D(1)[1]; return 0;
+                case 35:	i = L; return 1;
+                case 36:	i = 1;
+                case 37:	if (i-=2<-1) i=-1;
+                case 39:	if (++i>L) i=L; return 1;
+                default:	i=I.gC()[0];
+                    while(i<L&&S[i]){i++}
+                    if (i==L) return 0;
+
+                    c = String.fromCharCode(c);
+                    if (R(M.charAt(i)).test(c)) {
+                        D(1);
+                        $[i++] = c;
+                        j++;
+                        while(i<L&&S[i]){i++}
+                    }
+                    return 0;
+            }
+        }
+
+        var d=document, c='character', y=-100000, L=M.length, G=!c, i=0, j=0, $=M.split(''), S=M.split('');
+
+        for (var k=0;k<L;k++) if (/a|9|\*/.test($[k])) $[k]=S[k]=0;
+        I = typeof I=='string' ? d.getElementById(I) : I;
+
+        I.sC = function(l,g){
+            if(this.setSelectionRange) this.setSelectionRange(l,l);
+            else {
+                g = this.createTextRange();
+                g.collapse(true);
+                g.moveStart(c,y);
+                g.move(c,l);
+                g.select();
+            }
+        };
+        I.gC = function(r,b){
+            if (this.setSelectionRange) return [this.selectionStart,this.selectionEnd];
+            else {
+                r = d['selection'].createRange();
+                b = 0-r.duplicate().moveStart(c,y);
+                return [b,b+r.text.length]
+            }
+        };
+        I.onfocus = function(){
+            setTimeout(function(){N(0,!j)},0)
+        };
+        I.onblur = function(){
+            j ? N(' ',0,1) : this.value=''
+        };
+        I.onkeydown = function(e,c){
+            e = e||event;
+            c = e.keyCode||e.charCode;
+
+            if (c==8||c==46) {
+                G = true;
+                P(c);
+                N();
+                return !G
+            }
+            else if (!window.netscape&&(c>34&&c<38||c==39)) P(c)
+        };
+        I.onkeypress = function(e){
+            if (G) return G=!G;
+
+            e = e||event;
+
+            if (P(e.keyCode||e.charCode)) return !G;
+
+            N();
+
+            return G
+        };
+
+        if (d.all&&!window.opera){
+            I.onpaste=V;
+        } else {
+            I.addEventListener('input', V, false);
+        }
+        I.onselect = function(){
+            helper.setCaretPosition(this,this.getAttribute("placeholder").indexOf('_'));
+            this.onselect='';
+        };
+    };
+    helper.setCaretPosition = function(ctrl, pos) {
+        if(ctrl.setSelectionRange) {
+            ctrl.focus();
+            ctrl.setSelectionRange(pos,pos);
+            //alert(ctrl.setSelectionRange(pos,pos));
+        } else if (ctrl.createTextRange) {
+            var range = ctrl.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', pos);
+            range.moveStart('character', pos);
+            //alert(range.moveStart('character', pos));
+            range.select();
+        }
+    };
+    helper.typing = function(obj, callBack) {
+        phh1 = obj['#phone-h1'];
+        phdiv = obj['#phone-div'];
+
+        helper.cssQuery('#phone-h1').innerHTML = '';
+        helper.cssQuery('#phone-div').innerHTML = '';
+
+        var tText = phh1;
+        var tLength = 0;
+
+        typingH1();
+        function typingH1(){
+            tLength++;
+            if(tLength <= tText.length) {
+                helper.cssQuery('#phone-h1').innerHTML = tText.substr(0, tLength);
+                if(tLength == tText.length) {
+                    tText = phdiv;
+                    tLength = 0;
+                    typingDIV();
+                } else {
+                    setTimeout(typingH1, 50 );
+                }
+            }
+        }
+        function typingDIV(){
+            tLength++;
+            if(tLength <= tText.length) {
+                helper.cssQuery('#phone-div').innerHTML = tText.substr(0, tLength);
+                if(tLength == tText.length) {
+                    if (typeof callBack == 'function') callBack();
+                } else {
+                    setTimeout(typingDIV, 50 );
+                }
+            }
+        }
+    };
+    helper.rate = function() {
+        helper.cssQuery(".rate").style.display = "block";
+        helper.cssQuery(".rate-form").style.display = "block";
+        //Star 1
+        helper.cssQuery(".rate i:nth-child(1)").onmouseover = function(){
+            var i = 1;
+            while (i <= 1) {
+                helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'gold';
+                i++
+            }
+        };
+        helper.cssQuery(".rate i:nth-child(1)").onmouseout = function(){
+            if (!helper.cssQuery(".rate i:nth-child(1)").getAttribute('select-star')) {
+                var i = 1;
+                while (i <= 1) {
+                    helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'black';
+                    i++
+                }
+            } else {
+                var i = 1;
+                while (i <= 1) {
+                    helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'darkgoldenrod';
+                    i++
+                }
+            }
+        };
+        helper.cssQuery(".rate i:nth-child(1)").onclick = function(){
+            var i = 1;
+            while (i <= 5) {
+                helper.cssQuery(".rate i:nth-child("+i+")").setAttribute('select-star', false);
+                i++
+            }
+            var i = 1;
+            while (i <= 1) {
+                helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'darkgoldenrod';
+                helper.cssQuery(".rate i:nth-child("+i+")").setAttribute('select-star', true);
+                i++
+            }
+            helper.cssQuery(".rate i:nth-child(2)").style.color = 'black';
+            helper.cssQuery(".rate i:nth-child(3)").style.color = 'black';
+            helper.cssQuery(".rate i:nth-child(4)").style.color = 'black';
+            helper.cssQuery(".rate i:nth-child(5)").style.color = 'black';
+        };
+        //Star 2
+        helper.cssQuery(".rate i:nth-child(2)").onmouseover = function(){
+            var i = 1;
+            while (i <= 2) {
+                helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'gold';
+                i++
+            }
+        };
+        helper.cssQuery(".rate i:nth-child(2)").onmouseout = function(){
+            if (!helper.cssQuery(".rate i:nth-child(2)").getAttribute('select-star')) {
+                var i = 1;
+                while (i <= 2) {
+                    helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'black';
+                    i++
+                }
+            } else {
+                var i = 1;
+                while (i <= 2) {
+                    helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'darkgoldenrod';
+                    i++
+                }
+            }
+        };
+        helper.cssQuery(".rate i:nth-child(2)").onclick = function(){
+            var i = 1;
+            while (i <= 5) {
+                helper.cssQuery(".rate i:nth-child("+i+")").setAttribute('select-star', false);
+                i++
+            }
+            var i = 1;
+            while (i <= 2) {
+                helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'darkgoldenrod';
+                helper.cssQuery(".rate i:nth-child("+i+")").setAttribute('select-star', true);
+                i++
+            }
+            helper.cssQuery(".rate i:nth-child(3)").style.color = 'black';
+            helper.cssQuery(".rate i:nth-child(4)").style.color = 'black';
+            helper.cssQuery(".rate i:nth-child(5)").style.color = 'black';
+        };
+        //Star 3
+        helper.cssQuery(".rate i:nth-child(3)").onmouseover = function(){
+            var i = 1;
+            while (i <= 3) {
+                helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'gold';
+                i++
+            }
+        };
+        helper.cssQuery(".rate i:nth-child(3)").onmouseout = function(){
+            if (!helper.cssQuery(".rate i:nth-child(3)").getAttribute('select-star')) {
+                var i = 1;
+                while (i <= 3) {
+                    helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'black';
+                    i++
+                }
+            } else {
+                var i = 1;
+                while (i <= 3) {
+                    helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'darkgoldenrod';
+                    i++
+                }
+            }
+        };
+        helper.cssQuery(".rate i:nth-child(3)").onclick = function(){
+            var i = 1;
+            while (i <= 5) {
+                helper.cssQuery(".rate i:nth-child("+i+")").setAttribute('select-star', false);
+                i++;
+            }
+            var i = 1;
+            while (i <= 3) {
+                helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'darkgoldenrod';
+                helper.cssQuery(".rate i:nth-child("+i+")").setAttribute('select-star', true);
+                i++
+            }
+            helper.cssQuery(".rate i:nth-child(4)").style.color = 'black';
+            helper.cssQuery(".rate i:nth-child(5)").style.color = 'black';
+        };
+        //Star 4
+        helper.cssQuery(".rate i:nth-child(4)").onmouseover = function(){
+            var i = 1;
+            while (i <= 4) {
+                helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'gold';
+                i++
+            }
+        };
+        helper.cssQuery(".rate i:nth-child(4)").onmouseout = function(){
+            if (!helper.cssQuery(".rate i:nth-child(4)").getAttribute('select-star')) {
+                var i = 1;
+                while (i <= 4) {
+                    helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'black';
+                    i++
+                }
+            } else {
+                var i = 1;
+                while (i <= 4) {
+                    helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'darkgoldenrod';
+                    i++
+                }
+            }
+        };
+        helper.cssQuery(".rate i:nth-child(4)").onclick = function(){
+            var i = 1;
+            while (i <= 5) {
+                helper.cssQuery(".rate i:nth-child("+i+")").setAttribute('select-star', false);
+                i++
+            }
+            var i = 1;
+            while (i <= 4) {
+                helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'darkgoldenrod';
+                helper.cssQuery(".rate i:nth-child("+i+")").setAttribute('select-star', true);
+                i++
+            }
+            helper.cssQuery(".rate i:nth-child(5)").style.color = 'black';
+        };
+        //Star 5
+        helper.cssQuery(".rate i:nth-child(5)").onmouseover = function(){
+            var i = 1;
+            while (i <= 5) {
+                helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'gold';
+                i++
+            }
+        };
+        helper.cssQuery(".rate i:nth-child(5)").onmouseout = function(){
+            if (!helper.cssQuery(".rate i:nth-child(5)").getAttribute('select-star')) {
+                var i = 1;
+                while (i <= 5) {
+                    helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'black';
+                    i++
+                }
+            } else {
+                var i = 1;
+                while (i <= 5) {
+                    helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'darkgoldenrod';
+                    i++
+                }
+            }
+        };
+        helper.cssQuery(".rate i:nth-child(5)").onclick = function(){
+            var i = 1;
+            while (i <= 5) {
+                helper.cssQuery(".rate i:nth-child("+i+")").setAttribute('select-star', false);
+                i++
+            }
+            var i = 1;
+            while (i <= 5) {
+                helper.cssQuery(".rate i:nth-child("+i+")").style.color = 'darkgoldenrod';
+                helper.cssQuery(".rate i:nth-child("+i+")").setAttribute('select-star', true);
+                i++
+            }
+        };
+    };
+    helper.afterReview = function(){
+        $(".rate i").each(function (i, e) {
+            $(this).css("color", "black");
+            $(this).attr("select-star", false);
+        });
+        $(".form-review").val("");
+        $(".rate").hide();
+        $(".rate-form").hide();
+
+        $("#cbh_timer_seconds").text("07");
+        $("#cbh_timer_ms").text("99");
+        $(".robax-widget-phone-form").show();
+        $(".btn-call").show();
+        $(".robax-timer").show();
+        $(".robax-item-later").show();
+    };
+    RobaxWidget = function(param){
+        var t = this;
         var template = 'desktop';
         var div = document.createElement("div");
         div.setAttribute("class","robax");
@@ -163,12 +667,12 @@ var hostWidget = "robax.dev";
         if (isMobile.any()) {
             template = 'mobile';
         }
-        var dataJSON=JSON.parse(helper.get('//'+hostWidget+'/widget/get-widget',{
-            'action':'widget-get',
-            'key':param.key,
-            'site_url':window.location.hostname,
-            'protocol':window.location.protocol,
-            'template':template
+        var dataJSON = JSON.parse(helper.get('//'+hostWidget+'/widget/get-widget',{
+            'action': 'widget-get',
+            'key': param.key,
+            'site_url': window.location.hostname,
+            'protocol': window.location.protocol,
+            'template': template
         }).replace(/\ufeff/g,''));
         window.widget_key = param.key;
 
@@ -183,17 +687,20 @@ var hostWidget = "robax.dev";
         css2.href="//bootstrapformhelpers.com/assets/css/bootstrap-formhelpers.min.css";
         css2.rel="stylesheet";
 
+        var js = d.createElement("script");
+        js.src="https://use.fontawesome.com/49d2433643.js";
+
         d.getElementsByTagName("link")[0].parentNode.insertBefore(css, d.getElementsByTagName("link")[0]);
         d.getElementsByTagName("link")[0].parentNode.insertBefore(css2, d.getElementsByTagName("link")[0]);
+        d.getElementsByTagName("script")[0].parentNode.insertBefore(js, d.getElementsByTagName("script")[0]);
 
         helper.cssQuery('body').appendChild(div);
-        helper.cssQuery('.robax').innerHTML+=helper.replaceAll(dataJSON['tmp'],dataJSON);
-        setMask(helper.cssQuery('.robax-phone-input'),'+7(999)999-99-99');
+        helper.cssQuery('.robax').innerHTML += helper.replaceAll(dataJSON['tmp'],dataJSON);
+        helper.setMask(helper.cssQuery('.robax-phone-input'),'+7(999)999-99-99');
 
-        var color = dataJSON['widget_button_color'];
-        document.getElementById("open-button").style.background = color;
+        document.getElementById("open-button").style.background = dataJSON['widget_button_color'];
 
-        this.controller.open(dataJSON['widget-button-color']);
+        this.controller.open(dataJSON);
         this.controller.closed();
         this.controller.phone();
         this.controller.menu();
@@ -206,10 +713,56 @@ var hostWidget = "robax.dev";
         helper.cssQuery('.btn-call').onclick = function() {
             t.postCall(helper.cssQuery('.robax-widget-phone-form .robax-phone-input').value);
             t.controller.timer();
-        }
+        };
         helper.cssQuery('.btn-mail').onclick = function() {
-            t.postMail(helper.cssQuery('.form-question').value, helper.cssQuery('.form-mail').value, helper.cssQuery('.form-phone').value);
-        }
+            t.postMail(
+                helper.cssQuery('.form-question').value,
+                helper.cssQuery('.form-mail').value,
+                helper.cssQuery('.form-phone').value
+            );
+        };
+        helper.cssQuery(".btn-review").onclick = function() {
+            var i = 1, starCount = 0;
+            $(".rate i").each(function (i, e) {
+                if ($(this).attr("select-star")) {
+                    starCount++;
+                }
+            });
+            if (starCount && helper.cssQuery(".form-review").value) {
+                helper.typing({
+                    '#phone-h1': '— Спасибо Вам,',
+                    '#phone-div': 'за то, что помогаете, улучшить качество обслуживания клиентов. _'
+                }, helper.afterReview);
+                t.postReview(
+                    starCount,
+                    helper.cssQuery(".form-review").value
+                );
+            } else if (!starCount && helper.cssQuery(".form-review").value) {
+                helper.typing({
+                    '#phone-h1': '— Спасибо Вам,',
+                    '#phone-div': 'за оставленый отзыв. Он для нас очень важен. Удачного вам дня! _'
+                }, helper.afterReview);
+                t.postReview(
+                    starCount,
+                    helper.cssQuery(".form-review").value
+                );
+            } else if (starCount && !helper.cssQuery(".form-review").value) {
+                helper.typing({
+                    '#phone-h1': '— Спасибо Вам,',
+                    '#phone-div': 'за оценку менеджера. Для нас это важно. _'
+                }, helper.afterReview);
+                t.postReview(
+                    starCount,
+                    helper.cssQuery(".form-review").value
+                );
+            } else if (!starCount && !helper.cssQuery(".form-review").value) {
+                helper.typing({
+                    '#phone-h1': '— Нам очень жаль,',
+                    '#phone-div': 'что Вы не поставили оценку и не оставили отзыв о работе менеджера... _'
+                }, helper.afterReview);
+            }
+            starCount = 0;
+        };
 
         var dc=new Date();
         timeNow=dc.getHours()*60+dc.getMinutes();
@@ -217,7 +770,7 @@ var hostWidget = "robax.dev";
         timeStart=Number(dc.split(':')[0])*60+Number(dc.split(':')[1]);
         dc=dataJSON['date']['work-end-time'];
         timeEnd=Number(dc.split(':')[0])*60+Number(dc.split(':')[1]);
-        if(timeNow>timeEnd||timeNow<timeStart){
+        if(timeNow<timeStart){//if(timeNow>timeEnd||timeNow<timeStart){
             helper.cssQuery('#widget-msg-h1').style.display='block';
             helper.cssQuery('#widget-msg-div').style.display='block';
             helper.cssQuery('#phone-h1').style.display='none';
@@ -260,7 +813,7 @@ var hostWidget = "robax.dev";
                         }
                     }
                 });
-            },60000);
+            }, 60000);
 
             /*window.onbeforeunload = function (e) {
              if(!t.settings.PhonePosted){
@@ -274,19 +827,23 @@ var hostWidget = "robax.dev";
         helper.cssQuery('.robax-utp-form .line button').onclick=function(){
             t.postCall(helper.cssQuery('.robax-utp-form .line input').value);
         };
-        t.dataJSON=dataJSON;
-    }
-    RobaxWidget.prototype.settings=new Object();
-    RobaxWidget.prototype.getToken=function(){
-
-    }
-    RobaxWidget.prototype.getOldMessage=function(){
-
-    }
-    RobaxWidget.prototype.postMessage=function(){
-
-    }
-    RobaxWidget.prototype.postMail=function(question, mail, phone){
+        t.dataJSON = dataJSON;
+    };
+    RobaxWidget.prototype.settings = {};
+    RobaxWidget.prototype.getToken = function(){};
+    RobaxWidget.prototype.getOldMessage = function(){};
+    RobaxWidget.prototype.postMessage = function(){};
+    RobaxWidget.prototype.postReview = function(starCount, review){
+        helper.get('//'+hostWidget+'/widget/widget-review',{
+            'key': this.settings.key,
+            'review': review,
+            'starCount': starCount,
+            'callbackID': callbackID,
+            'site_url': window.location.hostname,
+            'protocol' :window.location.protocol
+        });
+    };
+    RobaxWidget.prototype.postMail = function(question, mail, phone){
         helper.get('//'+hostWidget+'/widget/widget-mail',{
             'key': this.settings.key,
             'question': question,
@@ -295,8 +852,8 @@ var hostWidget = "robax.dev";
             'site_url': window.location.hostname,
             'protocol' :window.location.protocol
         });
-    }
-    RobaxWidget.prototype.postCall=function(phone){
+    };
+    RobaxWidget.prototype.postCall = function(phone){
         var megaEvent = document.getElementById("megaEvent").value;
         var t=this;
         t.settings.PhonePosted=true;
@@ -316,11 +873,29 @@ var hostWidget = "robax.dev";
             if (window.ga && t.dataJSON['widget_google_metrika']) {
                 window.ga("send", "event", t.dataJSON['widget_name'], 'phone-' + phone + '-url-' + window.location.hostname + window.location.pathname);
             }
+            setTimeout(function(){
+                $.ajax({
+                    url: '//'+hostWidget+'/widget/get-callback',
+                    dataType: "json",
+                    data: {
+                        key: window.widget_key,
+                        site_url: window.location.hostname,
+                        protocol: window.location.protocol
+                    },
+                    success: function(data){
+                        callbackID = data.callbackID;
+                    }
+                });
+            }, 3000);
         });
-    }
+    };
     RobaxWidget.prototype.controller = {
-        open:function(){
+        open:function(dataJSON) {
             helper.cssQuery('.robax-widget-open-button, .robax-widget-open-button-mobile').onclick=function(){
+                helper.typing({
+                    '#phone-h1': dataJSON['phone']['h1'],
+                    '#phone-div': dataJSON['phone']['item-text']
+                });
                 if (widgetsound == 1) {
                     var audio = new Audio(); // Создаём новый элемент Audio
                     audio.src = 'http://'+hostWidget+'/widget-front/open_1.mp3'; // Указываем путь к звуку "клика"
@@ -328,8 +903,8 @@ var hostWidget = "robax.dev";
                 }
                 helper.cssQuery('.overlay').setAttribute("style","display:block;");
                 helper.cssQuery('.robax-widget, .robax-widget-mobile').setAttribute("style","right:0;");
-                document.getElementById("megaEvent").setAttribute('value', 'robax_button_clicked');
-            }
+                helper.cssQuery('#megaEvent').setAttribute('value', 'robax_button_clicked');
+            };
             helper.cssQuery('.overlay').onclick=function () {
                 helper.cssQuery('.overlay').setAttribute("style","display:none;");
                 if (!$('.robax-widget-mobile').length) {
@@ -338,10 +913,10 @@ var hostWidget = "robax.dev";
                     $('.robax-widget-active').removeClass('robax-widget-active');
                     helper.cssQuery('.robax-widget-mobile').setAttribute("style","right:-360px;");
                 }
-            }
+            };
             //textEcho({selector:helper.cssQuery('.robax-widget-open-button'),});
         },
-        closed:function(){
+        closed:function() {
             helper.cssQuery('.robax-widget-closed').onclick=function(){
                 helper.cssQuery('.overlay').setAttribute("style","display:none;");
                 if (!$('.robax-widget-mobile').length) {
@@ -350,7 +925,7 @@ var hostWidget = "robax.dev";
                     $('.robax-widget-active').removeClass('robax-widget-active');
                     helper.cssQuery('.robax-widget-mobile').setAttribute("style","right:-360px;");
                 }
-            }
+            };
             if (!$('.robax-widget-mobile').length) {
                 helper.cssQuery('.robax-arrow').onclick=function(){
                     helper.cssQuery('.overlay').setAttribute("style","display:none;");
@@ -358,7 +933,7 @@ var hostWidget = "robax.dev";
                 }
             }
         },
-        phone:function(){
+        phone:function() {
             /*var e=helper.cssQueryAll('.robax-phone-type-list div'),i=0,n=e.length;
              while(i<n){
              e[i].onclick=function(){
@@ -369,7 +944,7 @@ var hostWidget = "robax.dev";
              i++;
              }*/
         },
-        menu:function(){
+        menu:function() {
             var e=helper.cssQueryAll('.robax-menu-button'),el,i=0,z=0,y=0,n=e.length;
             while(i<n){
                 e[i].onclick=function(){
@@ -385,25 +960,25 @@ var hostWidget = "robax.dev";
                         y++;
                     }
                     helper.addClass(helper.cssQuery(this.getAttribute("data-target")),' robax-widget-active');
-                }
+                };
                 i++;
             }
         },
-        phone_item:function(dataJSON){
+        phone_item:function(dataJSON) {
             helper.cssQuery('.robax-item-later-link').onclick=function(){
                 helper.cssQuery('.robax-timer').style.display='none';
                 helper.cssQuery('.robax-later').style.display='block';
                 helper.cssQuery('.robax-item-later').style.display='none';
                 helper.cssQuery('.robax-item-now').style.display='block';
                 helper.cssQuery('.robax-later-data').value='true';
-            }
+            };
             helper.cssQuery('.robax-item-later-now').onclick=function(){
                 helper.cssQuery('.robax-timer').style.display='block';
                 helper.cssQuery('.robax-later').style.display='none';
                 helper.cssQuery('.robax-item-later').style.display='block';
                 helper.cssQuery('.robax-item-now').style.display='none';
                 helper.cssQuery('.robax-later-data').value='false';
-            }
+            };
             var date=new Date(Date.now() + 2592e5);
             var month=["Января", "Февраля", "Марта", "Апрела", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"];
             helper.cssQuery('.robax-later-sel__hold__day').innerHTML+='<li data-day="after-after-tomorrow">'+date.getDate()+' '+month[date.getMonth()]+'</li>';
@@ -417,23 +992,23 @@ var hostWidget = "robax.dev";
                     helper.cssQuery('.robax-later__day-val').innerHTML=this.innerHTML;
                     switch (this.innerText) {
                         case "Сегодня": {
-                            setTime(getTime(dataJSON["date"]["day"], dataJSON, "Сегодня"), helper);
+                            helper.setTime(helper.getTime(dataJSON["date"]["day"], dataJSON, "Сегодня"));
                             break;
                         }
                         case "Завтра": {
-                            setTime(getTime(dataJSON["date"]["day"], dataJSON, "Завтра"), helper);
+                            helper.setTime(helper.getTime(dataJSON["date"]["day"], dataJSON, "Завтра"));
                             break;
                         }
                         case "Послезавтра": {
-                            setTime(getTime(dataJSON["date"]["day"], dataJSON, "Послезавтра"), helper);
+                            helper.setTime(helper.getTime(dataJSON["date"]["day"], dataJSON, "Послезавтра"));
                             break;
                         }
                         default: {
-                            setTime(getTime(dataJSON["date"]["day"], dataJSON, "Послепослезавтра"), helper);
+                            helper.setTime(helper.getTime(dataJSON["date"]["day"], dataJSON, "Послепослезавтра"));
                             break;
                         }
                     }
-                }
+                };
                 i++;
             }
             var s=Number(dataJSON["date"]['work-start-time'].split(':')[0])*60+Number(dataJSON["date"]['work-start-time'].split(':')[1]),e=Number(dataJSON["date"]['work-end-time'].split(':')[0])*60+Number(dataJSON["date"]['work-end-time'].split(':')[1]),m=e-s,i=0,html='';
@@ -446,10 +1021,10 @@ var hostWidget = "robax.dev";
             helper.cssQuery('.robax-later__hour-val').innerHTML=helper.cssQuery('.robax-later-sel__hold__hour li').innerHTML;
             var e=helper.cssQueryAll('.robax-later__hour li'),i=0,n=e.length;
             while(i<n){
-                e[i].onclick=function(){
+                e[i].onclick = function(){
                     helper.cssQuery('.robax-later-data-hour').value=this.getAttribute("data-day");
                     helper.cssQuery('.robax-later__hour-val').innerHTML=this.innerHTML;
-                }
+                };
                 i++;
             }
             var dc=new Date();
@@ -458,23 +1033,34 @@ var hostWidget = "robax.dev";
             timeStart=Number(dc.split(':')[0])*60+Number(dc.split(':')[1]);
             dc=dataJSON['date']['work-end-time'];
             timeEnd=Number(dc.split(':')[0])*60+Number(dc.split(':')[1]);
-            if(timeNow>timeEnd||timeNow<timeStart){
+            if(timeNow<timeStart){//if(timeNow>timeEnd||timeNow<timeStart){
                 helper.cssQueryAll('.robax-later-sel__hold__day li')[0].style.display='none';
                 helper.cssQueryAll('.robax-later-sel__hold__day li')[1].onclick();
             }
         },
         timer:function timer(s){
-            var ms=Number(document.querySelector('#cbh_timer_ms').innerHTML)-1;
-            document.querySelector('#cbh_timer_ms').innerHTML=(ms<10?'0'+ms:ms);
-            if(ms>0)setTimeout(timer,10);
+            var ms = Number(helper.cssQuery('#cbh_timer_ms').innerHTML)-1;
+            helper.cssQuery("#cbh_timer_ms").innerHTML=(ms < 10 ? '0' + ms : ms);
+            if (ms > 0) setTimeout(timer,10);
             else {
-                var s=Number(document.querySelector('#cbh_timer_seconds').innerHTML)-1;
-                if(s>=0){
-                    document.querySelector('#cbh_timer_seconds').innerHTML=(s<10?'0'+s:s);
-                    document.querySelector('#cbh_timer_ms').innerHTML=99;
-                    setTimeout(timer,10);
+                //noinspection JSDuplicatedDeclaration
+                var s = Number(helper.cssQuery("#cbh_timer_seconds").innerHTML)-1;
+                if(s >= 0) {
+                    helper.cssQuery("#cbh_timer_seconds").innerHTML = (s < 10 ? '0' + s : s);
+                    helper.cssQuery("#cbh_timer_ms").innerHTML = 99;
+                    setTimeout(timer, 10);
+                    if (s == 0) {
+                        helper.cssQuery(".robax-widget-phone-form").style.display = 'none';
+                        helper.cssQuery(".btn-call").style.display = 'none';
+                        helper.cssQuery(".robax-timer").style.display = 'none';
+                        helper.cssQuery(".robax-item-later").style.display = 'none';
+                        helper.typing({
+                            '#phone-h1': '— Спасибо за заказ.',
+                            '#phone-div': 'Оцените пожалуйста работу менеджера по 5-ти бальной шкале и оставте пожалуйста ваш отзыв. _'
+                        }, helper.rate);
+                    }
                 } else {
-                    if(typeof(s)=='function') s();
+                    if (typeof(s) == 'function') s();
                 }
             }
         },
@@ -489,24 +1075,30 @@ var hostWidget = "robax.dev";
                     helper.cssQuery('.robax-utp-body').style.display='none';
                 };
             }
-            helper.cssQuery('.robax-utp-body').addEventListener('click',function(e){var ev=(e || window.event); if(ev.target.className=="robax-utp-body") helper.cssQuery('.robax-utp-body').style.display='none'; else ev.stopPropagation();},true);
+            helper.cssQuery('.robax-utp-body').addEventListener('click',function(e){
+                var ev=(e || window.event);
+                if(ev.target.className=="robax-utp-body")
+                    helper.cssQuery('.robax-utp-body').style.display='none';
+                else
+                    ev.stopPropagation();
+            },true);
         }
-    }
+    };
     var textEcho=function (options){
         var o=options;
-        if(typeof(o.text)!='string')o.text=document.querySelector(o.selector).innerHTML;
+        if(typeof(o.text)!='string')o.text = helper.cssQuery(o.selector).innerHTML;
         if(isNaN(o.io))o.io=0;
-        document.querySelector(o.selector).innerHTML='';
+        helper.cssQuery(o.selector).innerHTML='';
         var i=0;
         while(i<o.io){
-            document.querySelector(o.selector).innerHTML+=o.text[i];
+            helper.cssQuery(o.selector).innerHTML+=o.text[i];
             i++;
         }
         if(o.text.length>o.io) {o.io=o.io+1;setTimeout(function(){textEcho(o)},50);}
         else if(typeof(o.s)=='function') o.s();
     }
 
-})(this,this.document);
+})(this, this.document);
 
 // Проверка на поведенческий фактор "Посещение конкретной страницы или раздела сайта"
 window.onload=function(){
@@ -524,7 +1116,7 @@ window.onload=function(){
                     getPoints('other_page',parseInt(page.mark));
                 }
             }
-        },
+        }
     });
     $.ajax({
         url: '//'+hostWidget+'/widget/get-marks',
@@ -533,9 +1125,9 @@ window.onload=function(){
             protocol:window.location.protocol},
         success: function(result){
             dataMarks = JSON.parse(result);
-        },
+        }
     });
-}
+};
 if (typeof getCookie('counter') !=="undefined"){
     counter = getCookie('counter');
 } else {
@@ -716,7 +1308,7 @@ function getCookie(name) {
         offset = cookie.indexOf(search);
         if (offset != -1) {
             offset += search.length;
-            end = cookie.indexOf(";", offset)
+            end = cookie.indexOf(";", offset);
             if (end == -1) {
                 end = cookie.length;
             }
@@ -739,7 +1331,7 @@ function countryChange(lang, element, s) {
             button.html('<i class="glyphicon bfh-flag-RU"></i><span class="caret">');
             input.value = '';
             input.setAttribute('placeholder', '+7(___)___-__-__');
-            setMask(input, '+7(999)999-99-99');
+            helperMask.setMask(input, '+7(999)999-99-99');
             break;
         }
         case 'BY': {
@@ -749,7 +1341,7 @@ function countryChange(lang, element, s) {
             button.html('<i class="glyphicon bfh-flag-BY"></i><span class="caret">');
             input.value = '';
             input.setAttribute('placeholder', '+375(___)___-__-__');
-            setMask(input, '+375(999)999-99-99');
+            helperMask.setMask(input, '+375(999)999-99-99');
             break;
         }
         case 'UA': {
@@ -759,7 +1351,7 @@ function countryChange(lang, element, s) {
             button.html('<i class="glyphicon bfh-flag-UA"></i><span class="caret">');
             input.value = '';
             input.setAttribute('placeholder', '+380(___)___-__-__');
-            setMask(input, '+380(999)999-99-99');
+            helperMask.setMask(input, '+380(999)999-99-99');
             break;
         }
         case 'US': {
@@ -769,7 +1361,7 @@ function countryChange(lang, element, s) {
             button.html('<i class="glyphicon bfh-flag-US"></i><span class="caret">');
             input.value = '';
             input.setAttribute('placeholder', '+1(___)___-__-__');
-            setMask(input, '+1(999)999-99-99');
+            helperMask.setMask(input, '+1(999)999-99-99');
             break;
         }
     }
@@ -790,261 +1382,5 @@ function openDropDown(element) {
                 $('#' + aria).removeClass('open')
             }
         });
-    }
-}
-
-function setMask (I, M) {
-    function R(s) {
-        return new RegExp('('+s.replace(/\(/g,'\\(').replace(/\)/g,'\\)').replace(/\//g,'\\/').replace(/9/g,'\\d').replace(/a/g,'[a-zР°-СЏС‘]').replace(/\*/g,'[a-zР°-СЏС‘0-9]')+')','gi')
-    }
-    function N(c,j,x) {
-        for(var k=0,s='';k<L;k++)s+=$[k]||c||'_';
-        I.value=s;
-        x?0:I.sC(!j?i:0)
-    }
-    function D(e,p,i) {
-        p=I.gC();
-        if (p[0]==p[1]) {
-            if(e)p[1]++;
-            else p[0]--
-        }
-        for(i=p[0];i<p[1];i++)
-            if(!S[i]&&$[i]){
-                $[i]=0;
-                j--
-            }
-        return p
-    }
-    function V(){
-        setTimeout(function(k){
-            if (R(M).test(I.value)) {
-                I.value=RegExp.$1;
-                $=I.value.split('');
-                for(k=j=0;k<L;k++)if(!S[k])j++
-            }
-            else N()
-        },0)
-    }
-    function P(c){
-        if (c<35&&c!=8||c==45) return 1;
-        switch(c){
-            case 8:		i=D()[0]; return 0;
-            case 46:	i=D(1)[1]; return 0;
-            case 35:	i = L; return 1;
-            case 36:	i = 1;
-            case 37:	if (i-=2<-1) i=-1;
-            case 39:	if (++i>L) i=L; return 1;
-            default:	i=I.gC()[0];
-                while(i<L&&S[i]){i++}
-                if (i==L) return 0;
-
-                c = String.fromCharCode(c)
-                if (R(M.charAt(i)).test(c)) {
-                    D(1);
-                    $[i++] = c;
-                    j++;
-                    while(i<L&&S[i]){i++}
-                }
-                return 0
-        }
-    }
-
-    var d=document, c='character', y=-100000, L=M.length, G=!c, i=0, j=0, $=M.split(''), S=M.split('');
-
-    for (var k=0;k<L;k++) if (/a|9|\*/.test($[k])) $[k]=S[k]=0;
-    I = typeof I=='string' ? d.getElementById(I) : I;
-
-    I.sC = function(l,g){
-        if(this.setSelectionRange) this.setSelectionRange(l,l);
-        else {
-            g = this.createTextRange();
-            g.collapse(true);
-            g.moveStart(c,y);
-            g.move(c,l);
-            g.select();
-        }
-    }
-    I.gC = function(r,b){
-        if (this.setSelectionRange) return [this.selectionStart,this.selectionEnd];
-        else {
-            r = d['selection'].createRange();
-            b = 0-r.duplicate().moveStart(c,y)
-            return [b,b+r.text.length]
-        }
-    }
-    I.onfocus = function(){
-        setTimeout(function(){N(0,!j)},0)
-    }
-    I.onblur = function(){
-        j ? N(' ',0,1) : this.value=''
-    }
-    I.onkeydown = function(e,c){
-        e = e||event;
-        c = e.keyCode||e.charCode;
-
-        if (c==8||c==46) {
-            G = true;
-            P(c);
-            N();
-            return !G
-        }
-        else if (!window.netscape&&(c>34&&c<38||c==39)) P(c)
-    }
-    I.onkeypress = function(e){
-        if (G) return G=!G;
-
-        e = e||event;
-
-        if (P(e.keyCode||e.charCode)) return !G;
-
-        N();
-
-        return G
-    }
-
-    if (d.all&&!window.opera){
-        I.onpaste=V;
-    } else {
-        I.addEventListener('input', V, false);
-    }
-    I.onselect = function(){
-        setCaretPosition(this,this.getAttribute("placeholder").indexOf('_'));
-        this.onselect='';
-    }
-}
-
-function setCaretPosition (ctrl, pos) {
-    if(ctrl.setSelectionRange) {
-        ctrl.focus();
-        ctrl.setSelectionRange(pos,pos);
-        //alert(ctrl.setSelectionRange(pos,pos));
-    } else if (ctrl.createTextRange) {
-        var range = ctrl.createTextRange();
-        range.collapse(true);
-        range.moveEnd('character', pos);
-        range.moveStart('character', pos);
-        //alert(range.moveStart('character', pos));
-        range.select();
-    }
-}
-
-function getTime(day, dataJSON, strDay) {
-    switch (day) {
-        case "Monday": {
-            if (strDay == "Сегодня") {
-                return dataJSON["date"]["time"]["Monday"];
-            } else if (strDay == "Завтра") {
-                return dataJSON["date"]["time"]["Tuesday"];
-            } else if (strDay == "Послезавтра") {
-                return dataJSON["date"]["time"]["Wednesday"];
-            } else if (strDay == "Послепослезавтра") {
-                return dataJSON["date"]["time"]["Thursday"];
-            }
-            break;
-        }
-        case "Tuesday": {
-            if (strDay == "Сегодня") {
-                return dataJSON["date"]["time"]["Tuesday"];
-            } else if (strDay == "Завтра") {
-                return dataJSON["date"]["time"]["Wednesday"];
-            } else if (strDay == "Послезавтра") {
-                return dataJSON["date"]["time"]["Thursday"];
-            } else if (strDay == "Послепослезавтра") {
-                return dataJSON["date"]["time"]["Friday"];
-            }
-            break;
-        }
-        case "Wednesday": {
-            if (strDay == "Сегодня") {
-                return dataJSON["date"]["time"]["Wednesday"];
-            } else if (strDay == "Завтра") {
-                return dataJSON["date"]["time"]["Thursday"];
-            } else if (strDay == "Послезавтра") {
-                return dataJSON["date"]["time"]["Friday"];
-            } else if (strDay == "Послепослезавтра") {
-                return dataJSON["date"]["time"]["Saturday"];
-            }
-            break;
-        }
-        case "Thursday": {
-            if (strDay == "Сегодня") {
-                return dataJSON["date"]["time"]["Thursday"];
-            } else if (strDay == "Завтра") {
-                return dataJSON["date"]["time"]["Tuesday"];
-            } else if (strDay == "Послезавтра") {
-                return dataJSON["date"]["time"]["Friday"];
-            } else if (strDay == "Послепослезавтра") {
-                return dataJSON["date"]["time"]["Saturday"];
-            }
-            break;
-        }
-        case "Friday": {
-            if (strDay == "Сегодня") {
-                return dataJSON["date"]["time"]["Friday"];
-            } else if (strDay == "Завтра") {
-                return dataJSON["date"]["time"]["Saturday"];
-            } else if (strDay == "Послезавтра") {
-                return dataJSON["date"]["time"]["Sunday"];
-            } else if (strDay == "Послепослезавтра") {
-                return dataJSON["date"]["time"]["Monday"];
-            }
-            break;
-        }
-        case "Saturday": {
-            if (strDay == "Сегодня") {
-                return dataJSON["date"]["time"]["Saturday"];
-            } else if (strDay == "Завтра") {
-                return dataJSON["date"]["time"]["Sunday"];
-            } else if (strDay == "Послезавтра") {
-                return dataJSON["date"]["time"]["Monday"];
-            } else if (strDay == "Послепослезавтра") {
-                return dataJSON["date"]["time"]["Tuesday"];
-            }
-            break;
-        }
-        case "Sunday": {
-            if (strDay == "Сегодня") {
-                return dataJSON["date"]["time"]["Sunday"];
-            } else if (strDay == "Завтра") {
-                return dataJSON["date"]["time"]["Monday"];
-            } else if (strDay == "Послезавтра") {
-                return dataJSON["date"]["time"]["Tuesday"];
-            } else if (strDay == "Послепослезавтра") {
-                return dataJSON["date"]["time"]["Wednesday"];
-            }
-            break;
-        }
-    }
-
-    return null;
-}
-
-function setTime(dataTime, helper) {
-    var s=Number(dataTime['start'].split(':')[0])*60+Number(dataTime['start'].split(':')[1]),
-        e=Number(dataTime['end'].split(':')[0])*60+Number(dataTime['end'].split(':')[1]),
-        m=e-s,
-        i=0,
-        html='';
-    while (i<=m) {
-        if (i == (m - dataTime['end'].split(':')[1])) {
-            html+='<li data-time="'+dataTime['end']+'">'+dataTime['end']+'</li>';
-            i=i+60;
-        } else if (i == 0) {
-            html+='<li data-time="'+dataTime['start']+'">'+dataTime['start']+'</li>';
-            i=i+60;
-        } else {
-            html+='<li data-time="'+helper.parseHourse(s+i)+'">'+helper.parseHourse(s+i)+'</li>';
-            i=i+60;
-        }
-    }
-    helper.cssQuery('.robax-later__hour-val').innerHTML=dataTime['start'];
-    helper.cssQuery('.robax-later-sel__hold__hour').innerHTML=html;
-    var e=helper.cssQueryAll('.robax-later__hour li'),i=0,n=e.length;
-    while(i<n){
-        e[i].onclick=function(){
-            helper.cssQuery('.robax-later-data-hour').value=this.getAttribute("data-day");
-            helper.cssQuery('.robax-later__hour-val').innerHTML=this.innerHTML;
-        }
-        i++;
     }
 }

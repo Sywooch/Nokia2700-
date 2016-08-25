@@ -63,7 +63,7 @@ $this->title = 'Звонки с виджетов';
 						'emptyText'=>'Нам очень жаль. Пока нет отправленых сообщений.',
 				        'columns' => [
 				            'widget_id',
-				            'name',
+				            'phone',
 				            'email',
 				            'message',
 				        ],

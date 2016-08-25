@@ -30,7 +30,7 @@ class WidgetSendedEmail extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['widget_id', 'id', 'email'], 'required'],
+            [['widget_id', 'email'], 'required'],
             [['widget_id', 'id'], 'integer'],
             [['phone'], 'string', 'max' => 45],
             [['email'], 'string', 'max' => 100],
@@ -44,7 +44,7 @@ class WidgetSendedEmail extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'widget_id' => 'Номер виджета',
+            'widget_id' => 'ID виджета',
             'id' => 'ID',
             'phone' => 'Телефон',
             'email' => 'Почта',

@@ -139,7 +139,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
         print '<textarea style="width: 100%; height: 370px;" readonly>
             <script type="text/javascript">
             (function (d, w) {
-                var robax_widget="robax-'.$widget_code.'";
+                var robax_widget = "robax-'.$widget_code.'";
                 var n = d.getElementsByTagName("script")[0],
                     s = d.createElement("script"),
                     c = function () {w["robax_widget"+robax_widget]=new RobaxWidget({id:robax_widget,key: "'.$widget_code.'",w:w});},
@@ -278,18 +278,18 @@ class WidgetSettings extends \yii\db\ActiveRecord
                 //all is shit
             }
             return true;
-        } else return 'error';/*$this->error['widget_not_found'];*/
+        } else return 'error';
     }
 
     public function widgetMail($url, $question, $phone, $mail, $widget)
     {
         if(is_array($widget)){
             $WidgetSendedEmail = new WidgetSendedEmail();
-            $WidgetSendedEmail->widget_id = $widget['widget_id'];
+            $WidgetSendedEmail->widget_id = $widget["widget_id"];
             $WidgetSendedEmail->email = $mail;
             $WidgetSendedEmail->message = $question;
             $WidgetSendedEmail->phone = $phone;
-            $WidgetSendedEmail->save();
+            if (!$WidgetSendedEmail->save()) print_r($WidgetSendedEmail->getErrors());
 
             $subject = 'Письмо отправлено через Robaks!';
             $message =
@@ -302,15 +302,41 @@ class WidgetSettings extends \yii\db\ActiveRecord
                             <p>'.$question.'</p>
                             <p>'.$phone.'</p>
                             <p>'.$mail.'</p>
+                            <p>'.$mail.'</p>
                         </body>
                     </html>';
             Yii::$app->mailer->compose()
-                ->setTo($widget['widget_user_email'])
-                ->setFrom('robax@oblax.ru')
+                ->setTo($widget["widget_user_email"][0])
+                ->setFrom("robax@oblax.ru")
                 ->setSubject($subject)
                 ->setHtmlBody($message)
                 ->send();
-        } else return 'error';/*$this->error['widget_not_found'];*/
+
+            return true;
+        } else return "error";
+    }
+
+    public function widgetReview($review, $starCount, $callbackID, $widget)
+    {
+        if(is_array($widget)){
+            $WidgetPendingCalls = WidgetPendingCalls::findOne(["callBackCall_id" => $callbackID]);
+            $WidgetRatingManager = new WidgetRatingManager();
+            $WidgetRatingManager->widget_id = $widget["widget_id"];
+            $WidgetRatingManager->rating = $starCount;
+            $WidgetRatingManager->comment = ($review) ? $review : 'Нет коментария.';
+            $WidgetRatingManager->phone = $WidgetPendingCalls->phone;
+            if (!$WidgetRatingManager->save()) print_r($WidgetRatingManager->getErrors());
+
+            return true;
+        } else return "error";
+    }
+
+    public function widgetGetCallbackId($widget)
+    {
+        if(is_array($widget)){
+            $WidgetPendingCalls = WidgetPendingCalls::find()->where(["widget_id" => $widget["widget_id"]])->orderBy("call_time DESC")->one();
+            return json_encode(["callbackID" => $WidgetPendingCalls->callBackCall_id]);
+        } else return "error";
     }
 
     public function makeCallBackCallFollowMe($widget, $phone, $url, $megaEvent)
@@ -400,9 +426,9 @@ class WidgetSettings extends \yii\db\ActiveRecord
                 $model = WidgetPendingCalls::find()->where('callBackCall_id="'.$callBackCall_id.'"')->one();
                 $model->end_side = $end_side;
                 $model->call_back_cost = Tarifs::payForCall($minutes+$seconds, $model->widget_id);
-//                $user = User::find()->join('INNER JOIN','widget_settings','widget_settings.user_id=users.user_id')->where('widget_settings.widget_id='.$model->widget_id)->one();
-//                $user->cache -= $model->call_back_cost;
-//                $user->save();
+    //                $user = User::find()->join('INNER JOIN','widget_settings','widget_settings.user_id=users.user_id')->where('widget_settings.widget_id='.$model->widget_id)->one();
+    //                $user->cache -= $model->call_back_cost;
+    //                $user->save();
                 $model->call_back_currency = $response->result->callBackFollowmeCallInfoStruct->call_back_currency;
                 $model->waiting_period_A = $response->result->callBackFollowmeCallInfoStruct->waiting_period_A;
                 $model->waiting_period_B = $response->result->callBackFollowmeCallInfoStruct->waiting_period_B;
@@ -425,7 +451,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
                         </body>
                     </html>';
                 Yii::$app->mailer->compose()
-                    ->setTo($WidgetSettings->widget_user_email)
+                    ->setTo(explode(";", $WidgetSettings->widget_user_email)[0])
                     ->setFrom('robax@oblax.ru')
                     ->setSubject($subject)
                     ->setHtmlBody($message)

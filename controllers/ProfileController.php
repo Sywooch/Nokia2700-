@@ -180,13 +180,13 @@ class ProfileController extends Controller
     public function actionHistory()
     {
         $messageProvider = new ActiveDataProvider([
-            'query' => WidgetSendedEmail::find()->join('INNER JOIN','widget_settings','widget_settings.widget_id=widget_sended_email_messeg.widget_id')->where('widget_settings.user_id='.Yii::$app->user->identity->id),
+            'query' => WidgetSendedEmail::find()->join('INNER JOIN','widget_settings','widget_settings.widget_id=widget_sended_email_messeg.widget_id')->where('widget_settings.user_id='.Yii::$app->user->id),
             'pagination' => [
                 'pageSize' => 10,
             ],
         ]);
         $callProvider = new ActiveDataProvider([
-            'query' => WidgetPendingCalls::find()->join('INNER JOIN','widget_settings','widget_settings.widget_id=widget_pending_calls.widget_id')->where('widget_settings.user_id='.Yii::$app->user->identity->id),
+            'query' => WidgetPendingCalls::find()->join('INNER JOIN','widget_settings','widget_settings.widget_id=widget_pending_calls.widget_id')->where('widget_settings.user_id='.Yii::$app->user->id),
             'pagination' => [
                 'pageSize' => 10,
             ],
