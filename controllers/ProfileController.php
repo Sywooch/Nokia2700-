@@ -373,13 +373,6 @@ class ProfileController extends Controller
                 $email.=$postArray[$index].';';
             }
             $model->widget_user_email = $email;
-            $social = '';
-            for($i=1; $i<=$postArray['count_soc']; $i++)
-            {
-                $index = 'social_'.$i;
-                $social.=$postArray[$index].';';
-            }
-            $model->social = $social;
             $black_list = '';
             for($i=1; $i<=$postArray['count_black_list']; $i++)
             {
@@ -428,6 +421,16 @@ class ProfileController extends Controller
             $work_time['sunday']['lunch'] = $postArray['work-lunch-time-sunday'];
 
             $model->widget_work_time = json_encode($work_time);
+
+
+            $soc['vk'] = $postArray['social-vk'];
+            $soc['ok'] = $postArray['social-ok'];
+            $soc['facebook'] = $postArray['social-facabook'];
+            $soc['twitter'] = $postArray['social-twitter'];
+            $soc['insta'] = $postArray['social-insta'];
+
+            $model->social = json_encode($soc);
+
             $model->widget_sound = Yii::$app->request->post('widget_sound');
             ($_POST['WidgetSettings']['hand_turn_on']) ? $model->hand_turn_on = 1 : $model->hand_turn_on = 0;
             /*($_POST['WidgetSettings']['utp_turn_on']) ? $model->utp_turn_on = 1 : $model->utp_turn_on = 0;*/

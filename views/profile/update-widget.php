@@ -804,29 +804,77 @@ $this->title = 'Изменить виджет';
         </div>
       </div>
         <div class="bordered">
-            <label>Подключение социальных сетей</label>
-            <br>
-            <div id="soc_block">
+            <div class="form-group">
+                <label>Настройки социальных сетей</label><br>
                 <?php
-                $social = explode(';', $model->social);
-                $num = count($social)-1;
-                unset($social[$num]);
-                $count_soc = count($social);
-                for($i=1; $i<=$count_soc; $i++)
-                {?>
-                    <span class="phone">Страничка в соц сети</span>
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="social_<?=$i?>" placeholder="Page address" data-required="true" value="<?=$social[$i-1]?>">
-                    </div>
-                <?}
+                $social = json_decode($model->social);
                 ?>
+                <table class="table table-striped">
+                    <tr>
+                        <td class="col-md-1">
+                            <img class="img-responsive" src="/images/vkontakte.png"
+                                 style="max-height: 35px; max-width: 35px"
+                                 alt="Вконтакте">
+                        </td>
+                        <td>
+                            <input type="text" name = 'social-vk' value = "<?= $social->vk?>"
+                            class = 'form-control col-md-1' data-required = true
+                            placeholder = 'адресс без http:// или https://'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-1">
+                            <img class="img-responsive" src="/images/odnoklassniki.png"
+                                 style="max-height: 35px; max-width: 35px"
+                                 alt="Однокласники">
+                        </td>
+                        <td>
+                            <input type="text" name = 'social-ok' value = "<?= $social->ok?>"
+                                   class = 'form-control col-md-1' data-required = true
+                                   placeholder = 'адресс без http:// или https://'>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="col-md-1">
+                            <img class="img-responsive" src="/images/facebook.png"
+                                 style="max-height: 35px; max-width: 35px"
+                                 alt="FaceBook">
+                        </td>
+                        <td>
+                            <input type="text" name = 'social-facebook' value = "<?= $social->facebook?>"
+                                   class = 'form-control col-md-1' data-required = true
+                                   placeholder = 'адресс без http:// или https://'>
+                        </td>
+
+                    </tr>
+                    <tr >
+                        <td class="col-md-1">
+                            <img class="img-responsive" src="/images/twitter_new.png"
+                                 style="max-height: 35px; max-width: 35px"
+                                 alt="Twitter">
+                        </td>
+                        <td>
+                            <input type="text" name = 'social-twitter' value = "<?= $social->twitter?>"
+                                   class = 'form-control col-md-1' data-required = true
+                                   placeholder = 'адресс без http:// или https://'>
+                        </td>
+
+                    </tr>
+                    <tr >
+                        <td class="col-md-1">
+                            <img class="img-responsive" src="/images/instagram-new.png"
+                                 style="max-height: 35px; max-width: 35px"
+                                 alt="Instagram">
+                        </td>
+                        <td>
+                            <input type="text" name = 'social-insta' value = "<?= $social->insta?>"
+                                   class = 'form-control col-md-1' data-required = true
+                                   placeholder = 'адресс без http:// или https://'>
+                        </td>
+                    </tr>
+                </table>
             </div>
-            <br>
-            <input type="hidden" name="count_soc" value="<?=$count_soc?>">
-            <div class="input-group">
-                <button class="soc_more btn">Добавить еще одину страницу</button>
-            </div>
-            <br>
         </div>
         <div class="line-time">
           <?= Html::submitButton('Сохранить', ['class' => 'btn btn-block btn-success btn-lg']) ?>
