@@ -3,6 +3,7 @@ use kartik\switchinput\SwitchInput;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use app\models\WidgetTemplateNotification;
+use app\models\WidgetTemplateNotificationUsers;
 use yii\widgets\MaskedInput;
 
 $this->registerCssFile("http://bootstrapformhelpers.com/assets/css/bootstrap-formhelpers.min.css");
@@ -27,6 +28,8 @@ $this->registerCss("
 $path = '/files/images/desktop/';
 $path2 = '/files/images/mobile/';
 $this->title = 'Добавить виджет';
+
+$hren = new \app\models\WidgetSettings;
 ?>
 
 <section class="content-header">
@@ -44,6 +47,7 @@ $this->title = 'Добавить виджет';
 		</div>
 		<div class="form-group">
 			<input class="form-control" name="widget_site_url" type="text" placeholder="URL сайта (без http(s))" onblur="siteChange(this.value);">
+			<?/*= $form->field($hren, 'widget_site_url')->textInput(['placeholder' => 'URL сайта (без http(s))', 'onblur'=>"siteChange(this.value);"])->label(false)*/?>
 		</div>
 		<div class="form-group">
 		  <select class="form-control" name="widget_sound">
@@ -145,7 +149,7 @@ $this->title = 'Добавить виджет';
 				  <td style="padding-right:10px">Переход на другую страницу</td>
 				  <td style="padding-right:15px"><?=Html::dropDownList('other_page',$marks->other_page,$items);?></td>
 				  <td>Посещение более 3х страниц сайта</td>
-				  <td><?=Html::dropDownList('sitepage3_activity',$items[$marks->sitepage3_activity],$items);?></td>
+				  <td><?=Html::dropDownList('sitepage3_activity',$marks->sitepage3_activity,$items);?></td>
 			  </tr>
 			  <tr>
 				  <td>Скролл вниз(за 100% страницы)</td>
@@ -315,7 +319,7 @@ $this->title = 'Добавить виджет';
 	<div class="bordered">
 		<label>Настройки сообщений виджета</label>
 		<br>
-		<?if ($widgetTemplateUsers) {
+		<?if ($widgetTemplateUsers = new WidgetTemplateNotificationUsers()) {
 			foreach ($widgetTemplateUsers as $key => $value) {?>
 				<div>
 					<div style="display: inline-block;">
@@ -328,7 +332,7 @@ $this->title = 'Добавить виджет';
 						]);?>
 					</div>
 					<div style="display: inline-block;">
-						<?$widetTemplate = WidgetTemplateNotification::findOne(['id_template' => $value['id_template']]);?>
+						<?$widetTemplate = new WidgetTemplateNotification()/*::findOne(['id_template' => $value['id_template']])*/;?>
 						<span style="margin: 0 15px;"><?=$widetTemplate->name?></span>
 					</div>
 					<div id="openBlock-<?=$value['id_template']?>" style="<?=$value['status'] ? 'display: block;' : 'display: none;'?>margin-bottom: 30px;">
@@ -503,6 +507,9 @@ $this->title = 'Добавить виджет';
 			<br>
 			<?php
 			$work_time = json_decode($model->widget_work_time);
+			echo '<pre>';
+			print_r($work_time);
+			echo '</pre>';
 			?>
 			<table class="table table-striped">
 				<tr>
@@ -516,7 +523,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-start-time-monday',
-							'value' => $work_time->monday->start,
+//							'value' => $work_time->monday->start,
 							'mask' => '99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -528,7 +535,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-end-time-monday',
-							'value' => $work_time->monday->end,
+//							'value' => $work_time->monday->end,
 							'mask' => '99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -540,7 +547,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-lunch-time-monday',
-							'value' => $work_time->monday->lunch,
+//							'value' => $work_time->monday->lunch,
 							'mask' => '99:99 - 99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -555,7 +562,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-start-time-tuesday',
-							'value' => $work_time->tuesday->start,
+//							'value' => $work_time->tuesday->start,
 							'mask' => '99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -567,7 +574,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-end-time-tuesday',
-							'value' => $work_time->tuesday->end,
+//							'value' => $work_time->tuesday->end,
 							'mask' => '99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -579,7 +586,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-lunch-time-tuesday',
-							'value' => $work_time->tuesday->lunch,
+//							'value' => $work_time->tuesday->lunch,
 							'mask' => '99:99 - 99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -594,7 +601,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-start-time-wednesday',
-							'value' => $work_time->wednesday->start,
+//							'value' => $work_time->wednesday->start,
 							'mask' => '99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -606,7 +613,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-end-time-wednesday',
-							'value' => $work_time->wednesday->end,
+//							'value' => $work_time->wednesday->end,
 							'mask' => '99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -618,7 +625,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-lunch-time-wednesday',
-							'value' => $work_time->wednesday->lunch,
+//							'value' => $work_time->wednesday->lunch,
 							'mask' => '99:99 - 99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -633,7 +640,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-start-time-thursday',
-							'value' => $work_time->thursday->start,
+//							'value' => $work_time->thursday->start,
 							'mask' => '99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -645,7 +652,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-end-time-thursday',
-							'value' => $work_time->thursday->end,
+//							'value' => $work_time->thursday->end,
 							'mask' => '99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -657,7 +664,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-lunch-time-thursday',
-							'value' => $work_time->thursday->lunch,
+//							'value' => $work_time->thursday->lunch,
 							'mask' => '99:99 - 99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -672,7 +679,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-start-time-friday',
-							'value' => $work_time->friday->start,
+//							'value' => $work_time->friday->start,
 							'mask' => '99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -684,7 +691,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-end-time-friday',
-							'value' => $work_time->friday->end,
+//							'value' => $work_time->friday->end,
 							'mask' => '99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -696,7 +703,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-lunch-time-friday',
-							'value' => $work_time->friday->lunch,
+//							'value' => $work_time->friday->lunch,
 							'mask' => '99:99 - 99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -711,7 +718,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-start-time-saturday',
-							'value' => $work_time->saturday->start,
+//							'value' => $work_time->saturday->start,
 							'mask' => '99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -723,7 +730,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-end-time-saturday',
-							'value' => $work_time->saturday->end,
+//							'value' => $work_time->saturday->end,
 							'mask' => '99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -735,7 +742,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-lunch-time-saturday',
-							'value' => $work_time->saturday->lunch,
+//							'value' => $work_time->saturday->lunch,
 							'mask' => '99:99 - 99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -750,7 +757,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-start-time-sunday',
-							'value' => $work_time->sunday->start,
+//							'value' => $work_time->sunday->start,
 							'mask' => '99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -762,7 +769,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-end-time-sunday',
-							'value' => $work_time->sunday->end,
+//							'value' => $work_time->sunday->end,
 							'mask' => '99:99',
 							'options' => [
 								'class' => 'form-control',
@@ -774,7 +781,7 @@ $this->title = 'Добавить виджет';
 					<td>
 						<?=MaskedInput::widget([
 							'name' => 'work-lunch-time-sunday',
-							'value' => $work_time->sunday->lunch,
+//							'value' => $work_time->sunday->lunch,
 							'mask' => '99:99 - 99:99',
 							'options' => [
 								'class' => 'form-control',

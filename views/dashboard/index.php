@@ -1,5 +1,6 @@
 <?php
 
+use app\models\WidgetAnalytics;
 use app\models\WidgetPendingCalls;
 use app\models\WidgetSendedEmail;
 ?>
@@ -22,7 +23,14 @@ use app\models\WidgetSendedEmail;
                                     <span class="info-box-icon bg-light-blue"><i class="icon ion-ios-telephone-outline"></i></span>
                                     <div class="info-box-content">
                                         <span class="info-box-text">Заявок на звонок</span>
-                                        <span class="info-box-number"><?=WidgetPendingCalls::getCountRequireCalls()?></span>
+                                        <span class="info-box-number">
+                                        <?
+                                        $c = null;
+                                        foreach( WidgetAnalytics::getCatchAnalytics(0) as $a) {
+                                            $c += $a['catch'];
+                                        };
+                                        echo $c;?>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -32,7 +40,14 @@ use app\models\WidgetSendedEmail;
 
                                     <div class="info-box-content">
                                         <span class="info-box-text">Отправленных сообщений</span>
-                                        <span class="info-box-number"><?= WidgetSendedEmail::getCountSendMails()?></span>
+                                        <span class="info-box-number">
+                                        <?
+                                        $c = null;
+                                        foreach( WidgetAnalytics::getCatchAnalytics(0) as $a) {
+                                            $c += $a['catch'];
+                                        };
+                                        echo $c;?>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -42,7 +57,14 @@ use app\models\WidgetSendedEmail;
 
                                     <div class="info-box-content">
                                         <span class="info-box-text">Количество чатов</span>
-                                        <span class="info-box-number"><?= WidgetSendedEmail::getCountChats()?></span>
+                                        <span class="info-box-number">
+                                        <?
+                                        $c = null;
+                                        foreach( WidgetAnalytics::getCatchAnalytics(0) as $a) {
+                                            $c += $a['catch'];
+                                        };
+                                        echo $c;?>
+                                        </span>
                                     </div>
                                     <!-- /.info-box-content -->
                                 </div>
@@ -56,7 +78,14 @@ use app\models\WidgetSendedEmail;
                                     </span>
                                     <div class="info-box-content">
                                         <span class="info-box-text">CALLBACK</span>
-                                        <span class="info-box-number"><?= WidgetSendedEmail::getCountChats()?></span>
+                                        <span class="info-box-number">
+                                        <?
+                                        $c = null;
+                                        foreach( WidgetAnalytics::getCatchAnalytics(0) as $a) {
+                                            $c += $a['catch'];
+                                        };
+                                        echo $c;?>
+                                        </span>
                                     </div>
                                 </div>
                             </div>

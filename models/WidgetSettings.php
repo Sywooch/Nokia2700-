@@ -13,6 +13,7 @@ use Yii;
  * @property integer $widget_status
  * @property string $widget_site_url
  * @property string $widget_user_email
+ * @property string $social
  * @property string $widget_position
  * @property string $widget_position_mobile
  * @property string $widget_name
@@ -56,7 +57,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
             [['widget_key', 'widget_site_url', 'user_id', 'widget_work_time'], 'required'],
             [['widget_status', 'widget_theme_color', 'widget_yandex_metrika', 'widget_google_metrika', 'user_id', 'widget_GMT', 'widget_callback_email', 'widget_sound','hand_turn_on', 'utp_turn_on'], 'integer'],
             [['widget_settings', 'black_list'], 'string'],
-            [['widget_key', 'widget_site_url', 'widget_user_email'], 'string', 'max' => 100],
+            [['widget_key', 'widget_site_url', 'widget_user_email', 'social'], 'string', 'max' => 100],
             [['widget_position', 'widget_position_mobile'], 'string', 'max' => 150],
             [['widget_name'], 'string', 'max' => 80],
             [['widget_button_color', 'widget_phone_number_1', 'widget_phone_number_2', 'widget_phone_number_3', 'widget_phone_number_4', 'widget_language'], 'string', 'max' => 45],
@@ -191,6 +192,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
             $widget_json['position_mobile'] = $widget->widget_position_mobile;
             $widget_json['theme_color'] = $widget->widget_theme_color;
             $widget_json['widget_user_email'] = $widget->widget_user_email;
+            $widget_json['social'] = $widget->social;
             $widget_json['widget_settings'] = $widget->widget_settings;
             $widget_json["buttons"] = array(
                 "post" => "Жду звонка!",

@@ -6,6 +6,7 @@
 
 use app\models\Tarifs;
 use app\models\User;
+use app\models\UserNotifSettings;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
@@ -20,6 +21,10 @@ $cache = isset(Yii::$app->user->identity->cache) ? Yii::$app->user->identity->ca
 $bonuses = isset(Yii::$app->user->identity->bonus) ? Yii::$app->user->identity->bonus : '' ;
 $id = isset(Yii::$app->user->id) ? Yii::$app->user->id : '' ;
 $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->user->identity->create_at) : new DateTime();
+$notif = UserNotifSettings::findUserSettings($id);
+/*echo '<pre>';
+print_r($notif);
+echo '</pre>';*/
 ?>
 <section class="content-header">
     <h1><?=$this->title?></h1>
@@ -56,9 +61,10 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                     <li class=""><a href="#tarif" data-toggle="tab">Текущий тарифный план</a></li>
                     <li class=""><a href="#notification" data-toggle="tab">Настройки уведомлений</a></li>
                 </ul>
-                <? $formUser = ActiveForm::begin(['action'=>'/profile/update-user'])?>
+
                 <div class="tab-content" style="padding-bottom: 0;">
                     <div class="active tab-pane" id="activity">
+                        <? $formUser = ActiveForm::begin(['action'=>'/profile/update-user'])?>
                         <table class="table">
                             <tbody>
                             <tr>
@@ -121,6 +127,7 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                             </tr>
                             </tbody>
                         </table>
+                        <? ActiveForm::end()?>
                     </div>
                     <div class="tab-pane" id="tarif">
                         <div class="row">
@@ -146,26 +153,76 @@ $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->us
                     </div>
                     <div class="tab-pane" id="notification">
                         <table class="table">
-                            <tbody>
+                            <thead>
                             <tr>
-                                <td style="vertical-align: middle;">Уведомить меня если сумма на счету меньше :</td>
-                                <td>
-                                    <?=$formUser->field($user, 'cache_notification')->label(false)->textInput([
-                                        'readonly'=>true,
-                                        'class'=> 'col-md-6 col-sm-6 col-xs-6',
-                                        'style' => 'border: none;padding-left: 0;'
-                                    ])?> руб.
-                                </td>
-                                <td>
-                                    <a id="cache_notification" style="cursor: pointer;" onclick="myclick(this.id);"><i class="fa fa-edit col-md-12 col-sm-12 col-xs-12" style="font-size: 30px;"></i></a>
-                                    <?= Html::a('<span class="fa fa-save col-md-12 col-sm-12 col-xs-12" style="font-size: 30px;"></span>','', ['class' => 'sub_link', 'id'=>"save_cache_notification", 'hidden'=>true])?>
-                                </td>
+                                <th class='col-md-6 col-sm-6 col-xs-6'></th>
+                                <th class='col-md-3 col-sm-3 col-xs-3'></th>
+                                <th class='col-md-1 col-sm-1 col-xs-1'><div class="form-group" style="margin: -5px; padding: 0px;">email</div></th>
+                                <th class='col-md-1 col-sm-1 col-xs-1'><div class="form-group" style="margin: -5px; padding: 0px;">смс*</div></th>
+                                <th class='col-md-1 col-sm-1 col-xs-1'></th>
                             </tr>
+                            </thead>
+                            <tbody>
+                            <?$settForm = ActiveForm::begin(['action'=>'/profile/update-notif-settings'])?>
+                            <?foreach($notif as $nott){?>
+                                <tr>
+
+                                    <td style="vertical-align: middle;text-align: center;">
+                                        <?=$nott['notification_title']?>
+                                    </td>
+
+                                    <td style="vertical-align: middle;text-align: center;">
+                                        <input readonly="readonly" role="form" type="text"
+                                               disabled
+                                               class="form-group form-control col-md-12"
+                                               id="edit_notification_settings-<?=$nott['id']?>-limit"
+                                               name="limit-<?=$nott['id']?>"
+                                               value="<?=$nott['notification_value']?>">
+                                    </td>
+                                    <td style="vertical-align: middle; text-align: center;">
+                                        <input disabled type="checkbox" role="form" class="form-group col-md" form="w1"
+                                               id="edit_notification_settings-<?=$nott['id']?>-email"
+                                               name="email-<?=$nott['id']?>"
+                                            <?if($nott['notification_email']) echo 'checked'?>>
+                                    </td>
+                                    <td style="vertical-align: middle; text-align: center;">
+                                        <input disabled type="checkbox" role="form" class="form-group col-md" form="w1"
+                                               id="edit_notification_settings-<?=$nott['id']?>-sms"
+                                               name="sms-<?=$nott['id']?>"
+                                            <?if($nott['notification_sms']) echo 'checked'?>>
+                                    </td>
+                                    <td style="vertical-align: inherit;text-align: center;">
+                                        <a id="edit_notification_settings-<?=$nott['id']?>" style="cursor: pointer;" onclick="notifSet(this.id);"><i class="fa fa-edit col-md-12 col-sm-12 col-xs-12" style="font-size: 30px;"></i></a>
+                                        <?= Html::a('<span class="fa fa-save col-md-12 col-sm-12 col-xs-12" style="font-size: 30px;vertical-align: middle;"></span>','', ['class' => 'settings_sub_link', 'id'=>"edit_notification_settings-".$nott['id']."-save", 'hidden'=>true])?>
+                                    </td>
+                                    <td style="vertical-align: middle;text-align: center;">
+                                        <input hidden role="form" type="text" class="form-group"
+                                               disabled
+                                               id="edit_notification_settings-<?=$nott['id']?>-notif-id"
+                                               name="notif-id-<?=$nott['id']?>"
+                                               value="<?=$nott['notification_id']?>">
+                                        <input hidden role="form" type="text" class="form-group"
+                                               disabled
+                                               id="edit_notification_settings-<?=$nott['id']?>-id"
+                                               name="id-<?=$nott['id']?>"
+                                               value="<?=$nott['id']?>">
+                                    </td>
+                                </tr>
+                                <input hidden role="form" type="text" class="form-group"
+                                       name="user-id"
+                                       value="<?=$nott['user_id']?>">
+                            <?}?>
+
+                            <?ActiveForm::end()?>
                             </tbody>
                         </table>
+                        <div class="tab-content col-md-12 col-sm-12 col-xs-12 col-lg-12">
+                            <b>*</b> При подключенном ТП "Собери сам" стоимость одного смс 3 руб.
+                            <p style="margin-left: 10px"> При подключенном ТП "Безлимитный" стоимость одного смс 0 руб.</p>
+                        </div>
                     </div>
                 </div>
-                <? ActiveForm::end()?>
+
             </div>
         </div>
     </div>
@@ -181,5 +238,22 @@ function myclick(param){
 $(document).on('click','.sub_link',function(e){
     e.preventDefault();
     $('#w0').yiiActiveForm('submitForm');
+});
+
+function notifSet(param){
+    document.getElementById(param+"-sms").disabled=false;
+    document.getElementById(param+"-email").disabled=false;
+    document.getElementById(param+"-limit").readOnly=false;
+    document.getElementById(param+"-limit").disabled=false;
+    document.getElementById(param+"-notif-id").disabled=false;
+    document.getElementById(param+"-id").disabled=false;
+    document.getElementById(param+'-save').hidden=false;
+    document.getElementById(param).hidden=true;
+    $(param+"-limit").focus();
+}
+
+$(document).on('click','.settings_sub_link',function(e){
+    e.preventDefault();
+    $('#w1').yiiActiveForm('submitForm');
 });
 </script>

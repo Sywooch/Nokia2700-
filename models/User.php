@@ -24,6 +24,7 @@ use yii\helpers\Url;
  * @property string $activation
  * @property integer $status
  * @property integer $cache_notification
+ * @property integer $cache_notif_status
  * @property string $partner
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -47,12 +48,12 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['name', 'email', 'pass', 'phone'], 'required'],
-            [['create_at'], 'safe'],
-            [['cache', 'cache_notification', 'bonus'], 'integer'],
+            [['create_at','cache_notif_date'], 'safe'],
+            [['cache', 'cache_notification', 'bonus', 'cache_notif_status'], 'integer'],
             [['status'], 'integer'],
             [['name'], 'string', 'max' => 50],
             [['email', 'pass', 'password_hash', 'password_token'], 'string', 'max' => 120],
-            [['phone'], 'string', 'max' => 15],
+            [['phone'], 'string', 'max' => 16],
             [['activation'], 'string', 'max' => 200],
         ];
     }
@@ -77,7 +78,8 @@ class User extends ActiveRecord implements IdentityInterface
             'status' => 'Status',
             'partner' => 'Partner',
             'partners_count' => 'Привлечённые',
-            'cache_notification'=> 'Порог остатка на счету для уведомления'
+            'cache_notification'=> 'Порог остатка на счету для уведомления',
+            'cache_notif_status'=> 'Порог остатка на счету для уведомления'
         ];
     }
 

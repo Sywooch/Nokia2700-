@@ -6,6 +6,7 @@ use app\models\Bonus;
 use app\models\BonusHistory;
 use app\models\Paymant;
 use app\models\Tarifs;
+use app\models\UserNotifSettings;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\Connection;
@@ -45,7 +46,7 @@ class ProfileController extends Controller
                             'pay-with', 'paid', 'fail','paid-ik',
                             'update-paid-ik', 'tarifs', 'sound',
                             'user-tarif', 'for-test', 'deletewidget',
-                            'update-user', 'dashboard'
+                            'update-user', 'update-notif-settings'
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -239,6 +240,13 @@ class ProfileController extends Controller
                 $mail.=$postArray[$index].';';
             }
             $model->widget_user_email = $mail;
+            $social = '';
+            for($i=1; $i<=$postArray['count_soc']; $i++)
+            {
+                $index = 'social_'.$i;
+                $social.=$postArray[$index].';';
+            }
+            $model->social = $social;
             $black_list = '';
             for($i=1; $i<=$postArray['count_black_list']; $i++)
             {
@@ -293,8 +301,8 @@ class ProfileController extends Controller
             $model->widget_work_time = json_encode($work_time);
             $model->widget_sound = Yii::$app->request->post('widget_sound');
             ($_POST['WidgetSettings']['hand_turn_on']) ? $model->hand_turn_on = 1 : $model->hand_turn_on = 0;
-            ($_POST['WidgetSettings']['utp_turn_on']) ? $model->utp_turn_on = 1 : $model->utp_turn_on = 0;
-            $model->widget_utp_form_position = $_POST['widget-utp-form-top'].$_POST['widget-utp-form-left'];
+//            ($_POST['WidgetSettings']['utp_turn_on']) ? $model->utp_turn_on = 1 : $model->utp_turn_on = 0;
+//            $model->widget_utp_form_position = $_POST['widget-utp-form-top'].$_POST['widget-utp-form-left'];
 //            $model->utm_button_color = Yii::$app->request->post('utm-button-color');
 //            $model->utp_img_url = Yii::$app->request->post('utp-img-url');
             if($model->save()) {
@@ -315,6 +323,7 @@ class ProfileController extends Controller
                     $sites .= $postArray['site_page_'.$i].'*'.$postArray['select_site_page_'.$i].';';
                 }
                 $marks->site_pages_list = $sites;
+
                 if($marks->save()) {
                     for ($i = 0;$i < count($_POST['template']['id']);$i++) {
                         $widgetTemplateUsers = new WidgetTemplateNotificationUsers();
@@ -322,10 +331,10 @@ class ProfileController extends Controller
                         $widgetTemplateUsers->id_template = $_POST['template']['id'][$i];
                         $widgetTemplateUsers->description = $_POST['template']['description'][$i];
                         $widgetTemplateUsers->param = $_POST['template']['param'][$i];
-                        $widgetTemplateUsers->status =  $_POST['template']['change'][$_POST['template']['id'][$i]];
+//                        $widgetTemplateUsers->status =  $_POST['template']['change'][$_POST['template']['id'][$i]];
                         $widgetTemplateUsers->save();
                     }
-                    return $this->redirect(['profile/widgets']);
+                   return $this->redirect(['profile/widgets']);
                 } else {
                     print_r($marks->errors);
                     die();
@@ -364,6 +373,13 @@ class ProfileController extends Controller
                 $email.=$postArray[$index].';';
             }
             $model->widget_user_email = $email;
+            $social = '';
+            for($i=1; $i<=$postArray['count_soc']; $i++)
+            {
+                $index = 'social_'.$i;
+                $social.=$postArray[$index].';';
+            }
+            $model->social = $social;
             $black_list = '';
             for($i=1; $i<=$postArray['count_black_list']; $i++)
             {
@@ -415,9 +431,9 @@ class ProfileController extends Controller
             $model->widget_sound = Yii::$app->request->post('widget_sound');
             ($_POST['WidgetSettings']['hand_turn_on']) ? $model->hand_turn_on = 1 : $model->hand_turn_on = 0;
             /*($_POST['WidgetSettings']['utp_turn_on']) ? $model->utp_turn_on = 1 : $model->utp_turn_on = 0;*/
-            $model->widget_utp_form_position = $_POST['widget-utp-form-top'].$_POST['widget-utp-form-left'];
-            $model->utm_button_color = Yii::$app->request->post('utm-button-color');
-            $model->utp_img_url = Yii::$app->request->post('utp-img-url');
+           // $model->widget_utp_form_position = $_POST['widget-utp-form-top'].$_POST['widget-utp-form-left'];
+           // $model->utm_button_color = Yii::$app->request->post('utm-button-color');
+           // $model->utp_img_url = Yii::$app->request->post('utp-img-url');
             if($model->save()) {
                 $this->renameFileScreen($model->widget_id, $url, 2);
                 $marks->widget_id = $model->widget_id;
@@ -571,4 +587,25 @@ class ProfileController extends Controller
         return $this->redirect('/profile');
     }
 
+    public function actionUpdateNotifSettings()
+    {
+
+        $fl_array =array_values(preg_grep("/^id-/", array_keys($_POST)));
+
+        for($i = 0; $i < count($fl_array); $i++)
+        {
+            $id = $_POST[$fl_array[$i]];
+            $limit = $_POST['limit-'.$id];
+            $email = $_POST['email-'.$id];
+            $sms = $_POST['sms-'.$id];
+
+            $u_notif_sett = UserNotifSettings::findOne($id);
+            $u_notif_sett->notification_value = $limit;
+            (isset($email)) ? $u_notif_sett->notification_email = 1 : $u_notif_sett->notification_email = 0;
+            (isset($sms)) ? $u_notif_sett->notification_sms = 1 : $u_notif_sett->notification_sms = 0;
+            $u_notif_sett->save();
+        }
+
+        return $this->redirect('/profile');
+    }
 }

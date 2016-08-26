@@ -803,6 +803,31 @@ $this->title = 'Изменить виджет';
           </table>
         </div>
       </div>
+        <div class="bordered">
+            <label>Подключение социальных сетей</label>
+            <br>
+            <div id="soc_block">
+                <?php
+                $social = explode(';', $model->social);
+                $num = count($social)-1;
+                unset($social[$num]);
+                $count_soc = count($social);
+                for($i=1; $i<=$count_soc; $i++)
+                {?>
+                    <span class="phone">Страничка в соц сети</span>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="social_<?=$i?>" placeholder="Page address" data-required="true" value="<?=$social[$i-1]?>">
+                    </div>
+                <?}
+                ?>
+            </div>
+            <br>
+            <input type="hidden" name="count_soc" value="<?=$count_soc?>">
+            <div class="input-group">
+                <button class="soc_more btn">Добавить еще одину страницу</button>
+            </div>
+            <br>
+        </div>
         <div class="line-time">
           <?= Html::submitButton('Сохранить', ['class' => 'btn btn-block btn-success btn-lg']) ?>
         </div>
@@ -949,6 +974,15 @@ $('.email_more').click(function(e){
     var email_input = '<span class="phone">Ваша эл-почта</span><div class="input-group"> <div class="input-group-addon"><b>@</b></div> <input type="text" class="form-control" name="widget_user_email_'+i+'" placeholder="Email" data-required="true"> </div>';
     $('#emails_block').append(email_input);
     $('input[name="count_emails"]').val(i);
+});
+//Добавление соц сети (настройка уведомлений)
+var n = <?=$count_soc?>;
+$('.soc_more').click(function(e){
+    n++;
+    e.preventDefault();
+    var soc_input = '<span class="phone">Страничка в соц сетях</span><div class="input-group"><input type="text" class="form-control" name="social_'+n+'" placeholder="Page address" data-required="true"> </div>';
+    $('#soc_block').append(soc_input);
+    $('input[name="count_soc"]').val(n);
 });
 //Добавление телефона (определяется при звонке клиенту)
 var j = <?=$count_phones?>;

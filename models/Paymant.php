@@ -55,31 +55,20 @@ class Paymant extends Model
             ->where("user_id='$user_id' AND status = 1");
         $finance = $query->all();
 
-
-
         $cache = 0;
 
         foreach ($finance as $fin)
         {
             ($fin['type'])? $cache -= $fin['payment']: $cache += $fin['payment'];
         }
+
         $mod = User::findOne($user_id);
-        if($cache <= $mod->cache_notification && $mod->cache_notif_status != 1)
-        {
-            User::sendNotification($mod->email, $cache);
-            $mod->cache_notif_status = 1;
-            $mod->save();
-        }
-        else
-        {
-            $mod->cache_notif_status = 0;
-            $mod->save();
-        }
 
         if (null != $mod ) {
             $mod->cache = (integer)$cache;
             $mod->save();
         }
+        self::cashNotification($user_id);
 
         return $mod;
     }
@@ -195,11 +184,50 @@ class Paymant extends Model
 
     public function bonusValidate($attribute, $params)
     {
-        echo Yii::$app->user->identity->getId();
         if( $this->$attribute)
         {
 
             $this->addError($attribute, 'Вееденная сума превышает остаток на бонусном счету');
+        }
+    }
+
+    public static function cashNotification($user_id)
+    {
+        $mod = User::findOne($user_id);
+        if($mod->cache_notif_date != (string)date('dmY'))
+        {
+            $mod->cache_notif_status = 0;
+            $mod->save();
+        }
+        else
+        {
+            return true;
+        }
+        if(null != $mod && $mod->cache_notif_status != 1)
+        {
+            $cash = $mod->cache;
+            $query = new Query();
+            $query->select('*')
+                ->from('user_notif_settings')
+                ->where('user_id="'.$user_id.'" AND notification_id=1');
+            $row = $query->all();
+
+//            return $row['0']['notification_value'];
+
+            if($cash <=$row['0']['notification_value'] )
+            {
+                if($row['0']['notification_email'] == 1 )
+                {
+
+                    if(User::sendNotification($mod->email, $cash))
+                    {
+                        $mod->cache_notif_status = 1;
+                        $mod->cache_notif_date = date('dmY');
+                        $mod->save();
+                    }
+                }
+            }
+
         }
     }
 

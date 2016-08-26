@@ -143,7 +143,7 @@ class WidgetAnalytics extends Model
             $query->select ('*')
                 ->from('widget_pending_calls')
                 /*->join('LEFT JOIN', 'widget_catching', 'widget_pending_calls.catching_event=widget_catching.id')
-                ->join('LEFT JOIN', 'widget_settings', 'widget_catching.website=widget_settings.widget_site_url')*/
+                ->join('LEFT JOIN', 'widget_settings', 'widget_pending_calls.widget_id=widget_settings.widget_id')*/
                 ->where('catching_event = "'.$acttype.'" AND widget_id="'.$w_id.'"')
                 /*->groupBy('widget_catching.ip')*/;
         }
@@ -151,9 +151,9 @@ class WidgetAnalytics extends Model
         {
             $query->select ('*')
                 ->from('widget_pending_calls')
-               /* ->join('LEFT JOIN', 'widget_catching', 'widget_pending_calls.catching_id=widget_catching.id')
-                ->join('LEFT JOIN', 'widget_settings', 'widget_catching.website=widget_settings.widget_site_url')*/
-                ->where('catching_event = "'.$acttype.'"')
+                ->join('LEFT JOIN', 'widget_catching', 'widget_pending_calls.catching_id=widget_catching.id')
+                ->join('LEFT JOIN', 'widget_settings', 'widget_catching.website=widget_settings.widget_site_url')
+                ->where('catching_event = "'.$acttype.'" AND widget_settings.user_id = "'.Yii::$app->user->identity->id.'"')
                 /*->groupBy('widget_catching.ip')*/;
 
         }
