@@ -413,11 +413,15 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
         }
     };
     helper.typing = function(obj, callBack) {
-        phh1 = obj['#phone-h1'];
-        phdiv = obj['#phone-div'];
+        /*helper.cssQuery(obj['type_h1']).innerHTML = obj[obj['type_h1']];
+        helper.cssQuery(obj['type_div']).innerHTML = obj[obj['type_div']];
 
-        helper.cssQuery('#phone-h1').innerHTML = '';
-        helper.cssQuery('#phone-div').innerHTML = '';
+        if (typeof callBack == 'function') callBack();*/
+        phh1 = obj[obj['type_h1']];
+        phdiv = obj[obj['type_div']];
+
+        helper.cssQuery(obj['type_h1']).innerHTML = '';
+        helper.cssQuery(obj['type_div']).innerHTML = '';
 
         var tText = phh1;
         var tLength = 0;
@@ -426,24 +430,24 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
         function typingH1(){
             tLength++;
             if(tLength <= tText.length) {
-                helper.cssQuery('#phone-h1').innerHTML = tText.substr(0, tLength);
+                helper.cssQuery(obj['type_h1']).innerHTML = tText.substr(0, tLength);
                 if(tLength == tText.length) {
                     tText = phdiv;
                     tLength = 0;
                     typingDIV();
                 } else {
-                    setTimeout(typingH1, 50 );
+                    setTimeout(typingH1, 10);
                 }
             }
         }
         function typingDIV(){
             tLength++;
             if(tLength <= tText.length) {
-                helper.cssQuery('#phone-div').innerHTML = tText.substr(0, tLength);
+                helper.cssQuery(obj['type_div']).innerHTML = tText.substr(0, tLength);
                 if(tLength == tText.length) {
                     if (typeof callBack == 'function') callBack();
                 } else {
-                    setTimeout(typingDIV, 50 );
+                    setTimeout(typingDIV, 10);
                 }
             }
         }
@@ -653,10 +657,6 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
 
         $("#cbh_timer_seconds").text("07");
         $("#cbh_timer_ms").text("99");
-        $(".robax-widget-phone-form").show();
-        $(".btn-call").show();
-        $(".robax-timer").show();
-        $(".robax-item-later").show();
     };
     RobaxWidget = function(param){
         var t = this;
@@ -703,7 +703,7 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
         this.controller.open(dataJSON);
         this.controller.closed();
         this.controller.phone();
-        this.controller.menu();
+        this.controller.menu(dataJSON);
         this.controller.phone_item(dataJSON);
 
         for(var k in param){
@@ -711,15 +711,47 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
         }
 
         helper.cssQuery('.btn-call').onclick = function() {
-            t.postCall(helper.cssQuery('.robax-widget-phone-form .robax-phone-input').value);
-            t.controller.timer();
+            if (helper.cssQuery('.robax-widget-phone-form .robax-phone-input').value) {
+                t.postCall(helper.cssQuery('.robax-widget-phone-form .robax-phone-input').value);
+                t.controller.timer();
+            } else {
+                helper.typing({
+                    '#phone-h1': '— Упс,',
+                    '#phone-div': 'вы забыли ввести номер телефона. _',
+                    'type_h1': '#phone-h1',
+                    'type_div': '#phone-div'
+                });
+            }
         };
         helper.cssQuery('.btn-mail').onclick = function() {
-            t.postMail(
-                helper.cssQuery('.form-question').value,
-                helper.cssQuery('.form-mail').value,
-                helper.cssQuery('.form-phone').value
-            );
+            if (!helper.cssQuery('.form-question').value && !helper.cssQuery('.form-mail').value) {
+                helper.typing({
+                    '#mail-h1': '— Упс,',
+                    '#mail-div': 'вы забыли задать вопрос и написать E-mail, эти поля обязательны. _',
+                    'type_h1': '#mail-h1',
+                    'type_div': '#mail-div'
+                });
+            } else if (helper.cssQuery('.form-question').value && !helper.cssQuery('.form-mail').value) {
+                helper.typing({
+                    '#mail-h1': '— Упс,',
+                    '#mail-div': 'вы забыли заполнить E-mail. _',
+                    'type_h1': '#mail-h1',
+                    'type_div': '#mail-div'
+                });
+            } else if (!helper.cssQuery('.form-question').value && helper.cssQuery('.form-mail').value) {
+                helper.typing({
+                    '#mail-h1': '— Упс,',
+                    '#mail-div': 'вы забыли задать вопрос. _',
+                    'type_h1': '#mail-h1',
+                    'type_div': '#mail-div'
+                });
+            } else {
+                t.postMail(
+                    helper.cssQuery('.form-question').value,
+                    helper.cssQuery('.form-mail').value,
+                    helper.cssQuery('.form-phone').value
+                );
+            }
         };
         helper.cssQuery(".btn-review").onclick = function() {
             var i = 1, starCount = 0;
@@ -731,7 +763,9 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
             if (starCount && helper.cssQuery(".form-review").value) {
                 helper.typing({
                     '#phone-h1': '— Спасибо Вам,',
-                    '#phone-div': 'за то, что помогаете, улучшить качество обслуживания клиентов. _'
+                    '#phone-div': 'за то, что помогаете, улучшить качество обслуживания клиентов. _',
+                    'type_h1': '#phone-h1',
+                    'type_div': '#phone-div'
                 }, helper.afterReview);
                 t.postReview(
                     starCount,
@@ -740,7 +774,9 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
             } else if (!starCount && helper.cssQuery(".form-review").value) {
                 helper.typing({
                     '#phone-h1': '— Спасибо Вам,',
-                    '#phone-div': 'за оставленый отзыв. Он для нас очень важен. Удачного вам дня! _'
+                    '#phone-div': 'за оставленый отзыв. Он для нас очень важен. Удачного вам дня! _',
+                    'type_h1': '#phone-h1',
+                    'type_div': '#phone-div'
                 }, helper.afterReview);
                 t.postReview(
                     starCount,
@@ -749,7 +785,9 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
             } else if (starCount && !helper.cssQuery(".form-review").value) {
                 helper.typing({
                     '#phone-h1': '— Спасибо Вам,',
-                    '#phone-div': 'за оценку менеджера. Для нас это важно. _'
+                    '#phone-div': 'за оценку менеджера. Для нас это важно. _',
+                    'type_h1': '#phone-h1',
+                    'type_div': '#phone-div'
                 }, helper.afterReview);
                 t.postReview(
                     starCount,
@@ -758,23 +796,21 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
             } else if (!starCount && !helper.cssQuery(".form-review").value) {
                 helper.typing({
                     '#phone-h1': '— Нам очень жаль,',
-                    '#phone-div': 'что Вы не поставили оценку и не оставили отзыв о работе менеджера... _'
+                    '#phone-div': 'что Вы не поставили оценку и не оставили отзыв о работе менеджера... _',
+                    'type_h1': '#phone-h1',
+                    'type_div': '#phone-div'
                 }, helper.afterReview);
             }
             starCount = 0;
         };
 
-        var dc=new Date();
-        timeNow=dc.getHours()*60+dc.getMinutes();
-        dc=dataJSON['date']['work-start-time'];
-        timeStart=Number(dc.split(':')[0])*60+Number(dc.split(':')[1]);
-        dc=dataJSON['date']['work-end-time'];
-        timeEnd=Number(dc.split(':')[0])*60+Number(dc.split(':')[1]);
-        if(timeNow<timeStart){//if(timeNow>timeEnd||timeNow<timeStart){
-            helper.cssQuery('#widget-msg-h1').style.display='block';
-            helper.cssQuery('#widget-msg-div').style.display='block';
-            helper.cssQuery('#phone-h1').style.display='none';
-            helper.cssQuery('#phone-div').style.display='none';
+        var dc = new Date();
+        timeNow = dc.getHours() * 60 + dc.getMinutes();
+        dc = dataJSON['date']['work-start-time'];
+        timeStart = Number(dc.split(':')[0]) * 60 + Number(dc.split(':')[1]);
+        dc = dataJSON['date']['work-end-time'];
+        timeEnd = Number(dc.split(':')[0]) * 60 + Number(dc.split(':')[1]);
+        if(timeNow > timeEnd || timeNow < timeStart){
             helper.cssQuery('.robax-timer').style.display='none';
             helper.cssQuery('.robax-later').style.display='block';
             helper.cssQuery('.robax-item-later').style.display='none';
@@ -891,11 +927,32 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
     };
     RobaxWidget.prototype.controller = {
         open:function(dataJSON) {
-            helper.cssQuery('.robax-widget-open-button, .robax-widget-open-button-mobile').onclick=function(){
-                helper.typing({
-                    '#phone-h1': dataJSON['phone']['h1'],
-                    '#phone-div': dataJSON['phone']['item-text']
-                });
+            helper.cssQuery('.robax-widget-open-button, .robax-widget-open-button-mobile').onclick = function(){
+                var dc = new Date();
+                timeNow = dc.getHours() * 60 + dc.getMinutes();
+                dc = dataJSON['date']['work-start-time'];
+                timeStart = Number(dc.split(':')[0]) * 60 + Number(dc.split(':')[1]);
+                dc = dataJSON['date']['work-end-time'];
+                timeEnd = Number(dc.split(':')[0]) * 60 + Number(dc.split(':')[1]);
+                if(timeNow > timeEnd || timeNow < timeStart) {
+                    helper.typing({
+                        '#phone-h1': dataJSON['widget-msg']['h1'],
+                        '#phone-div': dataJSON['widget-msg']['item-text'],
+                        'type_h1': '#phone-h1',
+                        'type_div': '#phone-div'
+                    });
+                } else {
+                    helper.typing({
+                        '#phone-h1': dataJSON['phone']['h1'],
+                        '#phone-div': dataJSON['phone']['item-text'],
+                        'type_h1': '#phone-h1',
+                        'type_div': '#phone-div'
+                    });
+                }
+                helper.cssQuery('#cbh_timer_minutes').innerHTML = '00';
+                helper.cssQuery('#cbh_timer_seconds').innerHTML = '07';
+                helper.cssQuery('#cbh_timer_ms').innerHTML = '99';
+                $('.robax-d').text(':');
                 if (widgetsound == 1) {
                     var audio = new Audio(); // Создаём новый элемент Audio
                     audio.src = 'http://'+hostWidget+'/widget-front/open_1.mp3'; // Указываем путь к звуку "клика"
@@ -927,7 +984,7 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
                 }
             };
             if (!$('.robax-widget-mobile').length) {
-                helper.cssQuery('.robax-arrow').onclick=function(){
+                helper.cssQuery('.robax-arrow').onclick = function(){
                     helper.cssQuery('.overlay').setAttribute("style","display:none;");
                     helper.cssQuery('.robax-widget').setAttribute("style","right:-350px;");
                 }
@@ -944,43 +1001,60 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
              i++;
              }*/
         },
-        menu:function() {
-            var e=helper.cssQueryAll('.robax-menu-button'),el,i=0,z=0,y=0,n=e.length;
-            while(i<n){
-                e[i].onclick=function(){
-                    el=helper.cssQuery(this.getAttribute("data-target")).parentNode.children,z=0,y=0;
-                    while(z<n){
+        menu:function(dataJSON) {
+            var e = helper.cssQueryAll('.robax-menu-button'),el,i=0,z=0,y=0,n=e.length;
+            while(i < n){
+                e[i].onclick = function(){
+                    el = helper.cssQuery(this.getAttribute("data-target")).parentNode.children;
+                    z = 0;
+                    y = 0;
+                    while(z < n){
                         helper.removeClass(e[z],'robax-widget-active');
                         z++;
                     }
-                    z=0;
+                    z = 0;
                     this.setAttribute("class","robax-menu-button robax-widget-active");
-                    while(y<el.length){
+                    while(y < el.length){
                         helper.removeClass(el[y],'robax-widget-active');
                         y++;
                     }
                     helper.addClass(helper.cssQuery(this.getAttribute("data-target")),' robax-widget-active');
+                    if (this.getAttribute("data-target") == ".robax-widget-phone") {
+                        helper.typing({
+                            '#phone-h1': dataJSON['phone']['h1'],
+                            '#phone-div': dataJSON['phone']['item-text'],
+                            'type_h1': '#phone-h1',
+                            'type_div': '#phone-div'
+                        });
+                    } else if (this.getAttribute("data-target") == ".robax-widget-mail") {
+                        helper.typing({
+                            '#mail-h1': dataJSON['mail']['h1'],
+                            '#mail-div': dataJSON['mail']['item-text'],
+                            'type_h1': '#mail-h1',
+                            'type_div': '#mail-div'
+                        });
+                    }
                 };
                 i++;
             }
         },
         phone_item:function(dataJSON) {
-            helper.cssQuery('.robax-item-later-link').onclick=function(){
-                helper.cssQuery('.robax-timer').style.display='none';
-                helper.cssQuery('.robax-later').style.display='block';
-                helper.cssQuery('.robax-item-later').style.display='none';
-                helper.cssQuery('.robax-item-now').style.display='block';
+            helper.cssQuery('.robax-item-later-link').onclick = function(){
+                helper.cssQuery('.robax-timer').style.display = 'none';
+                helper.cssQuery('.robax-later').style.display = 'block';
+                helper.cssQuery('.robax-item-later').style.display = 'none';
+                helper.cssQuery('.robax-item-now').style.display = 'block';
                 helper.cssQuery('.robax-later-data').value='true';
             };
-            helper.cssQuery('.robax-item-later-now').onclick=function(){
-                helper.cssQuery('.robax-timer').style.display='block';
-                helper.cssQuery('.robax-later').style.display='none';
-                helper.cssQuery('.robax-item-later').style.display='block';
-                helper.cssQuery('.robax-item-now').style.display='none';
-                helper.cssQuery('.robax-later-data').value='false';
+            helper.cssQuery('.robax-item-later-now').onclick = function(){
+                helper.cssQuery('.robax-timer').style.display = 'block';
+                helper.cssQuery('.robax-later').style.display = 'none';
+                helper.cssQuery('.robax-item-later').style.display = 'block';
+                helper.cssQuery('.robax-item-now').style.display = 'none';
+                helper.cssQuery('.robax-later-data').value = 'false';
             };
-            var date=new Date(Date.now() + 2592e5);
-            var month=["Января", "Февраля", "Марта", "Апрела", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"];
+            var date = new Date(Date.now() + 2592e5);
+            var month = ["Января", "Февраля", "Марта", "Апрела", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"];
             helper.cssQuery('.robax-later-sel__hold__day').innerHTML+='<li data-day="after-after-tomorrow">'+date.getDate()+' '+month[date.getMonth()]+'</li>';
 
             var e=helper.cssQueryAll('.robax-later-sel__hold__day li'),
@@ -1017,24 +1091,24 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
                 i=i+60;
             }
 
-            helper.cssQuery('.robax-later-sel__hold__hour').innerHTML=html;
-            helper.cssQuery('.robax-later__hour-val').innerHTML=helper.cssQuery('.robax-later-sel__hold__hour li').innerHTML;
+            helper.cssQuery('.robax-later-sel__hold__hour').innerHTML = html;
+            helper.cssQuery('.robax-later__hour-val').innerHTML = helper.cssQuery('.robax-later-sel__hold__hour li').innerHTML;
             var e=helper.cssQueryAll('.robax-later__hour li'),i=0,n=e.length;
             while(i<n){
                 e[i].onclick = function(){
-                    helper.cssQuery('.robax-later-data-hour').value=this.getAttribute("data-day");
-                    helper.cssQuery('.robax-later__hour-val').innerHTML=this.innerHTML;
+                    helper.cssQuery('.robax-later-data-hour').value = this.getAttribute("data-day");
+                    helper.cssQuery('.robax-later__hour-val').innerHTML = this.innerHTML;
                 };
                 i++;
             }
-            var dc=new Date();
-            timeNow=dc.getHours()*60+dc.getMinutes();
-            dc=dataJSON['date']['work-start-time'];
-            timeStart=Number(dc.split(':')[0])*60+Number(dc.split(':')[1]);
-            dc=dataJSON['date']['work-end-time'];
-            timeEnd=Number(dc.split(':')[0])*60+Number(dc.split(':')[1]);
-            if(timeNow<timeStart){//if(timeNow>timeEnd||timeNow<timeStart){
-                helper.cssQueryAll('.robax-later-sel__hold__day li')[0].style.display='none';
+            var dc = new Date();
+            timeNow = dc.getHours()*60+dc.getMinutes();
+            dc = dataJSON['date']['work-start-time'];
+            timeStart = Number(dc.split(':')[0]) * 60 + Number(dc.split(':')[1]);
+            dc = dataJSON['date']['work-end-time'];
+            timeEnd = Number(dc.split(':')[0]) * 60 + Number(dc.split(':')[1]);
+            if(timeNow > timeEnd || timeNow < timeStart){
+                helper.cssQueryAll('.robax-later-sel__hold__day li')[0].style.display = 'none';
                 helper.cssQueryAll('.robax-later-sel__hold__day li')[1].onclick();
             }
         },
@@ -1056,7 +1130,9 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
                         helper.cssQuery(".robax-item-later").style.display = 'none';
                         helper.typing({
                             '#phone-h1': '— Спасибо за заказ.',
-                            '#phone-div': 'Оцените пожалуйста работу менеджера по 5-ти бальной шкале и оставте пожалуйста ваш отзыв. _'
+                            '#phone-div': 'Оцените пожалуйста работу менеджера по 5-ти бальной шкале и оставте пожалуйста ваш отзыв. _',
+                            'type_h1': '#phone-h1',
+                            'type_div': '#phone-div'
                         }, helper.rate);
                     }
                 } else {
@@ -1065,7 +1141,7 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
             }
         },
         open_utp:function(){
-            var css={'width':helper.cssQuery('.robax-utp-img').offsetWidth+'px','height':helper.cssQuery('.robax-utp-img').offsetHeight+'px','left':((document.body.offsetWidth-helper.cssQuery('.robax-utp-img').offsetWidth)/2)+'px','top':((document.body.offsetHeight-helper.cssQuery('.robax-utp-img').offsetHeight)/2)+'px'};
+            var css = {'width':helper.cssQuery('.robax-utp-img').offsetWidth+'px','height':helper.cssQuery('.robax-utp-img').offsetHeight+'px','left':((document.body.offsetWidth-helper.cssQuery('.robax-utp-img').offsetWidth)/2)+'px','top':((document.body.offsetHeight-helper.cssQuery('.robax-utp-img').offsetHeight)/2)+'px'};
             for(var k in css){
                 helper.cssQuery('.robax-utp').style[k]=css[k];
             }

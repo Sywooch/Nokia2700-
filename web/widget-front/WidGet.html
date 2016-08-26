@@ -1,7 +1,7 @@
 <div class="robax-widget-body">
     <div class="overlay"></div>
     <div class="robax-widget-open-button" id="open-button" style="<{position}>">
-        <img src="http://robax.dev/widget-front/img/phone-icon.png" class="phone">
+        <img src="http://r.oblax.ru/widget-front/img/phone-icon.png" class="phone">
     </div>
     <div class="robax-widget">
         <div class="robax-arrow"><div class="robax-arrow-wrapper"><div class="robax-arrow-part"></div><div class="robax-arrow-part cbh-bottom"></div></div></div>
@@ -27,10 +27,6 @@
             <div class="robax-widget-phone robax-widget-active robax-widget-item">
                 <h1 id="phone-h1"></h1>
                 <div id="phone-div" class="robax-widget-item-text"></div>
-                <h1 id="widget-msg-h1" style="display:none"><{widget-msg.h1}></h1>
-                <div id="widget-msg-div" style="display:none" class="robax-widget-item-text">
-                    <{widget-msg.item-text}>
-                </div>
                 <div class="robax-later" style="display:none;">
                     <input type="hidden" class="robax-later-data" value="false" />
                     <div class="robax-later__day">
@@ -68,15 +64,15 @@
                 </div>
                 <div class="robax-timer" id="robax-timer">
                     <div class="robax-numbs">
-                        <span id="cbh_timer_minutes">00</span>
+                        <span id="cbh_timer_minutes"></span>
                     </div>
-                    <div class="robax-d">:</div>
+                    <div class="robax-d"></div>
                     <div class="robax-numbs">
-                        <span id="cbh_timer_seconds">07</span>
+                        <span id="cbh_timer_seconds"></span>
                     </div>
-                    <div class="robax-d">:</div>
+                    <div class="robax-d"></div>
                     <div class="robax-numbs">
-                        <span id="cbh_timer_ms">99</span>
+                        <span id="cbh_timer_ms"></span>
                     </div>
                 </div>
                 <div class="robax-item-later"><span class="robax-item-later-link"><{phone.later-text}></span></div>
@@ -94,6 +90,9 @@
                         <{buttons.post-form}>
                     </div>
                 </div>
+                <div class="robax-social">
+
+                </div>
             </div>
             <div class="robax-widget-msg robax-widget-item">
                 <h1><{widget-msg.h1}></h1>
@@ -104,10 +103,8 @@
                 </div>
             </div>
             <div class="robax-widget-mail robax-widget-item">
-                <h1><{mail.h1}></h1>
-                <div class="robax-widget-item-text">
-                    <{mail.item-text}>
-                </div>
+                <h1 id="mail-h1"></h1>
+                <div id="mail-div" class="robax-widget-item-text"></div>
                 <form class="robax-widget-form">
                     <textarea placeholder="Напишите вопрос" name="question" class="form-question"></textarea>
                     <input type="text" name="email" class="form-mail" placeholder="Ваш E-mail (для ответа)" />
