@@ -3,6 +3,8 @@
 namespace app\models;
 
 use CURLFile;
+use DateInterval;
+use DateTime;
 use Yii;
 
 /**
@@ -194,6 +196,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
             $widget_json['widget_user_email'] = $widget->widget_user_email;
             $widget_json['social'] = $widget->social;
             $widget_json['widget_settings'] = $widget->widget_settings;
+            $widget_json["social"] = $widget->social;
             $widget_json["buttons"] = array(
                 "post" => "Жду звонка!",
                 "post-form" => "Отправить"
@@ -333,6 +336,36 @@ class WidgetSettings extends \yii\db\ActiveRecord
         } else return "error";
     }
 
+    public function widgetOrder($phone, $dateText, $time, $widget)
+    {
+        $date = new DateTime(date("Y-m-d"));
+        switch ($dateText) {
+            case "Завтра": {
+                $date->add(new DateInterval('P1D'));
+                break;
+            }
+            case "Послезавтра": {
+                $date->add(new DateInterval('P2D'));
+                break;
+            }
+            default: {
+                $date->add(new DateInterval('P3D'));
+                break;
+            }
+        }
+        $date = $date->format('Y-m-d');
+        if(is_array($widget)){
+            $WidgetOrderCall = new WidgetOrderCall();
+            $WidgetOrderCall->widget_id = $widget["widget_id"];
+            $WidgetOrderCall->date = $date;
+            $WidgetOrderCall->time = $time;
+            $WidgetOrderCall->phone = $phone;
+            if (!$WidgetOrderCall->save()) print_r($WidgetOrderCall->getErrors());
+
+            return true;
+        } else return "error";
+    }
+
     public function widgetGetCallbackId($widget)
     {
         if(is_array($widget)){
@@ -357,21 +390,12 @@ class WidgetSettings extends \yii\db\ActiveRecord
                         "order" => $order_count,
                         "timeout" => 40,
                         "redirect_number" => $this->cutNumber($widget['widget_phone_number_'.$i]),
-                        //"redirect_number" => '+74993227920',
                         "type" => "lineral",
                         "name" => "manager_".$i
                     ];
                     $order_count++;
                 }
             }
-            /*
-                        $data['simpleCallBackFollowmeStruct'][] = [
-                            "order": $order_count,
-                            "type": "text",
-                            "value": "Звонок с сайта все продам ру",
-                            "side": "A"
-                            ];
-            */
             $response = $this->mttCallBackAPI(array(
                 "id" => "1",
                 "jsonrpc" => "2.0",
@@ -380,12 +404,8 @@ class WidgetSettings extends \yii\db\ActiveRecord
                     "customer_name"=> $customer_name,
                     "b_number" => '+'.$this->cutNumber($phone),
                     "callBackURL" => "r.oblax.ru/widget/listener",
-                    //"caller_id" => "+74993227920",
                     "caller_id" => $this->cutNumber($data['simpleCallBackFollowmeStruct'][0]['redirect_number']),
                     "recordEnable" => "1",
-                    //"client_caller_id" => "+7xxxxxxxxxx",
-                    //структура, которую необходимо сформировать при звонке,
-                    //для этого необходимо получить все номера телефонов
                     "simpleCallBackFollowmeStruct" => $data['simpleCallBackFollowmeStruct']
                 )
             ));
@@ -428,9 +448,6 @@ class WidgetSettings extends \yii\db\ActiveRecord
                 $model = WidgetPendingCalls::find()->where('callBackCall_id="'.$callBackCall_id.'"')->one();
                 $model->end_side = $end_side;
                 $model->call_back_cost = Tarifs::payForCall($minutes+$seconds, $model->widget_id);
-    //                $user = User::find()->join('INNER JOIN','widget_settings','widget_settings.user_id=users.user_id')->where('widget_settings.widget_id='.$model->widget_id)->one();
-    //                $user->cache -= $model->call_back_cost;
-    //                $user->save();
                 $model->call_back_currency = $response->result->callBackFollowmeCallInfoStruct->call_back_currency;
                 $model->waiting_period_A = $response->result->callBackFollowmeCallInfoStruct->waiting_period_A;
                 $model->waiting_period_B = $response->result->callBackFollowmeCallInfoStruct->waiting_period_B;
@@ -442,7 +459,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
                 $model->save();
                 //////////////////////////////////
                 $WidgetSettings = WidgetSettings::findOne(["widget_id" => $model->widget_id]);
-                $subject = 'Уведомление об успешно звонке Robaks!';
+                $subject = 'Уведомление об успешно звонке Robax!';
                 $message =
                     '<html>
                         <head>
@@ -475,8 +492,6 @@ class WidgetSettings extends \yii\db\ActiveRecord
     public function mttCallBackAPI($data)
     {
         $config = $this->initConfig();
-        $id = 1;
-        echo json_encode($data);
         if ($mtt_curl = curl_init())
         {
             curl_setopt($mtt_curl, CURLOPT_URL, $config['url']);                          //устанавливает адрес обращения для curl

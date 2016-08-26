@@ -122,7 +122,7 @@ class WidgetController extends Controller
                 $widget_json['widget_yandex_metrika'] = $widget->widget_yandex_metrika;
                 $widget_json['widget_google_metrika'] = $widget->widget_google_metrika;
                 $widget_json['widget_sound'] = $widget->widget_sound;
-
+                $widget_json["social"] = $widget->social;
                 $widget_json["buttons"] = array(
                     "post" => "Жду звонка!",
                     "post-form" => "Отправить"
@@ -303,6 +303,22 @@ class WidgetController extends Controller
         if(is_array($widget) && ($review != 'undefined' && $starCount != 'undefined' && $callbackID != 'undefined')){
             header('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
             die($model->widgetReview($review, $starCount, $callbackID, $widget));
+        } else throw new \Exception('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
+    }
+
+    public function actionWidgetOrder()
+    {
+        $getArray = Yii::$app->request->get();
+        $key = $getArray['key'];
+        $phone = $getArray['phone'];
+        $date = $getArray['date'];
+        $time = $getArray['time'];
+        $site_url = $getArray['site_url'];
+        $widget = WidgetSettings::getJSONWidget($key, $site_url);
+        $model = new WidgetSettings();
+        if(is_array($widget) && ($phone != 'undefined' && $date != 'undefined' && $time != 'undefined')){
+            header('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
+            die($model->widgetOrder($phone, $date, $time, $widget));
         } else throw new \Exception('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
     }
 

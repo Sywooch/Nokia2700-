@@ -436,7 +436,7 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
                     tLength = 0;
                     typingDIV();
                 } else {
-                    setTimeout(typingH1, 10);
+                    setTimeout(typingH1, 30);
                 }
             }
         }
@@ -447,7 +447,7 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
                 if(tLength == tText.length) {
                     if (typeof callBack == 'function') callBack();
                 } else {
-                    setTimeout(typingDIV, 10);
+                    setTimeout(typingDIV, 30);
                 }
             }
         }
@@ -711,13 +711,27 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
         }
 
         helper.cssQuery('.btn-call').onclick = function() {
-            if (helper.cssQuery('.robax-widget-phone-form .robax-phone-input').value) {
-                t.postCall(helper.cssQuery('.robax-widget-phone-form .robax-phone-input').value);
-                t.controller.timer();
+            if (helper.cssQuery(".robax-later__day-val").innerHTML == "Сегодня") {
+                if (helper.cssQuery(".robax-widget-phone-form .robax-phone-input").value) {
+                    t.postCall(helper.cssQuery(".robax-widget-phone-form .robax-phone-input").value);
+                    t.controller.timer();
+                } else {
+                    helper.typing({
+                        '#phone-h1': '— Упс,',
+                        '#phone-div': 'вы забыли ввести номер телефона. _',
+                        'type_h1': '#phone-h1',
+                        'type_div': '#phone-div'
+                    });
+                }
             } else {
+                t.postOrderCall(
+                    helper.cssQuery(".robax-widget-phone-form .robax-phone-input").value,
+                    helper.cssQuery(".robax-later__day-val").innerHTML,
+                    helper.cssQuery(".robax-later__hour-val").innerHTML
+                );
                 helper.typing({
-                    '#phone-h1': '— Упс,',
-                    '#phone-div': 'вы забыли ввести номер телефона. _',
+                    '#phone-h1': '— Спасибо,',
+                    '#phone-div': 'ваша заявка на звонок успешно отправлена. _',
                     'type_h1': '#phone-h1',
                     'type_div': '#phone-div'
                 });
@@ -869,6 +883,16 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
     RobaxWidget.prototype.getToken = function(){};
     RobaxWidget.prototype.getOldMessage = function(){};
     RobaxWidget.prototype.postMessage = function(){};
+    RobaxWidget.prototype.postOrderCall = function(phone, date, time){
+        helper.get('//'+hostWidget+'/widget/widget-order',{
+            'key': this.settings.key,
+            'phone': phone,
+            'date': date,
+            'time': time,
+            'site_url': window.location.hostname,
+            'protocol' :window.location.protocol
+        });
+    };
     RobaxWidget.prototype.postReview = function(starCount, review){
         helper.get('//'+hostWidget+'/widget/widget-review',{
             'key': this.settings.key,
