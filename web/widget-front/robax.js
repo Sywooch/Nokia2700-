@@ -668,7 +668,7 @@ var hostWidget = "r.oblax.dev", helperMask, callbackID, JSON_social, Widget_date
             new_json["twitter"].length ||
             new_json["insta"].length
         ) {
-            $(".robax-social").append('<h3>Присоединяйтесь к нам в соц сетях</h3>');
+            $(".robax-social").append('<h3>Присоединяйтесь к нам</h3>');
         }
         if (new_json["vk"].length) $(".robax-social").append('<a href="http://'+new_json["vk"]+'"><img src="http://'+hostWidget+'/images/vkontakte.png"/></a>');
         if (new_json["ok"].length) $(".robax-social").append('<a href="http://'+new_json["ok"]+'"><img src="http://'+hostWidget+'/images/odnoklassniki.png"/></a>');
