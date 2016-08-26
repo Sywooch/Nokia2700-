@@ -1,4 +1,4 @@
-var hostWidget = "r.oblax.dev", helperMask, callbackID, JSON_social, Widget_date;
+var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date;
 (function(w,d){
     var helper={};
     var widgetsound = 0;
@@ -668,6 +668,7 @@ var hostWidget = "r.oblax.dev", helperMask, callbackID, JSON_social, Widget_date
             new_json["twitter"].length ||
             new_json["insta"].length
         ) {
+            $(".robax-social").html('');
             $(".robax-social").append('<h3>Присоединяйтесь к нам</h3>');
         }
         if (new_json["vk"].length) $(".robax-social").append('<a href="http://'+new_json["vk"]+'"><img src="http://'+hostWidget+'/images/vkontakte.png"/></a>');
