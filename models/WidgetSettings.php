@@ -302,11 +302,9 @@ class WidgetSettings extends \yii\db\ActiveRecord
                             <title>Письмо отправлено через Robaks!</title>
                         </head>
                         <body>
-                            <p>'.$url.'</p>
                             <p>'.$question.'</p>
-                            <p>'.$phone.'</p>
-                            <p>'.$mail.'</p>
-                            <p>'.$mail.'</p>
+                            <p></p>
+                            <p>Обратный E-mail для связи: '.$mail.'</p>
                         </body>
                     </html>';
             Yii::$app->mailer->compose()
