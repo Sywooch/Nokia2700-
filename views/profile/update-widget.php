@@ -1023,15 +1023,6 @@ $('.email_more').click(function(e){
     $('#emails_block').append(email_input);
     $('input[name="count_emails"]').val(i);
 });
-//Добавление соц сети (настройка уведомлений)
-var n = <?=$count_soc?>;
-$('.soc_more').click(function(e){
-    n++;
-    e.preventDefault();
-    var soc_input = '<span class="phone">Страничка в соц сетях</span><div class="input-group"><input type="text" class="form-control" name="social_'+n+'" placeholder="Page address" data-required="true"> </div>';
-    $('#soc_block').append(soc_input);
-    $('input[name="count_soc"]').val(n);
-});
 //Добавление телефона (определяется при звонке клиенту)
 var j = <?=$count_phones?>;
 $('.phone_more').click(function(e){

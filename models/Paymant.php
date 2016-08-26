@@ -213,23 +213,21 @@ class Paymant extends Model
             $row = $query->all();
 
 //            return $row['0']['notification_value'];
-
-            if($cash <=$row['0']['notification_value'] )
-            {
-                if($row['0']['notification_email'] == 1 )
+            if ($row) {
+                if($cash <=$row['0']['notification_value'] )
                 {
-
-                    if(User::sendNotification($mod->email, $cash))
+                    if($row['0']['notification_email'] == 1 )
                     {
-                        $mod->cache_notif_status = 1;
-                        $mod->cache_notif_date = date('dmY');
-                        $mod->save();
+
+                        if(User::sendNotification($mod->email, $cash))
+                        {
+                            $mod->cache_notif_status = 1;
+                            $mod->cache_notif_date = date('dmY');
+                            $mod->save();
+                        }
                     }
                 }
             }
-
         }
     }
-
 }
-

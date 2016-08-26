@@ -187,14 +187,6 @@ class WidgetSettings extends \yii\db\ActiveRecord
             $time['Sunday']['end'] = $time_cache->sunday->end;
             $time['Sunday']['lunch'] = $time_cache->sunday->lunch;
 
-            $social = json_decode($widget->social);
-
-            $soc['vk'] = $social['social-vk'];
-            $soc['ok'] = $social['social-ok'];
-            $soc['facebook'] = $social['social-facabook'];
-            $soc['twitter'] = $social['social-twitter'];
-            $soc['insta'] = $social['social-insta'];
-
             $widget_json['widget_id'] = $widget->widget_id;
             $widget_json['widget_site_url'] = $widget->widget_site_url;
             $widget_json['user_id'] = $widget->user_id;

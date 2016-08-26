@@ -1,4 +1,4 @@
-var hostWidget = "r.oblax.ru", helperMask, callbackID;
+var hostWidget = "r.oblax.dev", helperMask, callbackID, JSON_social, Widget_date;
 (function(w,d){
     var helper={};
     var widgetsound = 0;
@@ -657,6 +657,42 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
 
         $("#cbh_timer_seconds").text("07");
         $("#cbh_timer_ms").text("99");
+
+        var new_json = JSON_social.replace('\\', '');
+        new_json = new_json.replace('\\', '');
+        new_json = JSON.parse(new_json);
+
+        if (new_json["vk"].length) $(".robax-social").append('<a href="http://'+new_json["vk"]+'"><img src="http://'+hostWidget+'/images/vkontakte.png"/></a>');
+        if (new_json["ok"].length) $(".robax-social").append('<a href="http://'+new_json["ok"]+'"><img src="http://'+hostWidget+'/images/odnoklassniki.png"/></a>');
+        if (new_json["facebook"].length) $(".robax-social").append('<a href="http://'+new_json["facebook"]+'"><img src="http://'+hostWidget+'/images/facebook.png"/></a>');
+        if (new_json["twitter"].length) $(".robax-social").append('<a href="http://'+new_json["twitter"]+'"><img src="http://'+hostWidget+'/images/twitter_new.png"/></a>');
+        if (new_json["insta"].length) $(".robax-social").append('<a href="http://'+new_json["insta"]+'"><img src="http://'+hostWidget+'/images/instagram-new.png"/></a>');
+
+        $(".robax-social").show();
+    };
+    helper.resetRobax = function() {
+        helper.cssQuery(".robax-social").style.display = 'none';
+        helper.cssQuery(".robax-widget-phone-form").style.display = 'block';
+        helper.cssQuery(".btn-call").style.display = 'block';
+        helper.cssQuery(".robax-timer").style.display = 'block';
+        helper.cssQuery(".robax-item-later").style.display = 'block';
+
+        var dc = new Date();
+        timeNow = dc.getHours() * 60 + dc.getMinutes();
+        dc = Widget_date['work-start-time'];
+        timeStart = Number(dc.split(':')[0]) * 60 + Number(dc.split(':')[1]);
+        dc = Widget_date['work-end-time'];
+        timeEnd = Number(dc.split(':')[0]) * 60 + Number(dc.split(':')[1]);
+
+        if(timeNow > timeEnd || timeNow < timeStart) {
+            helper.cssQuery('.robax-timer').style.display='none';
+            helper.cssQuery('.robax-later').style.display='block';
+            helper.cssQuery('.robax-item-later').style.display='none';
+            helper.cssQuery('.robax-later-data').value='true';
+            helper.cssQuery('.robax-item-now').style.display='none';
+            helper.cssQueryAll('.robax-later-sel__hold__day li')[0].style.display = 'none';
+            helper.cssQueryAll('.robax-later-sel__hold__day li')[1].onclick();
+        }
     };
     RobaxWidget = function(param){
         var t = this;
@@ -675,6 +711,8 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
             'template': template
         }).replace(/\ufeff/g,''));
         window.widget_key = param.key;
+        JSON_social = dataJSON['social'];
+        Widget_date = dataJSON['date'];
 
         widgetsound = dataJSON['widget_sound']; //Получаем параметры звука
         //var colorTheme = dataJSON['theme_color'];
@@ -998,7 +1036,7 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
             //textEcho({selector:helper.cssQuery('.robax-widget-open-button'),});
         },
         closed:function() {
-            helper.cssQuery('.robax-widget-closed').onclick=function(){
+            helper.cssQuery('.robax-widget-closed').onclick = function(){
                 helper.cssQuery('.overlay').setAttribute("style","display:none;");
                 if (!$('.robax-widget-mobile').length) {
                     helper.cssQuery('.robax-widget').setAttribute("style","right:-350px;");
@@ -1006,11 +1044,13 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
                     $('.robax-widget-active').removeClass('robax-widget-active');
                     helper.cssQuery('.robax-widget-mobile').setAttribute("style","right:-360px;");
                 }
+                helper.resetRobax();
             };
             if (!$('.robax-widget-mobile').length) {
                 helper.cssQuery('.robax-arrow').onclick = function(){
                     helper.cssQuery('.overlay').setAttribute("style","display:none;");
                     helper.cssQuery('.robax-widget').setAttribute("style","right:-350px;");
+                    helper.resetRobax();
                 }
             }
         },
@@ -1057,6 +1097,7 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID;
                             'type_h1': '#mail-h1',
                             'type_div': '#mail-div'
                         });
+                        helper.resetRobax();
                     }
                 };
                 i++;

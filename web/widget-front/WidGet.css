@@ -399,3 +399,16 @@
     box-sizing: content-box;
     box-shadow: none;
 }
+
+.robax-social {
+    display: none;
+}
+
+.robax-social a {
+    margin-right: 10px;
+}
+
+.robax-social img {
+    width: 32px;
+    height: 32px;
+}
