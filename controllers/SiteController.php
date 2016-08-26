@@ -99,9 +99,6 @@ class SiteController extends Controller
             }
             return $this->redirect(['site/login']);
         }
-        echo '<pre>';
-        print_r($model);
-        echo '</pre>';
         return $this->render('register', [
             'model' => $model,
         ]);

@@ -240,13 +240,6 @@ class ProfileController extends Controller
                 $mail.=$postArray[$index].';';
             }
             $model->widget_user_email = $mail;
-            $social = '';
-            for($i=1; $i<=$postArray['count_soc']; $i++)
-            {
-                $index = 'social_'.$i;
-                $social.=$postArray[$index].';';
-            }
-            $model->social = $social;
             $black_list = '';
             for($i=1; $i<=$postArray['count_black_list']; $i++)
             {
@@ -425,7 +418,7 @@ class ProfileController extends Controller
 
             $soc['vk'] = $postArray['social-vk'];
             $soc['ok'] = $postArray['social-ok'];
-            $soc['facebook'] = $postArray['social-facabook'];
+            $soc['facebook'] = $postArray['social-facebook'];
             $soc['twitter'] = $postArray['social-twitter'];
             $soc['insta'] = $postArray['social-insta'];
 

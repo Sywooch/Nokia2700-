@@ -61,36 +61,35 @@ class UserNotifSettings extends ActiveRecord
 
     public static function findUserSettings($u_id)
     {
-        $query = new Query();
+       $query = new Query();
         $query->select('*')
             ->from('user_notif_settings')
             ->join('INNER JOIN', 'user_notifications', 'user_notif_settings.notification_id = user_notifications.notification_id')
             ->where('user_id="'.$u_id.'"');
         $rows = $query->all();
-        if(!empty($rows)) return $rows;
+        return $rows;
 
-        $query_2 = new Query;
-        $query_2->select('*')
-            ->from('user_notifications');
-        $row = $query_2->all();
+    }
+
+    public static function setUserNotifSettings($u_id)
+    {
+            $query_2 = new Query;
+            $query_2->select('*')
+                ->from('user_notifications');
+            $row = $query_2->all();
+
         foreach ($row as $r)
-        {
-            $sett = new UserNotifSettings();
-            $sett->id = '';
-            $sett->user_id=$u_id;
-            $sett->notification_id = $r['notification_id'];
-            $sett->notification_value='';
-            $sett->notification_email='';
-            $sett->notification_sms='';
-            $sett->save();
-        }
-        $query_3 = new Query();
-        $query_3->select('*')
-            ->from('user_notif_settings')
-            ->join('INNER JOIN', 'user_notifications', 'user_notif_settings.notification_id = user_notifications.notification_id')
-            ->where('user_id="'.$u_id.'"');
-        $r = $query_3->all();
-        return $r;
+            {
+                $sett = new UserNotifSettings();
+                $sett->id = '';
+                $sett->user_id=$u_id;
+                $sett->notification_id = $r['notification_id'];
+                $sett->notification_value='0';
+                $sett->notification_email='1';
+                $sett->notification_sms='0';
+                $sett->save();
+            }
+        return self::findUserSettings($u_id);
     }
 
     public static function notification($user_id)

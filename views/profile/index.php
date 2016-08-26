@@ -22,9 +22,7 @@ $bonuses = isset(Yii::$app->user->identity->bonus) ? Yii::$app->user->identity->
 $id = isset(Yii::$app->user->id) ? Yii::$app->user->id : '' ;
 $date = isset(Yii::$app->user->identity->create_at) ? new DateTime(Yii::$app->user->identity->create_at) : new DateTime();
 $notif = UserNotifSettings::findUserSettings($id);
-/*echo '<pre>';
-print_r($notif);
-echo '</pre>';*/
+if(empty($notif))$notif = UserNotifSettings::setUserNotifSettings($id);
 ?>
 <section class="content-header">
     <h1><?=$this->title?></h1>
