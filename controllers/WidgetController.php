@@ -270,7 +270,7 @@ class WidgetController extends Controller
         $model = new WidgetSettings();
         if(is_array($widget) && $phone != 'undefined'){
             header('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
-            die($model->widgetCall($site_url, $phone, $event, $widget));
+            die($model->widgetCall($phone, $event, $widget));
         } else throw new \Exception('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
     }
 
@@ -318,7 +318,7 @@ class WidgetController extends Controller
         $model = new WidgetSettings();
         if(is_array($widget) && ($phone != 'undefined' && $date != 'undefined' && $time != 'undefined')){
             header('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
-            die($model->widgetOrder($phone, $date, $time, $widget));
+            die($model->widgetOrder($phone, $date, $time, $site_url, $key, $widget));
         } else throw new \Exception('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
     }
 

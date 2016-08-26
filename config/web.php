@@ -55,6 +55,7 @@ $config = [
                 'r/<link:\w+>' => 'site/link',
                 'register' => 'site/register',
                 'login' => 'site/login',
+                'dev/cron.php' => 'site/cron',
             ],
         ],
     ],

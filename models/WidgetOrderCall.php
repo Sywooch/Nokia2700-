@@ -12,6 +12,9 @@ use Yii;
  * @property string $date
  * @property string $time
  * @property string $phone
+ * @property string $url
+ * @property string $key
+ * @property boolean $status
  */
 class WidgetOrderCall extends \yii\db\ActiveRecord
 {
@@ -29,10 +32,13 @@ class WidgetOrderCall extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['widget_id', 'date', 'time', 'phone'], 'required'],
+            [['widget_id', 'date', 'time', 'phone', 'url', 'key'], 'required'],
             [['widget_id'], 'integer'],
             [['date', 'time'], 'safe'],
+            [['status'], 'boolean'],
             [['phone'], 'string', 'max' => 24],
+            [['url'], 'string', 'max' => 64],
+            [['key'], 'string', 'max' => 100],
         ];
     }
 
@@ -47,6 +53,9 @@ class WidgetOrderCall extends \yii\db\ActiveRecord
             'date' => 'Date',
             'time' => 'Time',
             'phone' => 'Phone',
+            'url' => 'Url',
+            'key' => 'Key',
+            'status' => 'Status',
         ];
     }
 }

@@ -1,4 +1,4 @@
-var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date;
+var hostWidget = "r.oblax.dev", helperMask, callbackID, JSON_social, Widget_date;
 (function(w,d){
     var helper={};
     var widgetsound = 0;

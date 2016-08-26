@@ -2,7 +2,10 @@
 
 namespace app\controllers;
 
+use app\models\Cron;
 use app\models\PartnerLink;
+use app\models\WidgetOrderCall;
+use app\models\WidgetSettings;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -149,5 +152,22 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionCron()
+    {
+        $WidgetOrderCall = WidgetOrderCall::findAll(["date" => date("Y-m-d"), "status" => 0]);
+        foreach ($WidgetOrderCall as $key => $value) {
+            if ($value["time"] == date("H:i:s")) {
+                $widget = WidgetSettings::getJSONWidget($value["key"], $value["url"]);
+                $WidgetSettings = new WidgetSettings();
+                $WidgetSettings->widgetCall($value["phone"], "cron", $widget);
+
+                $WidgetOrderCall = WidgetOrderCall::findOne(["id" => $value["id"]]);
+                $WidgetOrderCall->status = 1;
+                if (!$WidgetOrderCall->save()) print_r($WidgetOrderCall->getErrors());
+            }
+        }
+        return true;
     }
 }

@@ -272,10 +272,10 @@ class WidgetSettings extends \yii\db\ActiveRecord
         } else return false;
     }
 
-    public function widgetCall($url, $phone, $megaEvent, $widget)
+    public function widgetCall($phone, $megaEvent, $widget)
     {
         if(is_array($widget)){
-            $callback=$this->makeCallBackCallFollowMe($widget, $this->cutNumber($phone), $url, $megaEvent);
+            $callback=$this->makeCallBackCallFollowMe($widget, $this->cutNumber($phone), $megaEvent);
             if($callback){
                 //all is good
             } else {
@@ -335,7 +335,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
         } else return "error";
     }
 
-    public function widgetOrder($phone, $dateText, $time, $widget)
+    public function widgetOrder($phone, $dateText, $time, $url, $key, $widget)
     {
         $date = new DateTime(date("Y-m-d"));
         switch ($dateText) {
@@ -359,6 +359,8 @@ class WidgetSettings extends \yii\db\ActiveRecord
             $WidgetOrderCall->date = $date;
             $WidgetOrderCall->time = $time;
             $WidgetOrderCall->phone = $phone;
+            $WidgetOrderCall->url = $url;
+            $WidgetOrderCall->key = $key;
             if (!$WidgetOrderCall->save()) print_r($WidgetOrderCall->getErrors());
 
             return true;
@@ -373,7 +375,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
         } else return "error";
     }
 
-    public function makeCallBackCallFollowMe($widget, $phone, $url, $megaEvent)
+    public function makeCallBackCallFollowMe($widget, $phone, $megaEvent)
     {
         if($this->checkCallbackBalance($widget['user_id'])){
 
