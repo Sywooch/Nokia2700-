@@ -337,14 +337,7 @@ class WidgetController extends Controller
     public function actionListener()
     {
         $getArray = Yii::$app->request->get();
-        if($getArray['event'] == 'end_side_A')
-        {
-            $model = new WidgetSettings();
-            $model->getCallBackFollowmeCallInfo($getArray['event'], $getArray['id']);
-        } else if($getArray['event'] == 'end_side_B')
-        {
-            $model = new WidgetSettings();
-            $model->getCallBackFollowmeCallInfo($getArray['event'], $getArray['id']);
-        }
+        $model = new WidgetSettings();
+        $model->getCallBackFollowmeCallInfo($getArray['event'], $getArray['id']);
     }
 }

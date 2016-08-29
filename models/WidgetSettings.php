@@ -380,6 +380,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
             //Получаем списки номеров клиента в настройках виджета
             $data['simpleCallBackFollowmeStruct'] = [];
             $order_count = 1;
+            $id = 1;
             for ($i = 1; $i < 5; $i++)
             {
                 if (isset($widget['widget_phone_number_'.$i]) && $widget['widget_phone_number_'.$i] != '')
@@ -395,7 +396,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
                 }
             }
             $response = $this->mttCallBackAPI(array(
-                "id" => "1",
+                "id" => $id,
                 "jsonrpc" => "2.0",
                 "method" => "makeCallBackCallFollowme",
                 "params" => array(
@@ -423,8 +424,9 @@ class WidgetSettings extends \yii\db\ActiveRecord
     public function getCallBackFollowmeCallInfo($end_side ,$callBackCall_id)
     {
         $customer = '883140779001066';
+        $id = 1;
         $response = $this->mttCallBackAPI(array(
-            "id" => "1",
+            "id" => $id,
             "jsonrpc" => "2.0",
             "method" => "getCallBackFollowmeCallInfo",
             "params" => array(
