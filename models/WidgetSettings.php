@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use CURLFile;
 use DateInterval;
 use DateTime;
 use Yii;
@@ -285,7 +284,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
         } else return 'error';
     }
 
-    public function widgetMail($url, $question, $phone, $mail, $widget)
+    public function widgetMail($question, $phone, $mail, $widget)
     {
         if(is_array($widget)){
             $WidgetSendedEmail = new WidgetSendedEmail();
@@ -421,7 +420,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
         }
     }
 
-    public function getCallBackFollowmeCallInfo($end_side,$callBackCall_id)
+    public function getCallBackFollowmeCallInfo($end_side ,$callBackCall_id)
     {
         $customer = '883140779001066';
         $response = $this->mttCallBackAPI(array(
@@ -453,8 +452,12 @@ class WidgetSettings extends \yii\db\ActiveRecord
                 $model->call_back_real_length_A = $response->result->callBackFollowmeCallInfoStruct->call_back_real_length_A;
                 $model->call_back_real_length_B = $response->result->callBackFollowmeCallInfoStruct->call_back_real_length_B;
                 $model->call_back_admin_cost = $response->result->callBackFollowmeCallInfoStruct->call_back_cost;
-                $model->call_back_record_URL_A = $response->result->callBackFollowmeCallInfoStruct->call_back_record_URL_A;
-                $model->call_back_record_URL_B = $response->result->callBackFollowmeCallInfoStruct->call_back_record_URL_B;
+                $model->call_back_record_URL_A = (isset($response->result->callBackFollowmeCallInfoStruct->call_back_record_URL_A->downloadURL))
+                    ? $response->result->callBackFollowmeCallInfoStruct->call_back_record_URL_A->downloadURL :
+                    $response->result->callBackFollowmeCallInfoStruct->call_back_record_URL_A;
+                $model->call_back_record_URL_B = (isset($response->result->callBackFollowmeCallInfoStruct->call_back_record_URL_B->downloadURL))
+                    ? $response->result->callBackFollowmeCallInfoStruct->call_back_record_URL_B->downloadURL :
+                    $response->result->callBackFollowmeCallInfoStruct->call_back_record_URL_B;
                 $model->save();
                 //////////////////////////////////
                 $WidgetSettings = WidgetSettings::findOne(["widget_id" => $model->widget_id]);

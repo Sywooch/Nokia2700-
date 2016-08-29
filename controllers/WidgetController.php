@@ -6,7 +6,6 @@ use app\models\WidgetCatching;
 use Yii;
 use yii\db\Query;
 use yii\web\Controller;
-use yii\requirements\YiiRequirementChecker;
 use app\models\WidgetSettings;
 use app\models\WidgetActionMarks;
 
@@ -286,7 +285,7 @@ class WidgetController extends Controller
         $model = new WidgetSettings();
         if(is_array($widget) && $question != 'undefined' && $phone != 'undefined' && $mail != 'undefined'){
             header('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
-            die($model->widgetMail($site_url, $question, $phone, $mail, $widget));
+            die($model->widgetMail($question, $phone, $mail, $widget));
         } else throw new \Exception('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
     }
 
@@ -341,11 +340,11 @@ class WidgetController extends Controller
         if($getArray['event'] == 'end_side_A')
         {
             $model = new WidgetSettings();
-            $model->getCallBackFollowmeCallInfo($getArray['event'],$getArray['id']);
+            $model->getCallBackFollowmeCallInfo($getArray['event'], $getArray['id']);
         } else if($getArray['event'] == 'end_side_B')
         {
             $model = new WidgetSettings();
-            $model->getCallBackFollowmeCallInfo($getArray['event'],$getArray['id']);
+            $model->getCallBackFollowmeCallInfo($getArray['event'], $getArray['id']);
         }
     }
 }
