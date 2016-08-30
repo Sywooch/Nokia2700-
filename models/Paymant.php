@@ -82,30 +82,31 @@ class Paymant extends Model
         /*WHERE MONTH(`date`) = MONTH(NOW()) AND YEAR(`date`) = YEAR(NOW())*/
         $rows = $query->all();
 
-        if($rows['0']['partner'] != 0)
-        {
-            $sum = $ceche;
+        if(isset ($rows['0']['partner'])) {
+            if ($rows['0']['partner'] != 0) {
+                $sum = $ceche;
 
-            $payment_to_first_partner =
-                [
-                    'partner_id'=>$rows['0']['partner'],
-                    'client'=>$u_id,
-                    'partner_of_partner'=>0,
-                    'date'=> '',
-                    'client_paid_sum'=>$sum,
-                    'payment_for_part'=>$sum*0.3,
-                    'type'=>0,
-                    'description'=>'Бонус 1-го порядка за своего клиента с ID-'.$u_id
-                ];
+                $payment_to_first_partner =
+                    [
+                        'partner_id' => $rows['0']['partner'],
+                        'client' => $u_id,
+                        'partner_of_partner' => 0,
+                        'date' => '',
+                        'client_paid_sum' => $sum,
+                        'payment_for_part' => $sum * 0.3,
+                        'type' => 0,
+                        'description' => 'Бонус 1-го порядка за своего клиента с ID-' . $u_id
+                    ];
 
-            $payment_to_second_partner = self::cashForSecondPartners($rows['0']['partner'], $ceche, $u_id);
+                $payment_to_second_partner = self::cashForSecondPartners($rows['0']['partner'], $ceche, $u_id);
 
-            $payment_to_partners ['payment_to_first_partner']=$payment_to_first_partner;
+                $payment_to_partners ['payment_to_first_partner'] = $payment_to_first_partner;
 
-            if($payment_to_second_partner != 0) $payment_to_partners ['payment_to_second_partner']=$payment_to_second_partner;
+                if ($payment_to_second_partner != 0) $payment_to_partners ['payment_to_second_partner'] = $payment_to_second_partner;
 
 
-            return $payment_to_partners;
+                return $payment_to_partners;
+            } else return null;
         }
         else return null;
 
@@ -120,29 +121,28 @@ class Paymant extends Model
         /*WHERE MONTH(`date`) = MONTH(NOW()) AND YEAR(`date`) = YEAR(NOW())*/
         $rows = $query->all();
 
+        if(isset ($rows['0']['partner'])) {
+            if ($rows['0']['partner'] != 0) {
+                $sum = $ceche;
 
-        if($rows['0']['partner'] != 0)
-        {
-            $sum = $ceche;
+                $payment_to_second_partner =
+                    [
+                        'partner_id' => $rows['0']['partner'],
+                        'client' => $partner_id,
+                        'partner_of_partner' => $u_id,
+                        'date' => '',
+                        'client_paid_sum' => $sum,
+                        'payment_for_part' => $sum * 0.1,
+                        'type' => 1,
+                        'description' => 'Бонус 2-го порядка за клиента партнера (ID-' . $partner_id . ') с ID-' . $u_id
+                    ];
 
-            $payment_to_second_partner =
-                [
-                    'partner_id'=>$rows['0']['partner'],
-                    'client'=>$partner_id,
-                    'partner_of_partner'=>$u_id,
-                    'date'=> '',
-                    'client_paid_sum'=>$sum,
-                    'payment_for_part'=>$sum*0.1,
-                    'type'=>1,
-                    'description'=>'Бонус 2-го порядка за клиента партнера (ID-'.$partner_id.') с ID-'.$u_id
-                ];
-
-            return $payment_to_second_partner;
+                return $payment_to_second_partner;
+            } else {
+                return 0;
+            }
         }
-        else
-        {
-            return 0;
-        }
+        else return null;
 
     }
 

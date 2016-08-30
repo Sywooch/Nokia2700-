@@ -3,7 +3,6 @@ use kartik\switchinput\SwitchInput;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use app\models\WidgetTemplateNotification;
-use app\models\WidgetTemplateNotificationUsers;
 use yii\widgets\MaskedInput;
 
 $this->registerCssFile("http://bootstrapformhelpers.com/assets/css/bootstrap-formhelpers.min.css");
@@ -28,187 +27,185 @@ $this->registerCss("
 $path = '/files/images/desktop/';
 $path2 = '/files/images/mobile/';
 $this->title = 'Добавить виджет';
-
-$hren = new \app\models\WidgetSettings;
 ?>
-
 <section class="content-header">
-    <h1><?= Html::encode($this->title) ?></h1>
+	<h1><?= Html::encode($this->title) ?></h1>
 </section>
+
 <!-- Main content -->
 <section class="content">
-  <!-- Small boxes (Stat box) -->
-  <?php $form = ActiveForm::begin(); ?>
-  <div class="">
+	<!-- Small boxes (Stat box) -->
+	<?php $form = ActiveForm::begin(); ?>
+	<div class="">
 
-	<div class="bordered">
-		<div class="form-group">
-		<label>Общие настройки</label>
+		<div class="form-group bordered">
+			<div class="form-group">
+				<label>Общие настройки</label>
+			</div>
+			<div class="form-group">
+				<input class="form-control" name="widget_site_url" type="text" placeholder="URL сайта (без http(s))" onblur="siteChange(this.value);" value="<?=$model->widget_site_url?>">
+			</div>
+			<div class="form-group">
+				<select class="form-control" name="widget_sound">
+					<option value="1">Включить звук</option>
+					<option value="0">Выключить звук</option>
+				</select>
+			</div>
+			<label>Цветовая схема <small>(выберете схему)</small></label><br>
+			<ul class="color_theme_list__ul">
+				<li class="color_theme_list__ul__item" style="border-radius: 30px !important; background: rgba(204, 204, 204, 0.95);color:#333;"></li>
+				<li class="color_theme_list__ul__item" style="border-radius: 30px !important; background: black;color:#fff;"></li>
+			</ul>
+			<select class="form-control" name="widget_theme_color" style="display: none;">
+				<option value="1">Светлая тема</option>
+				<option value="0">Тёмная тема</option>
+			</select>
+			<label>Цвет кнопки</label><br>
+			<div class="input-group my-colorpicker colorpicker-element" style="width: 35%;">
+				<input type="text" name="widget_button_color" class="form-control"  placeholder="Цвет кнопки" value="<?=$model->widget_button_color?>">
+				<div class="input-group-addon">
+					<i></i>
+				</div>
+			</div>
+			<script type="text/javascript">
+				$("[name='widget_button_color']").change(function(){
+					$("#open-button").style.background = '#bbb';
+				});
+			</script>
 		</div>
-		<div class="form-group">
-			<input class="form-control" name="widget_site_url" type="text" placeholder="URL сайта (без http(s))" onblur="siteChange(this.value);">
-			<?/*= $form->field($hren, 'widget_site_url')->textInput(['placeholder' => 'URL сайта (без http(s))', 'onblur'=>"siteChange(this.value);"])->label(false)*/?>
-		</div>
-		<div class="form-group">
-		  <select class="form-control" name="widget_sound">
-			<option value="1">Включить звук</option>
-			<option value="0">Выключить звук</option>
-		  </select>
-		</div>
-		<label>Цветовая схема <small>(выберете схему)</small></label><br>
-		<ul class="color_theme_list__ul">
-			<li class="color_theme_list__ul__item" style="border-radius: 30px !important; background: rgba(204, 204, 204, 0.95);color:#333;"></li>
-			<li class="color_theme_list__ul__item" style="border-radius: 30px !important; background: black;color:#fff;"></li>
-		</ul>
-		<select class="form-control" name="widget_theme_color" style="display: none;">
-			<option value="1">Светлая тема</option>
-			<option value="0">Тёмная тема</option>
-		</select>
-		<label>Цвет кнопки</label><br>
-		<div class="input-group my-colorpicker colorpicker-element" style="width: 35%;">
-			<input type="text" name="widget_button_color" class="form-control"  placeholder="Цвет кнопки" value="<?=$model->widget_button_color?>">
-			<div class="input-group-addon">
-				<i></i>
+		<div class="form-group col-sm-6 bordered" style="width: 65%;">
+			<label>Расположение виджета</label><br>
+			<div class="widget-position">
+				<div class="widget-top-position">
+				</div>
+				<div class="widget-body-position" style="width: 600px;height: 400px;">
+					<div class="robax-widget-open-button" id="open-button" style="z-index: 100;background: rgba(0, 175, 242,0.6); border-radius: 100%; position: relative; top:90%; left:94%; width: 38px; height: 38px;">
+						<?=Html::img('@web'.'/widget-front/img/phone-icon.png',['class' => "phone", 'style' => 'margin: 9px; width: 21px; height: 21px;']); ?>
+					</div>
+					<img style="width: 600px;height: 400px;position: relative;top: -40px;" id="screenDesktop" />
+				</div>
+				<div class="clear"></div>
+				<div class="widget-left-position">
+				</div>
+				<input name="witget-button-top" type="hidden">
+				<input name="witget-button-left" type="hidden">
 			</div>
 		</div>
-		<script type="text/javascript">
-			$("[name='widget_button_color']").change(function(){
-				$("#open-button").style.background = '#FFF';
-			});
-		</script>
-	</div>
-	<div class="form-group col-sm-6 bordered" style="width: 65%;">
-	  <label>Расположение виджета</label><br>
-	  <div class="widget-position">
-		  <div class="widget-top-position">
-		  </div>
-		  <div class="widget-body-position" style="width: 600px;height: 400px;">
-			  <div class="robax-widget-open-button" id="open-button" style="z-index: 100;background: rgba(0, 175, 242,0.6); border-radius: 100%; position: relative; top:90%; left:94%; width: 38px; height: 38px;">
-				  <?=Html::img('@web'.'/widget-front/img/phone-icon.png',['class' => "phone", 'style' => 'margin: 9px; width: 21px; height: 21px;']); ?>
-			  </div>
-			  <img style="width: 600px;height: 400px;position: relative;top: -40px;" id="screenDesktop"/>
-		  </div>
-		  <div class="clear"></div>
-		  <div class="widget-left-position">
-		  </div>
-		  <input name="witget-button-top" type="hidden">
-		  <input name="witget-button-left" type="hidden">
-	  </div>
-	</div>
-	<div class="form-group col-sm-6 bordered" style="width: 31%;">
-	  <label>Расположение виджета (моб-ая версия)</label><br>
-	  <div class="widget-position-mob">
-		  <div class="widget-top-position-mob">
-		  </div>
-		  <div class="widget-body-position-mob" style="width: 230px;height: 400px;">
-			  <div class="robax-widget-open-button-mob" id="open-button-mob" style="z-index: 100;background: rgba(0, 175, 242,0.6); border-radius: 100%; position: relative; top:91%; left:85%; width: 34px; height: 34px;">
-				  <?=Html::img('@web'.'/widget-front/img/phone-icon.png',['class' => "phone", 'style' => 'margin: 9px; width: 18px; height: 18px;']); ?>
-			  </div>
-			  <img style="width: 230px;height: 400px;position: relative;top: -35px;" id="screenMobile"/>
-		  </div>
-		  <div class="clear"></div>
-		  <div class="widget-left-position-mob">
-		  </div>
-		  <input name="witget-button-top-mob" type="hidden">
-		  <input name="witget-button-left-mob" type="hidden">
-	  </div>
-	</div>
-	<div class="clear"></div>
-	  <div class="bordered">
-		  <label>Настройка поведенческих факторов</label><br>
-		  <div class="form-group">
-			  <div style="margin: 10px 0;">
-				  <div style="display: inline-block;">
-					  <?echo $form->field($model, 'hand_turn_on')->widget(SwitchInput::classname(), [
-						  'options'=>[
-							  'onchange'=>'openMarks();',
-						  ]
-					  ])->label(false);?>
-				  </div>
-				  <div style="display: inline-block">
-					  <span style="margin: 0 15px;">если настройка выключена, то виджет автоматически настраивает поведенческие факторы под ваш сайт.</span>
-				  </div>
-			  </div>
-		  </div>
-		  <div id="openMarks" class="marks-body" <?= ($model->hand_turn_on)? 'style="display: block;':'style="display: none;'?>">
-		  <?$items = [
-			  0 => '0 баллов',
-			  1 => '1 балл',
-			  2 => '2 балла',
-			  3 => '3 балла',
-			  4 => '4 балла',
-			  5 => '5 баллов',
-			  6 => '6 баллов',
-			  7 => '7 баллов',
-			  8 => '8 баллов',
-			  9 => '9 баллов',
-			  10 => '10 баллов',
-		  ];?>
-		  <table>
-			  <tr>
-				  <td style="padding-right:10px">Переход на другую страницу</td>
-				  <td style="padding-right:15px"><?=Html::dropDownList('other_page',$marks->other_page,$items);?></td>
-				  <td>Посещение более 3х страниц сайта</td>
-				  <td><?=Html::dropDownList('sitepage3_activity',$marks->sitepage3_activity,$items);?></td>
-			  </tr>
-			  <tr>
-				  <td>Скролл вниз(за 100% страницы)</td>
-				  <td><?=Html::dropDownList('scroll_down',$marks->scroll_down,$items);?></td>
-				  <td>Дольше среднего времени на сайте</td>
-				  <td><?=Html::dropDownList('more_avgtime',$marks->more_avgtime,$items);?></td>
-			  </tr>
-			  <tr>
-				  <td>Активность на сайте более 40 сек.</td>
-				  <td><?=Html::dropDownList('active_more40',$marks->active_more40,$items);?></td>
-				  <td>За каждые 30 сек., после 1 мин.</td>
-				  <td><?=Html::dropDownList('moretime_after1min',$marks->moretime_after1min,$items);?></td>
-			  </tr>
-			  <tr>
-				  <td>Интенсивность движения мышки</td>
-				  <td><?=Html::dropDownList('mouse_intencivity',$marks->mouse_intencivity,$items);?></td>
-				  <td>Взаимодействие с формами</td>
-				  <td><?=Html::dropDownList('form_activity',$marks->form_activity,$items);?></td>
-			  </tr>
-			  <tr>
-				  <td style="padding-right:10px"></td>
-				  <td></td>
-				  <td style="padding-right:10px">Поведение, похожее на других клиентов</td>
-				  <td><?=Html::dropDownList('client_activity',$marks->client_activity,$items);?></td>
-			  </tr>
-		  </table>
-		  <label>Посещение конкретной страницы или раздела сайта</label>
-		  <br>
-		  <div id="pages_block">
-			  <?php
-			  $sitePageList = json_decode($marks->site_pages_list);
-			  $sitePageList = explode(';', $marks->site_pages_list);
-			  $num = count($sitePageList)-1;
-			  unset($sitePageList[$num]);
-			  $count_site_pages = count($sitePageList);
-			  for($i=1; $i<=$count_site_pages; $i++)
-			  {
-				  $values = explode('*',$sitePageList[$i-1]);
-				  echo '<span class="phone">Cсылка №'.$i.'</span>
+		<div class="form-group col-sm-6 bordered" style="width: 31%;">
+			<label>Расположение виджета (моб-ая версия)</label><br>
+			<div class="widget-position-mob">
+				<div class="widget-top-position-mob">
+				</div>
+				<div class="widget-body-position-mob" style="width: 225px;height:400px;">
+					<div class="robax-widget-open-button-mob" id="open-button-mob" style="z-index: 100;background: rgba(0, 175, 242,0.6); border-radius: 100%; position: relative; top:91%; left:85%; width: 34px; height: 34px;">
+						<?=Html::img('@web'.'/widget-front/img/phone-icon.png',['class' => "phone", 'style' => 'margin: 9px; width: 18px; height: 18px;']); ?>
+					</div>
+					<img style="width: 225px;height: 400px;position: relative;top: -35px;" id="screenMobile" />
+				</div>
+				<div class="clear"></div>
+				<div class="widget-left-position-mob">
+				</div>
+				<input name="witget-button-top-mob" type="hidden">
+				<input name="witget-button-left-mob" type="hidden">
+			</div>
+		</div>
+		<div class="clear"></div>
+		<div class="bordered">
+			<label>Настройка поведенческих факторов</label><br>
+			<div class="form-group">
+				<div style="margin: 10px 0;">
+					<div style="display: inline-block;">
+						<?echo $form->field($model, 'hand_turn_on')->widget(SwitchInput::classname(), [
+							'options'=>[
+								'onchange'=>'openMarks();',
+							]
+						])->label(false);?>
+					</div>
+					<div style="display: inline-block">
+						<span style="margin: 0 15px;">если настройка выключена, то виджет автоматически настраивает поведенческие факторы под ваш сайт.</span>
+					</div>
+				</div>
+			</div>
+			<div id="openMarks" class="marks-body" <?= ($model->hand_turn_on)? 'style="display: block;':'style="display: none;'?>">
+			<?$items = [
+				0 => '0 баллов',
+				1 => '1 балл',
+				2 => '2 балла',
+				3 => '3 балла',
+				4 => '4 балла',
+				5 => '5 баллов',
+				6 => '6 баллов',
+				7 => '7 баллов',
+				8 => '8 баллов',
+				9 => '9 баллов',
+				10 => '10 баллов',
+			];?>
+			<table>
+				<tr>
+					<td style="padding-right:10px">Переход на другую страницу</td>
+					<td style="padding-right:15px"><?=Html::dropDownList('other_page',$marks->other_page,$items);?></td>
+					<td>Посещение более 3х страниц сайта</td>
+					<td><?=Html::dropDownList('sitepage3_activity',$items[$marks->sitepage3_activity],$items);?></td>
+				</tr>
+				<tr>
+					<td>Скролл вниз(за 100% страницы)</td>
+					<td><?=Html::dropDownList('scroll_down',$marks->scroll_down,$items);?></td>
+					<td>Дольше среднего времени на сайте</td>
+					<td><?=Html::dropDownList('more_avgtime',$marks->more_avgtime,$items);?></td>
+				</tr>
+				<tr>
+					<td>Активность на сайте более 40 сек.</td>
+					<td><?=Html::dropDownList('active_more40',$marks->active_more40,$items);?></td>
+					<td>За каждые 30 сек., после 1 мин.</td>
+					<td><?=Html::dropDownList('moretime_after1min',$marks->moretime_after1min,$items);?></td>
+				</tr>
+				<tr>
+					<td>Интенсивность движения мышки</td>
+					<td><?=Html::dropDownList('mouse_intencivity',$marks->mouse_intencivity,$items);?></td>
+					<td>Взаимодействие с формами</td>
+					<td><?=Html::dropDownList('form_activity',$marks->form_activity,$items);?></td>
+				</tr>
+				<tr>
+					<td style="padding-right:10px"></td>
+					<td></td>
+					<td style="padding-right:10px">Поведение, похожее на других клиентов</td>
+					<td><?=Html::dropDownList('client_activity',$marks->client_activity,$items);?></td>
+				</tr>
+			</table>
+			<label>Посещение конкретной страницы или раздела сайта</label>
+			<br>
+			<div id="pages_block">
+				<?php
+				$sitePageList = json_decode($marks->site_pages_list);
+				$sitePageList = explode(';', $marks->site_pages_list);
+				$num = count($sitePageList)-1;
+				unset($sitePageList[$num]);
+				$count_site_pages = count($sitePageList);
+				for($i=1; $i<=$count_site_pages; $i++)
+				{
+					$values = explode('*',$sitePageList[$i-1]);
+					echo '<span class="phone">Cсылка №'.$i.'</span>
                 <div class="input-group">
                 <div class="input-group-addon">
                 <i class="fa fa-link"></i>
                 </div>
                 <input type="text" class="form-control widget_url" name="site_page_'.$i.'" data-required="true" value="'.$values[0].'"></div>'
-					  .Html::dropDownList('select_site_page_'.$i,$values[1],$items,['class' => 'form-control']).'<br>';
-			  }
-			  ?>
-		  </div>
-		  <br>
-		  <input type="hidden" name="count_pages" value="<?=$count_site_pages?>">
-		  <div class="input-group">
-			  <button class="sitepage_more btn">Добавить еще одну страницу</button>
-		  </div>
-		  <br>
-	  </div>
-	  </div>
+						.Html::dropDownList('select_site_page_'.$i,$values[1],$items,['class' => 'form-control']).'<br>';
+				}
+				?>
+			</div>
+			<br>
+			<input type="hidden" name="count_pages" value="<?=$count_site_pages?>">
+			<div class="input-group">
+				<button class="sitepage_more btn">Добавить еще одну страницу</button>
+			</div>
+			<br>
+		</div>
+	</div>
 	<div class="clear"></div>
 	<!--<div class="bordered">
-		<label>УТП  </label><br>
+        <label>УТП</label>
+        <br>
         <div class="form-group">
             <div style="margin: 10px 0;">
                 <div style="display: inline-block;">
@@ -223,27 +220,30 @@ $hren = new \app\models\WidgetSettings;
                 </div>
             </div>
         </div>
-        <div id="openUtp" class="utp-body" style="display: none;">
-			<div class="callout callout-info"><p>Максимальный размер изображения: 800 x 800</p></div>
-			<input maxlength="500" id="url_utp_img" name="utp-img-url" type="text" class="form-control" placeholder="URL изображения">
-			<br />
-			<label>Цвет кнопки</label>
-			<div class="input-group  colorpicker-element" style="width: 400px;">
-			  <input type="text" name="utm-button-color" class="form-control utm-button-color my-colorpicker"  placeholder="Цвет кнопки">
-			</div>
-			<br>
-			<div class="utp-exampl">
-			<div class="utm-closed"></div>
-				<div class="utp-form">
-					<div class="line"><input type="text" placeholder="Введите ваш телефон" /></div>
-					<div class="line"><button style="background: #fff;">Отправить</button></div>
-				</div>
-			</div>
+        <div id="openUtp" class="utp-body" <?/*= ($model->utp_turn_on)? 'style="display: block;':'style="display: none;'*/?>">
+            <div class="callout callout-info"><p>Максимальный размер изображения: 800 x 800</p></div>
+            <input maxlength="500" id="url_utp_img" name="utp-img-url" type="text" class="form-control" placeholder="URL изображения" value="<?/*=$model->utp_img_url*/?>">
+            <br>
+            <label>Цвет кнопки</label>
+            <div class="input-group  colorpicker-element" style="width: 400px;">
+                <input type="text" name="utm-button-color" class="form-control utm-button-color my-colorpicker"  placeholder="Цвет кнопки" value="<?/*=$model->utm_button_color*/?>">
+            </div>
+            <br>
+            <?/*$width = 0;$height = 0;
+            if ($model->utp_img_url) list($width, $height, $type, $attr) = getimagesize($model->utp_img_url);*/?>
+            <div class="utp-exampl" style="background: url(<?/*=$model->utp_img_url*/?>);background-repeat: no-repeat;width: <?/*=$width*/?>px;height: <?/*=$height*/?>px;">
+                <div class="utm-closed"></div>
+                <div class="utp-form" style="<?/*=$model->widget_utp_form_position*/?>">
+                    <div class="line"><input type="text" placeholder="Введите ваш телефон" /></div>
+                    <div class="line"><button style="background: <?/*=$model->utm_button_color*/?>;">Отправить</button></div>
+                </div>
+            </div>
             <img class="utp-img-exampl"  style="display: none;"/>
-            <input name="widget-utp-form-left" style="display: none;"/>
-            <input name="widget-utp-form-top" style="display: none;"/>
-		</div>
-	</div>-->
+            <?/*$pos = explode(';', $model->widget_utp_form_position)*/?>
+            <input name="widget-utp-form-left" style="display: none;" value="<?/*=$pos[0]*/?>;"/>
+            <input name="widget-utp-form-top" style="display: none;" value="<?/*=$pos[1]*/?>;"/>
+        </div>
+    </div>-->
 	<div class="bordered">
 		<label>Черный список </label> <small>(укажите номера, на которые виджет не будет звонить)</small>
 		<br>
@@ -318,8 +318,22 @@ $hren = new \app\models\WidgetSettings;
 	</div>
 	<div class="bordered">
 		<label>Настройки сообщений виджета</label>
+		<div class="form-group">
+			<div style="margin: 10px 0;">
+				<div style="display: inline-block;">
+					<?echo $form->field($model, 'widget_messages_on')->widget(SwitchInput::classname(), [
+						'options'=>[
+							'onchange'=>'openMessages();',
+						]
+					])->label(false);?>
+				</div>
+				<div style="display: inline-block">
+					<span style="margin: 0 15px;">если настройка выключена, то используются шаблоны разработанные нашим отделом маркетинга.</span></div>
+			</div>
+		</div>
 		<br>
-		<?if ($widgetTemplateUsers = new WidgetTemplateNotificationUsers()) {
+		<div id="openMessages" class="messages-body" <?= ($model->widget_messages_on)? 'style="display: block;"':'style="display: none;"'?>>
+			<?if ($widgetTemplateUsers) {
 			foreach ($widgetTemplateUsers as $key => $value) {?>
 				<div>
 					<div style="display: inline-block;">
@@ -332,7 +346,7 @@ $hren = new \app\models\WidgetSettings;
 						]);?>
 					</div>
 					<div style="display: inline-block;">
-						<?$widetTemplate = new WidgetTemplateNotification()/*::findOne(['id_template' => $value['id_template']])*/;?>
+						<?$widetTemplate = WidgetTemplateNotification::findOne(['id_template' => $value['id_template']]);?>
 						<span style="margin: 0 15px;"><?=$widetTemplate->name?></span>
 					</div>
 					<div id="openBlock-<?=$value['id_template']?>" style="<?=$value['status'] ? 'display: block;' : 'display: none;'?>margin-bottom: 30px;">
@@ -377,6 +391,7 @@ $hren = new \app\models\WidgetSettings;
 				</div>
 			<?}
 		}?>
+		</div>
 	</div>
 	<div class="bordered">
 		<label>Настройки уведомлений</label>
@@ -457,338 +472,428 @@ $hren = new \app\models\WidgetSettings;
 	<div class="bordered">
 		<div class="form-group">
 			<label>Настройки рабочего времени</label><br>
-			<div class="line-time">
-				<label>Часовой пояс(GMT):</label>
-				<select class="form-control" name="widget_GMT">
-					<option value="-12">-12</option>
-					<option value="-11">-11</option>
-					<option value="-10">-10</option>
-					<option value="-9">-9</option>
-					<option value="-8">-8</option>
-					<option value="-7">-7</option>
-					<option value="-6">-6</option>
-					<option value="-5">-5</option>
-					<option value="-4:30">-4:30</option>
-					<option value="-4">-4</option>
-					<option value="-3:30">-3:30</option>
-					<option value="-3">-3</option>
-					<option value="-2">-2</option>
-					<option value="-1">-1</option>
-					<option value="0">+0</option>
-					<option value="1">+1</option>
-					<option value="2">+2</option>
-					<option value="3" selected="selected">+3</option>
-					<option value="3:30">+3:30</option>
-					<option value="4">+4</option>
-					<option value="4:30">+4:30</option>
-					<option value="5">+5</option>
-					<option value="5:30">+5:30</option>
-					<option value="5:45">+5:45</option>
-					<option value="6">+6</option>
-					<option value="6:30">+6:30</option>
-					<option value="7">+7</option>
-					<option value="8">+8</option>
-					<option value="8:30">+8:30</option>
-					<option value="8:45">+8:45</option>
-					<option value="9">+9</option>
-					<option value="9:30">+9:30</option>
-					<option value="10">+10</option>
-					<option value="10:30">+10:30</option>
-					<option value="11">+11</option>
-					<option value="11:30">+11:30</option>
-					<option value="12">+12</option>
-					<option value="12:45">+12:45</option>
-					<option value="13">+13</option>
-					<option value="13:45">+13:45</option>
-					<option value="14">+14</option>
-				</select>
+			<div class="form-group">
+				<div style="margin: 10px 0;">
+					<div style="display: inline-block;">
+						<?echo $form->field($model, 'widget_work_time_on')->widget(SwitchInput::classname(), [
+							'options'=>[
+								'onchange'=>'openWorkTime();',
+							]
+						])->label(false);?>
+					</div>
+					<div style="display: inline-block">
+						<span style="margin: 0 15px;">если настройка выключена, то установлено время работы офиса с 9.00 до 18.00, перерыв на обед с 13.00 до 14.00 7 дней в неделю.</span></div>
+				</div>
 			</div>
-			<br>
-			<br>
+			<div id="openWorkTime" class="work-time-body" <?= ($model->widget_work_time_on)? 'style="display: block;"':'style="display: none;"'?>>
+				<div class="line-time">
+					<label>Часовой пояс(GMT):</label>
+					<select class="form-control" name="widget_GMT">
+						<option value="-12">-12</option>
+						<option value="-11">-11</option>
+						<option value="-10">-10</option>
+						<option value="-9">-9</option>
+						<option value="-8">-8</option>
+						<option value="-7">-7</option>
+						<option value="-6">-6</option>
+						<option value="-5">-5</option>
+						<option value="-4:30">-4:30</option>
+						<option value="-4">-4</option>
+						<option value="-3:30">-3:30</option>
+						<option value="-3">-3</option>
+						<option value="-2">-2</option>
+						<option value="-1">-1</option>
+						<option value="0">+0</option>
+						<option value="1">+1</option>
+						<option value="2">+2</option>
+						<option value="3" selected="selected">+3</option>
+						<option value="3:30">+3:30</option>
+						<option value="4">+4</option>
+						<option value="4:30">+4:30</option>
+						<option value="5">+5</option>
+						<option value="5:30">+5:30</option>
+						<option value="5:45">+5:45</option>
+						<option value="6">+6</option>
+						<option value="6:30">+6:30</option>
+						<option value="7">+7</option>
+						<option value="8">+8</option>
+						<option value="8:30">+8:30</option>
+						<option value="8:45">+8:45</option>
+						<option value="9">+9</option>
+						<option value="9:30">+9:30</option>
+						<option value="10">+10</option>
+						<option value="10:30">+10:30</option>
+						<option value="11">+11</option>
+						<option value="11:30">+11:30</option>
+						<option value="12">+12</option>
+						<option value="12:45">+12:45</option>
+						<option value="13">+13</option>
+						<option value="13:45">+13:45</option>
+						<option value="14">+14</option>
+					</select>
+				</div>
+				<br>
+				<br>
+				<?php
+				$work_time = json_decode($model->widget_work_time);
+				?>
+				<table class="table table-striped">
+					<tr>
+						<th>День недели:</th>
+						<th>Начало рабочего дня:</th>
+						<th>Конец рабочего дня:</th>
+						<th>Обед:</th>
+					</tr>
+					<tr>
+						<td>Понедельник</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-start-time-monday',
+								'value' => $work_time->monday->start,
+								'mask' => '99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '09:00'
+								]
+							]);?>
+						</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-end-time-monday',
+								'value' => $work_time->monday->end,
+								'mask' => '99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '18:00'
+								]
+							]);?>
+						</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-lunch-time-monday',
+								'value' => $work_time->monday->lunch,
+								'mask' => '99:99 - 99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '13:00 - 14:00'
+								]
+							]);?>
+						</td>
+					</tr>
+					<tr>
+						<td>Вторник</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-start-time-tuesday',
+								'value' => $work_time->tuesday->start,
+								'mask' => '99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '09:00'
+								]
+							]);?>
+						</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-end-time-tuesday',
+								'value' => $work_time->tuesday->end,
+								'mask' => '99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '18:00'
+								]
+							]);?>
+						</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-lunch-time-tuesday',
+								'value' => $work_time->tuesday->lunch,
+								'mask' => '99:99 - 99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '13:00 - 14:00'
+								]
+							]);?>
+						</td>
+					</tr>
+					<tr>
+						<td>Среда</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-start-time-wednesday',
+								'value' => $work_time->wednesday->start,
+								'mask' => '99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '09:00'
+								]
+							]);?>
+						</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-end-time-wednesday',
+								'value' => $work_time->wednesday->end,
+								'mask' => '99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '18:00'
+								]
+							]);?>
+						</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-lunch-time-wednesday',
+								'value' => $work_time->wednesday->lunch,
+								'mask' => '99:99 - 99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '13:00 - 14:00'
+								]
+							]);?>
+						</td>
+					</tr>
+					<tr>
+						<td>Четверг</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-start-time-thursday',
+								'value' => $work_time->thursday->start,
+								'mask' => '99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '09:00'
+								]
+							]);?>
+						</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-end-time-thursday',
+								'value' => $work_time->thursday->end,
+								'mask' => '99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '18:00'
+								]
+							]);?>
+						</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-lunch-time-thursday',
+								'value' => $work_time->thursday->lunch,
+								'mask' => '99:99 - 99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '13:00 - 14:00'
+								]
+							]);?>
+						</td>
+					</tr>
+					<tr>
+						<td>Пятница</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-start-time-friday',
+								'value' => $work_time->friday->start,
+								'mask' => '99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '09:00'
+								]
+							]);?>
+						</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-end-time-friday',
+								'value' => $work_time->friday->end,
+								'mask' => '99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '18:00'
+								]
+							]);?>
+						</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-lunch-time-friday',
+								'value' => $work_time->friday->lunch,
+								'mask' => '99:99 - 99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '13:00 - 14:00'
+								]
+							]);?>
+						</td>
+					</tr>
+					<tr>
+						<td>Суббота</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-start-time-saturday',
+								'value' => $work_time->saturday->start,
+								'mask' => '99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '09:00'
+								]
+							]);?>
+						</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-end-time-saturday',
+								'value' => $work_time->saturday->end,
+								'mask' => '99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '18:00'
+								]
+							]);?>
+						</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-lunch-time-saturday',
+								'value' => $work_time->saturday->lunch,
+								'mask' => '99:99 - 99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '13:00 - 14:00'
+								]
+							]);?>
+						</td>
+					</tr>
+					<tr>
+						<td>Воскресенье</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-start-time-sunday',
+								'value' => $work_time->sunday->start,
+								'mask' => '99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '09:00'
+								]
+							]);?>
+						</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-end-time-sunday',
+								'value' => $work_time->sunday->end,
+								'mask' => '99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '18:00'
+								]
+							]);?>
+						</td>
+						<td>
+							<?=MaskedInput::widget([
+								'name' => 'work-lunch-time-sunday',
+								'value' => $work_time->sunday->lunch,
+								'mask' => '99:99 - 99:99',
+								'options' => [
+									'class' => 'form-control',
+									'data-required' => true,
+									'placeholder' => '13:00 - 14:00'
+								]
+							]);?>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="bordered">
+		<div class="form-group">
+			<label>Настройки социальных сетей</label><br>
+			<div style="display: inline-block">
+                    <span style="margin: 0 0px;">
+                        После осуществления звонка и оценки качества обсуживания Вашими менджерами, мы предложим соц сети клиенту что бы подружится с Вашим проектом.
+                    </span>
+			</div><br/>
 			<?php
-			$work_time = json_decode($model->widget_work_time);
-			echo '<pre>';
-			print_r($work_time);
-			echo '</pre>';
+			$social = json_decode($model->social);
 			?>
 			<table class="table table-striped">
 				<tr>
-					<th>День недели:</th>
-					<th>Начало рабочего дня:</th>
-					<th>Конец рабочего дня:</th>
-					<th>Обед:</th>
-				</tr>
-				<tr>
-					<td>Понедельник</td>
-					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-start-time-monday',
-//							'value' => $work_time->monday->start,
-							'mask' => '99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '09:00'
-							]
-						]);?>
+					<td class="col-md-1">
+						<img class="img-responsive" src="/images/vkontakte.png"
+							 style="max-height: 35px; max-width: 35px"
+							 alt="Вконтакте">
 					</td>
 					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-end-time-monday',
-//							'value' => $work_time->monday->end,
-							'mask' => '99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '18:00'
-							]
-						]);?>
-					</td>
-					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-lunch-time-monday',
-//							'value' => $work_time->monday->lunch,
-							'mask' => '99:99 - 99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '13:00 - 14:00'
-							]
-						]);?>
+						<input type="text" name = 'social-vk' value = "<?= $social->vk?>"
+							   class = 'form-control col-md-1' data-required = true
+							   placeholder = 'адресс без http:// или https://'>
 					</td>
 				</tr>
 				<tr>
-					<td>Вторник</td>
-					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-start-time-tuesday',
-//							'value' => $work_time->tuesday->start,
-							'mask' => '99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '09:00'
-							]
-						]);?>
+					<td class="col-md-1">
+						<img class="img-responsive" src="/images/odnoklassniki.png"
+							 style="max-height: 35px; max-width: 35px"
+							 alt="Однокласники">
 					</td>
 					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-end-time-tuesday',
-//							'value' => $work_time->tuesday->end,
-							'mask' => '99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '18:00'
-							]
-						]);?>
+						<input type="text" name = 'social-ok' value = "<?= $social->ok?>"
+							   class = 'form-control col-md-1' data-required = true
+							   placeholder = 'адресс без http:// или https://'>
 					</td>
-					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-lunch-time-tuesday',
-//							'value' => $work_time->tuesday->lunch,
-							'mask' => '99:99 - 99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '13:00 - 14:00'
-							]
-						]);?>
-					</td>
+
 				</tr>
 				<tr>
-					<td>Среда</td>
-					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-start-time-wednesday',
-//							'value' => $work_time->wednesday->start,
-							'mask' => '99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '09:00'
-							]
-						]);?>
+					<td class="col-md-1">
+						<img class="img-responsive" src="/images/facebook.png"
+							 style="max-height: 35px; max-width: 35px"
+							 alt="FaceBook">
 					</td>
 					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-end-time-wednesday',
-//							'value' => $work_time->wednesday->end,
-							'mask' => '99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '18:00'
-							]
-						]);?>
+						<input type="text" name = 'social-facebook' value = "<?= $social->facebook?>"
+							   class = 'form-control col-md-1' data-required = true
+							   placeholder = 'адресс без http:// или https://'>
 					</td>
-					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-lunch-time-wednesday',
-//							'value' => $work_time->wednesday->lunch,
-							'mask' => '99:99 - 99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '13:00 - 14:00'
-							]
-						]);?>
-					</td>
+
 				</tr>
-				<tr>
-					<td>Четверг</td>
-					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-start-time-thursday',
-//							'value' => $work_time->thursday->start,
-							'mask' => '99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '09:00'
-							]
-						]);?>
+				<tr >
+					<td class="col-md-1">
+						<img class="img-responsive" src="/images/twitter_new.png"
+							 style="max-height: 35px; max-width: 35px"
+							 alt="Twitter">
 					</td>
 					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-end-time-thursday',
-//							'value' => $work_time->thursday->end,
-							'mask' => '99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '18:00'
-							]
-						]);?>
+						<input type="text" name = 'social-twitter' value = "<?= $social->twitter?>"
+							   class = 'form-control col-md-1' data-required = true
+							   placeholder = 'адресс без http:// или https://'>
 					</td>
-					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-lunch-time-thursday',
-//							'value' => $work_time->thursday->lunch,
-							'mask' => '99:99 - 99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '13:00 - 14:00'
-							]
-						]);?>
-					</td>
+
 				</tr>
-				<tr>
-					<td>Пятница</td>
-					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-start-time-friday',
-//							'value' => $work_time->friday->start,
-							'mask' => '99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '09:00'
-							]
-						]);?>
+				<tr >
+					<td class="col-md-1">
+						<img class="img-responsive" src="/images/instagram-new.png"
+							 style="max-height: 35px; max-width: 35px"
+							 alt="Instagram">
 					</td>
 					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-end-time-friday',
-//							'value' => $work_time->friday->end,
-							'mask' => '99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '18:00'
-							]
-						]);?>
-					</td>
-					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-lunch-time-friday',
-//							'value' => $work_time->friday->lunch,
-							'mask' => '99:99 - 99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '13:00 - 14:00'
-							]
-						]);?>
-					</td>
-				</tr>
-				<tr>
-					<td>Суббота</td>
-					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-start-time-saturday',
-//							'value' => $work_time->saturday->start,
-							'mask' => '99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '09:00'
-							]
-						]);?>
-					</td>
-					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-end-time-saturday',
-//							'value' => $work_time->saturday->end,
-							'mask' => '99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '18:00'
-							]
-						]);?>
-					</td>
-					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-lunch-time-saturday',
-//							'value' => $work_time->saturday->lunch,
-							'mask' => '99:99 - 99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '13:00 - 14:00'
-							]
-						]);?>
-					</td>
-				</tr>
-				<tr>
-					<td>Воскресенье</td>
-					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-start-time-sunday',
-//							'value' => $work_time->sunday->start,
-							'mask' => '99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '09:00'
-							]
-						]);?>
-					</td>
-					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-end-time-sunday',
-//							'value' => $work_time->sunday->end,
-							'mask' => '99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '18:00'
-							]
-						]);?>
-					</td>
-					<td>
-						<?=MaskedInput::widget([
-							'name' => 'work-lunch-time-sunday',
-//							'value' => $work_time->sunday->lunch,
-							'mask' => '99:99 - 99:99',
-							'options' => [
-								'class' => 'form-control',
-								'data-required' => true,
-								'placeholder' => '13:00 - 14:00'
-							]
-						]);?>
+						<input type="text" name = 'social-insta' value = "<?= $social->insta?>"
+							   class = 'form-control col-md-1' data-required = true
+							   placeholder = 'адресс без http:// или https://'>
 					</td>
 				</tr>
 			</table>
@@ -800,280 +905,285 @@ $hren = new \app\models\WidgetSettings;
 	<div class="line-time">
 		<?= Html::button('Отменить', ['class' => 'btn btn-block btn-danger btn-lg']) ?>
 	</div>
-  <?php ActiveForm::end(); ?>
-<script type="text/javascript">
-//---------
-$('.btn-success').click(function(){
-	var time_start=$("[name='work-start-time']").val(),time_end=$("[name='work-end-time']").val();
-	var test_start_time=Number(time_start.split(':')[0]*60)+Number(time_start.split(':')[1]),test_end_time=Number(time_end.split(':')[0]*60)+Number(time_end.split(':')[1]);
-	if(test_start_time<test_end_time&&test_start_time<1440&&test_end_time<1440) $.post('/route.php',param,function(r){
-		console.log(JSON.parse(r.replace(/\ufeff/g,'')));
-		var o=JSON.parse(r.replace(/\ufeff/g,'')),info={};
-		info['msg']=o['msg']; info['title']='Информационное окно';
-		var html=helper.replaceAll(document.getElementById('modal').innerHTML,info);
-		document.getElementsByTagName('body')[0].innerHTML+=html;
-			$('.close,.modal-dialog .btn').click(function(){
-				window.location.hash='widgets';
-				$('.modal-info').remove();
-			});
-		});
-	else {
-		if(test_start_time<test_end_time||test_start_time<1440) $("[name='work-start-time']").parent().addClass('has-error');
-		if(test_end_time<1440) $("[name='work-end-time']").parent().addClass('has-error');
-		return false;
-	}
-});
-</script>
-<style>
-.colorpicker-element .input-group-addon i {border: 1px solid #d2d6de;}
-.utm-closed {position: relative; top: -2%; left: 98%; border: 1px solid rgba(0, 0, 0, .1); width: 30px; border-radius: 15px; text-align: center; box-shadow: 0 0 0 3px rgba(0, 0, 0, .4); font-weight: 900; height: 30px; color: rgba(0, 0, 0, .63); box-sizing: border-box; padding: 2px; z-index: 10; -webkit-transition: all .3s ease-out; transition: all .3s ease-out; cursor: pointer; background: #f1f1f1 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABBElEQVQ4T5WT63KCMBSEd+FJK2K9VPxfwXEG+wDiCF56f7NOn0OOkyg2YkIxf2G/bM7u4egp/ik9zIts8YE7znASh6WUMw6i+IHAnsLeepW+t2Fo8aHMPd8PqASjcdIRyq4NRIkhKEB28mX6rQHqDCdxAMEWxGO+XLzZnFRigQRF9vKl/rkA/oPYxDcA/Zwo6QpkQ7C/ztLXM/hkW9jNV+mn6e7KQfXBhAiFLrHVgTGT060ABAhdMVsdXNlWg2qI2Ar4GxhCT8imiG8Al5yNgTX1pB6jc9ouiFkkLTZLUi+TDaIBrpLY2liH0FwM1e02y1RBVLzsR8+/Hv1pW3F1gdpiAMkRptjH3QzyD+8AAAAASUVORK5CYII='); background-repeat: no-repeat; background-position: center center;}
-.utp-exampl {max-width: 800px; max-height:800px; background-repeat: no-repeat;}
-.utp-exampl .utp-form {position: relative; top: 0; left: 0; width: 200px; height: 70px; z-index: 9; cursor: move;}
-.utp-exampl .utp-form .line input,.utp-exampl .utp-form .line button {box-shadow:0 0 0 3px rgba(0, 0, 0, .2); border-radius: 15px; width: 100%; height: 30px; margin-bottom: 10px; border: 1px solid #CACACA; position:relative; z-index: -1; padding: 5px 0 5px 10px; background: #f5f5f5;}
-.utp-exampl .utp-form .line button {margin: 0;}
-span.phone   {font-weight: 400; font-size: 14px;}
-.light-label {vertical-align: middle; margin-right: 10px;}
-.bootstrap-switch-label {background: #f9f9f9 !important;}
-.clear {clear: both;}
-.line-time {width:30%; margin-left: 2%; display: inline-block;}
-.bordered {color: #333333; font-family: "Open Sans", sans-serif; border: 1px solid #e1e1e1; padding: 1%; background:#fff; margin:1%;}
-.bordered, .bordered * {-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;}
-.color_theme_list__ul{list-style: none;}
-.color_theme_list__ul__item{width: 50px; height: 50px; display: inline-block; vertical-align: top; margin: 10px; line-height: 28px; text-align: center; border-radius: 30px; cursor: pointer;}
-.color_theme_list__ul__item.active{border: 2px rgb(33, 204, 252) solid;}
-.widget-position, .widget-position-mob {width: 100%; margin-top: 45px;}
-.widget-top-position, .widget-top-position-mob {background-color: #f7f7f7; background-image: -moz-linear-gradient(top, #f0f0f0, #f9f9f9); background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f0f0f0), to(#f9f9f9)); background-image: -webkit-linear-gradient(top, #f0f0f0, #f9f9f9); background-image: -o-linear-gradient(top, #f0f0f0, #f9f9f9); background-image: linear-gradient(to bottom, #f0f0f0, #f9f9f9); background-repeat: repeat-x; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff0f0f0', endColorstr='#fff9f9f9', GradientType=0); -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; height: 400px; width: 10px; float:left;margin: 0 10px 0 0;}
-.widget-top-position-mob {height: 400px;margin: 0 10px 0 0;}
-.widget-left-position, .widget-left-position-mob {background-color: #f7f7f7; background-image: -moz-linear-gradient(top, #f0f0f0, #f9f9f9); background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f0f0f0), to(#f9f9f9)); background-image: -webkit-linear-gradient(top, #f0f0f0, #f9f9f9); background-image: -o-linear-gradient(top, #f0f0f0, #f9f9f9); background-image: linear-gradient(to bottom, #f0f0f0, #f9f9f9); background-repeat: repeat-x; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff0f0f0', endColorstr='#fff9f9f9', GradientType=0); -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; height: 10px;float: left;}
-.widget-left-position {width: 600px;margin: 17px 0 0 24px;}
-.widget-left-position-mob {width: 232px;margin: 17px 0 0 24px;}
-.widget-body-position, .widget-body-position-mob {width: 94%; width: calc(100% - 15px); height: 225px; margin: 0 0 0 5px; float: left; border: 1px #dedede solid;}
-.ui-state-default {
-	background: #444!important;
-	height: 21px!important;
-	width: 21px!important;
-	border-radius: 100%;
-	outline: none;
-	cursor: pointer!important;
-	margin: -3px!important;
-}
-</style>
-  <!-- /.row -->
-  <!-- Main row -->
 
-  <!-- /.row (main row) -->
+	<?php ActiveForm::end(); ?>
+	<script type="text/javascript">
+
+		$('.btn-danger').click(function(){
+			window.location.href='widgets';
+		});
+	</script>
+
+	<style>
+		.colorpicker-element .input-group-addon i {border: 1px solid #d2d6de;}
+		.utm-closed {position: relative; top: -2%; left: 98%; border: 1px solid rgba(0, 0, 0, .1); width: 30px; border-radius: 15px; text-align: center; box-shadow: 0 0 0 3px rgba(0, 0, 0, .4); font-weight: 900; height: 30px; color: rgba(0, 0, 0, .63); box-sizing: border-box; padding: 2px; z-index: 10; -webkit-transition: all .3s ease-out; transition: all .3s ease-out; cursor: pointer; background: #f1f1f1 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABBElEQVQ4T5WT63KCMBSEd+FJK2K9VPxfwXEG+wDiCF56f7NOn0OOkyg2YkIxf2G/bM7u4egp/ik9zIts8YE7znASh6WUMw6i+IHAnsLeepW+t2Fo8aHMPd8PqASjcdIRyq4NRIkhKEB28mX6rQHqDCdxAMEWxGO+XLzZnFRigQRF9vKl/rkA/oPYxDcA/Zwo6QpkQ7C/ztLXM/hkW9jNV+mn6e7KQfXBhAiFLrHVgTGT060ABAhdMVsdXNlWg2qI2Ar4GxhCT8imiG8Al5yNgTX1pB6jc9ouiFkkLTZLUi+TDaIBrpLY2liH0FwM1e02y1RBVLzsR8+/Hv1pW3F1gdpiAMkRptjH3QzyD+8AAAAASUVORK5CYII='); background-repeat: no-repeat; background-position: center center;}
+		.utp-exampl {max-width: 800px; max-height:800px; background-repeat: no-repeat;}
+		.utp-exampl .utp-form {position: relative; top: 0; left: 0; width: 200px; height: 70px; z-index: 9; cursor: move;}
+		.utp-exampl .utp-form .line input,.utp-exampl .utp-form .line button {box-shadow:0 0 0 3px rgba(0, 0, 0, .2); border-radius: 15px; width: 100%; height: 30px; margin-bottom: 10px; border: 1px solid #CACACA; position:relative; z-index: -1; padding: 5px 0 5px 10px; background: #f5f5f5;}
+		.utp-exampl .utp-form .line button {margin: 0;}
+		span.phone   {font-weight: 400; font-size: 14px;}
+		.light-label {vertical-align: middle; margin-right: 10px;}
+		.bootstrap-switch-label {background: #f9f9f9 !important;}
+		.clear {clear: both;}
+		.line-time {width:30%; margin-left: 2%; display: inline-block;}
+		.bordered {color: #333333; font-family: "Open Sans", sans-serif; border: 1px solid #e1e1e1; padding: 1%; background:#fff; margin:1%;}
+		.bordered, .bordered * {-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;}
+		.color_theme_list__ul{list-style: none;}
+		.color_theme_list__ul__item{width: 50px; height: 50px; display: inline-block; vertical-align: top; margin: 10px; line-height: 28px; text-align: center; border-radius: 30px; cursor: pointer;}
+		.color_theme_list__ul__item.active{border: 2px rgb(33, 204, 252) solid;}
+		.widget-position, .widget-position-mob {width: 100%; margin-top: 45px;}
+		.widget-top-position, .widget-top-position-mob {background-color: #f7f7f7; background-image: -moz-linear-gradient(top, #f0f0f0, #f9f9f9); background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f0f0f0), to(#f9f9f9)); background-image: -webkit-linear-gradient(top, #f0f0f0, #f9f9f9); background-image: -o-linear-gradient(top, #f0f0f0, #f9f9f9); background-image: linear-gradient(to bottom, #f0f0f0, #f9f9f9); background-repeat: repeat-x; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff0f0f0', endColorstr='#fff9f9f9', GradientType=0); -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; height: 400px; width: 10px; float:left;margin: 0 10px 0 0;}
+		.widget-top-position-mob {height: 400px;margin: 0 10px 0 0;}
+		.widget-left-position, .widget-left-position-mob {background-color: #f7f7f7; background-image: -moz-linear-gradient(top, #f0f0f0, #f9f9f9); background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f0f0f0), to(#f9f9f9)); background-image: -webkit-linear-gradient(top, #f0f0f0, #f9f9f9); background-image: -o-linear-gradient(top, #f0f0f0, #f9f9f9); background-image: linear-gradient(to bottom, #f0f0f0, #f9f9f9); background-repeat: repeat-x; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff0f0f0', endColorstr='#fff9f9f9', GradientType=0); -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; height: 10px;float: left;}
+		.widget-left-position {width: 600px;margin: 17px 0 0 24px;}
+		.widget-left-position-mob {width: 232px;margin: 17px 0 0 24px;}
+		.widget-body-position, .widget-body-position-mob {width: 94%; width: calc(100% - 15px); height: 225px; margin: 0 0 0 5px; float: left; border: 1px #dedede solid;}
+		.widget-top-position .button, .widget-top-position-mob .button {top: 88%;}
+		.widget-left-position .button, .widget-left-position-mob .button {margin: -5px 0 0 0; left:94%;}
+		.ui-state-default {
+			background: #444!important;
+			height: 21px!important;
+			width: 21px!important;
+			border-radius: 100%;
+			outline: none;
+			cursor: pointer!important;
+			margin: -3px!important;
+		}
+	</style>
+
+	<!-- /.row -->
+	<!-- Main row -->
+
+	<!-- /.row (main row) -->
 
 </section>
-<script>
-//Настройка виджета Десктоп
-$(".widget-top-position").slider({
-	orientation: "vertical",
-	range: "min",
-	min: 0,
-	max: 100,
-	value: 10,
-	slide: function( event, ui ) {
-		$(".robax-widget-open-button").css('top', (100 - ui.value) + '%');
-		$("[name='witget-button-top']").val('top: ' + (100 - ui.value) + '%;');
-	}
-});
-$(".widget-left-position").slider({
-	range: "min",
-	min: 0,
-	max: 100,
-	value: 94,
-	slide: function( event, ui ) {
-		$(".robax-widget-open-button").css('left', (ui.value) + '%');
-		$("[name='witget-button-left']").val('left: ' + (ui.value) + '%;');
-	}
-});
-//Настройка виджета Мобайл
-$(".widget-top-position-mob").slider({
-	orientation: "vertical",
-	range: "min",
-	min: 0,
-	max: 100,
-	value: 9,
-	slide: function( event, ui ) {
-		$(".robax-widget-open-button-mob").css('top', (100 - ui.value) + '%');
-		$("[name='witget-button-top-mob']").val('top: ' + (100 - ui.value) + '%;');
-	}
-});
-$(".widget-left-position-mob").slider({
-	range: "min",
-	min: 0,
-	max: 100,
-	value: 85,
-	slide: function( event, ui ) {
-		$(".robax-widget-open-button-mob").css('left', (ui.value) + '%');
-		$("[name='witget-button-left-mob']").val('left: ' + (ui.value) + '%;');
-	}
-});
-//Добавление телефона (чёрный список)
-var k = 1;
-$('.blacklist_more').click(function(e){
-    k++;
-    e.preventDefault();
-	var BL_input = '<span class="phone">Телефон №'+k+'</span><div class="input-group"><input type="text" style="padding-left: 45px;" class="form-control widget_phone" name="black_list_number_'+k+'" placeholder="+7(___)___-__-__" data-required="false">' +
-        '<button class="flag-select dropdown-toggle" type="button" id="dropdownMenu_'+k+'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="glyphicon bfh-flag-RU"></i><span class="caret"></span></button>' +
-        '<ul class="dropdown-menu" aria-labelledby="dropdownMenu_'+k+'">' +
-        '<li onclick="countryChange(\'RU\', $(this));"><i class="glyphicon bfh-flag-RU"></i> Россия</li>' +
-        '<li onclick="countryChange(\'BY\', $(this));"><i class="glyphicon bfh-flag-BY"></i> Белорусия</li>' +
-        '<li onclick="countryChange(\'UA\', $(this));"><i class="glyphicon bfh-flag-UA"></i> Украина</li>' +
-        '<li onclick="countryChange(\'US\', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>' +
-        '</ul>'+
-        '</div>';
-	$('#black_list_block').append(BL_input);
-	$("input[name='black_list_number_"+k+"']").inputmask("+7(999)999-99-99");
-	$('input[name="count_black_list"]').val(k);
-});
-//Добавление емэйла (настройка уведомлений)
-var i = 1;
-$('.email_more').click(function(e){
-    i++;
-    e.preventDefault();
-	var email_input = '<span class="phone">Ваша эл-почта</span><div class="input-group"> <div class="input-group-addon"><b>@</b></div> <input type="text" class="form-control" name="widget_user_email_'+i+'" placeholder="Email" data-required="true"> </div>';
-	$('#emails_block').append(email_input);
-	$('input[name="count_emails"]').val(i);
-});
-//Добавление телефона (определяется при звонке клиенту)
-var j = 1;
-$('.phone_more').click(function(e){
-    j++;
-    e.preventDefault();
-	var phone_input = '<span class="phone">Телефон №'+j+'</span><div class="input-group"><input type="text" style="padding-left: 45px;" class="form-control widget_phone" name="widget_phone_number_'+j+'" placeholder="+7(___)___-__-__" data-required="false">' +
-        '<button class="flag-select dropdown-toggle" type="button" id="dropdown2Menu_'+j+'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="glyphicon bfh-flag-RU"></i><span class="caret"></span></button>' +
-        '<ul class="dropdown-menu" aria-labelledby="dropdown2Menu_'+j+'">' +
-        '<li onclick="countryChange(\'RU\', $(this));"><i class="glyphicon bfh-flag-RU"></i> Россия</li>' +
-        '<li onclick="countryChange(\'BY\', $(this));"><i class="glyphicon bfh-flag-BY"></i> Белорусия</li>' +
-        '<li onclick="countryChange(\'UA\', $(this));"><i class="glyphicon bfh-flag-UA"></i> Украина</li>' +
-        '<li onclick="countryChange(\'US\', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>' +
-        '</ul>'+
-        '</div>';
-	$('#phones_block').append(phone_input);
-	$("input[name='widget_phone_number_"+j+"']").inputmask("+7(999)999-99-99");
-	$('input[name="count_phones"]').val(j);
-});
-//Добавить страницу
-var l = 1;
-$('.pages_more').click(function(e){
-    e.preventDefault();
-    l++;
-    var page_input = '<span class="phone">Ссылка на страницу</span><div class="input-group"><div class="input-group-addon"><i class="fa fa-link"></i> </div><input type="text" class="form-control" name="site_page_'+l+'" placeholder="URL"> </div><select class="form-control" name="select_site_page_'+l+'"> <option value="0">0 баллов</option> <option value="1">1 балл</option> <option value="2">2 балла</option> <option value="3">3 балла</option> <option value="4">4 балла</option> <option value="5">5 баллов</option> <option value="6">6 баллов</option> <option value="7">7 баллов</option> <option value="8">8 баллов</option> <option value="9">9 баллов</option> <option value="10">10 баллов</option> </select>';
-    $('#pages_block').append(page_input);
-    $('input[name="count_pages"]').val(l);
-});
-//Уникально торговое предложение
-/*$(".utm-button-color").colorpicker().on('changeColor',function(){
-	$('.utp-form .line button').css('background',$(this).val());
-});
-$('#url_utp_img').change(function(){
-	$('.utp-img-exampl').attr("src",this.value);
-	$('.utp-img-exampl').load(function(){
-		$('.utp-exampl').css({
-		    "background":'url('+this.src+')',
-            'width':$('.utp-img-exampl').width()+'px',
-            'height':$('.utp-img-exampl').height()+'px'
-		});
-		$('.utp-img-exampl').hide();
-	});
-});
-$('.utp-form').draggable({
-    stop: function() {
-        $("[name='widget-utp-form-top']").val('top: '+$(this).css('top')+';');
-        $("[name='widget-utp-form-left']").val('left: '+$(this).css('left')+';');
-    },
-    containment: '.utp-exampl',
-    scroll: false
-});*/
-//
-$(".my-colorpicker").colorpicker();
-$('.color_theme_list__ul__item').eq(0).click(function(){
-    $(this).attr("class","color_theme_list__ul__item active");
-    $('.color_theme_list__ul__item').eq(1).attr("class","color_theme_list__ul__item");
-    $("[name='widget_theme_color']").val(0);
-});
-$('.color_theme_list__ul__item').eq(1).click(function(){
-    $(this).attr("class","color_theme_list__ul__item active");
-    $('.color_theme_list__ul__item').eq(0).attr("class","color_theme_list__ul__item");
-    $("[name='widget_theme_color']").val(1);
-});
-//Функции
-function countryChange(lang, element) {
-    ul = element.parent('ul');
-    id_button = ul.attr('aria-labelledby');
-    button = ul.siblings('button');
-    input = ul.siblings('input');
-    switch (lang) {
-        case 'RU': {
-            button.html('<i class="glyphicon bfh-flag-RU"></i><span class="caret">');
-            input.val('');
-            input.attr('placeholder', '+7(___)___-__-__');
-            input.inputmask('+7(999)999-99-99');
-            break;
-        }
-        case 'BY': {
-            button.html('<i class="glyphicon bfh-flag-BY"></i><span class="caret">');
-            input.val('');
-            input.attr('placeholder', '+375(___)___-__-__');
-            input.inputmask('+375(999)999-99-99');
-            break;
-        }
-        case 'UA': {
-            button.html('<i class="glyphicon bfh-flag-UA"></i><span class="caret">');
-            input.val('');
-            input.attr('placeholder', '+380(___)___-__-__');
-            input.inputmask('+380(999)999-99-99');
-            break;
-        }
-        case 'US': {
-            button.html('<i class="glyphicon bfh-flag-US"></i><span class="caret">');
-            input.val('');
-            input.attr('placeholder', '+1(___)___-__-__');
-            input.inputmask('+1(999)999-99-99');
-            break;
-        }
-    }
-}
 
-function openMarks() {
-    if ($('#openMarks').css('display') == 'none') {
-        $('#openMarks').show();
-    } else {
-        $('#openMarks').hide();
-    }
-}
-function openUtp() {
-    if ($('#openUtp').css('display') == 'none') {
-        $('#openUtp').show();
-    } else {
-        $('#openUtp').hide();
-    }
-}
-function openBlock(id) {
-	if ($('#openBlock-'+id).css('display') == 'none' && $('.bootstrap-switch-id-w'+id).hasClass('bootstrap-switch-on')) {
-		$('#w'+id).val(1);
-		$('#openBlock-'+id).show();
-	} else {
-		$('#w'+id).val(0);
-		$('#openBlock-'+id).hide();
-	}
-}
-function siteChange(url) {
-	address = ['http://', 'https://'];
-	new_url = url.replace(address, '');
-	if (url.length) {
-		$('#screenDesktop').attr('src', 'http://mini.s-shot.ru/1280x800/JPEG/1280/Z100/?'+new_url);
-		$('#screenMobile').attr('src', 'http://mini.s-shot.ru/360x640/JPEG/360/Z100/?'+new_url);
-		$.ajax({
-			url: '/profile/savesiteimage',
-			method: 'POST',
-			data: {
-				url_desktop: 'http://mini.s-shot.ru/1280x800/JPEG/1280/Z100/?'+new_url,
-				url_mobile: 'http://mini.s-shot.ru/360x640/JPEG/360/Z100/?'+new_url,
-				site: url
+<script>
+	//Настройка виджета Десктоп
+
+	$(".widget-top-position").slider({
+		orientation: "vertical",
+		range: "min",
+		min: 0,
+		max: 100,
+		value: 10,
+		slide: function( event, ui ) {
+			$(".robax-widget-open-button").css('top', (100 - ui.value) + '%');
+			$("[name='witget-button-top']").val('top: ' + (100 - ui.value) + '%;');
+		}
+	});
+	$(".widget-left-position").slider({
+		range: "min",
+		min: 0,
+		max: 100,
+		value: 10,
+		slide: function( event, ui ) {
+			$(".robax-widget-open-button").css('left', (ui.value) + '%');
+			$("[name='witget-button-left']").val('left: ' + (ui.value) + '%;');
+		}
+	});
+	//Настройка виджета Мобайл
+
+	$(".widget-top-position-mob").slider({
+		orientation: "vertical",
+		range: "min",
+		min: 0,
+		max: 100,
+		value: 10,
+		slide: function( event, ui ) {
+			$(".robax-widget-open-button-mob").css('top', (100 - ui.value) + '%');
+			$("[name='witget-button-top-mob']").val('top: ' + (100 - ui.value) + '%;');
+		}
+	});
+	$(".widget-left-position-mob").slider({
+		range: "min",
+		min: 0,
+		max: 100,
+		value: 10,
+		slide: function( event, ui ) {
+			$(".robax-widget-open-button-mob").css('left', (ui.value) + '%');
+			$("[name='witget-button-left-mob']").val('left: ' + (ui.value) + '%;');
+		}
+	});
+	//Добавление телефона (чёрный список)
+	var k = <?=$count_black_list?>;
+	$('.blacklist_more').click(function(e){
+		k++;
+		e.preventDefault();
+		var BL_input = '<span class="phone">Телефон №'+k+'</span><div class="input-group"><input type="text" style="padding-left: 45px;" class="form-control widget_phone" name="black_list_number_'+k+'" placeholder="+7(___)___-__-__" data-required="false">' +
+			'<button class="flag-select dropdown-toggle" type="button" id="dropdownMenu_'+k+'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="glyphicon bfh-flag-RU"></i><span class="caret"></span></button>' +
+			'<ul class="dropdown-menu" aria-labelledby="dropdownMenu_'+k+'">' +
+			'<li onclick="countryChange(\'RU\', $(this));"><i class="glyphicon bfh-flag-RU"></i> Россия</li>' +
+			'<li onclick="countryChange(\'BY\', $(this));"><i class="glyphicon bfh-flag-BY"></i> Белорусия</li>' +
+			'<li onclick="countryChange(\'UA\', $(this));"><i class="glyphicon bfh-flag-UA"></i> Украина</li>' +
+			'<li onclick="countryChange(\'US\', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>' +
+			'</ul>'+
+			'</div>';
+		$('#black_list_block').append(BL_input);
+		$("input[name='black_list_number_"+k+"']").inputmask("+7(999)999-99-99");
+		$('input[name="count_black_list"]').val(k);
+	});
+	//Добавление емэйла (настройка уведомлений)
+	var i = <?=$count_mails?>;
+	$('.email_more').click(function(e){
+		i++;
+		e.preventDefault();
+		var email_input = '<span class="phone">Ваша эл-почта</span><div class="input-group"> <div class="input-group-addon"><b>@</b></div> <input type="text" class="form-control" name="widget_user_email_'+i+'" placeholder="Email" data-required="true"> </div>';
+		$('#emails_block').append(email_input);
+		$('input[name="count_emails"]').val(i);
+	});
+	//Добавление телефона (определяется при звонке клиенту)
+	var j = <?=$count_phones?>;
+	$('.phone_more').click(function(e){
+		j++;
+		e.preventDefault();
+		var phone_input = '<span class="phone">Телефон №'+j+'</span><div class="input-group"><input type="text" style="padding-left: 45px;" class="form-control widget_phone" name="widget_phone_number_'+j+'" placeholder="+7(___)___-__-__" data-required="false">' +
+			'<button class="flag-select dropdown-toggle" type="button" id="dropdown2Menu_'+j+'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="glyphicon bfh-flag-RU"></i><span class="caret"></span></button>' +
+			'<ul class="dropdown-menu" aria-labelledby="dropdown2Menu_'+j+'">' +
+			'<li onclick="countryChange(\'RU\', $(this));"><i class="glyphicon bfh-flag-RU"></i> Россия</li>' +
+			'<li onclick="countryChange(\'BY\', $(this));"><i class="glyphicon bfh-flag-BY"></i> Белорусия</li>' +
+			'<li onclick="countryChange(\'UA\', $(this));"><i class="glyphicon bfh-flag-UA"></i> Украина</li>' +
+			'<li onclick="countryChange(\'US\', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>' +
+			'</ul>'+
+			'</div>';
+		$('#phones_block').append(phone_input);
+		$("input[name='widget_phone_number_"+j+"']").inputmask("+7(999)999-99-99");
+		$('input[name="count_phones"]').val(j);
+	});
+	//Добавит страницу
+	var l = <?=$count_site_pages?>;
+	$('.sitepage_more').click(function(e){
+		l++;
+		e.preventDefault();
+		var page_input = '<span class="phone">Ссылка на страницу</span><div class="input-group"><div class="input-group-addon"><i class="fa fa-link"></i></div><input type="text" class="form-control" name="site_page_'+l+'" placeholder="URL"> </div><select class="form-control" name="select_site_page_'+l+'"><option value="0">0 баллов</option> <option value="1">1 балл</option> <option value="2">2 балла</option> <option value="3">3 балла</option> <option value="4">4 балла</option> <option value="5">5 баллов</option> <option value="6">6 баллов</option> <option value="7">7 баллов</option> <option value="8">8 баллов</option> <option value="9">9 баллов</option> <option value="10">10 баллов</option> </select><br>';
+		$('#pages_block').append(page_input);
+		$('input[name="count_pages"]').val(l);
+	});
+	//Уникальное торговое предложение
+	/*$(".utm-button-color").colorpicker().on('changeColor',function(){
+	 $('.utp-form .line button').css('background',$(this).val());
+	 });
+	 $('#url_utp_img').change(function(){
+	 $('.utp-img-exampl').attr("src",this.value);
+	 $('.utp-img-exampl').load(function(){
+	 $('.utp-exampl').css({
+	 'background': 'url('+this.src+')',
+	 'width': $('.utp-img-exampl').width()+'px',
+	 'height': $('.utp-img-exampl').height()+'px'
+	 });
+	 });
+	 });
+	 $('.utp-form').draggable({
+	 stop: function() {
+	 $("[name='widget-utp-form-top']").val('top: '+$(this).css('top')+';');
+	 $("[name='widget-utp-form-left']").val('left: '+$(this).css('left')+';');
+	 },
+	 containment: '.utp-exampl',
+	 scroll: false
+	 });*/
+	//
+	$(".my-colorpicker").colorpicker();
+	$('.color_theme_list__ul__item').eq(0).click(function(){
+		$(this).attr("class","color_theme_list__ul__item active");
+		$('.color_theme_list__ul__item').eq(1).attr("class","color_theme_list__ul__item");
+		$("[name='widget_theme_color']").val(0);
+	});
+	$('.color_theme_list__ul__item').eq(1).click(function(){
+		$(this).attr("class","color_theme_list__ul__item active");
+		$('.color_theme_list__ul__item').eq(0).attr("class","color_theme_list__ul__item");
+		$("[name='widget_theme_color']").val(1);
+	});
+	//Функции
+	function countryChange(lang, element) {
+		ul = element.parent('ul');
+		id_button = ul.attr('aria-labelledby');
+		button = ul.siblings('button');
+		input = ul.siblings('input');
+		switch (lang) {
+			case 'RU': {
+				button.html('<i class="glyphicon bfh-flag-RU"></i><span class="caret">');
+				input.val('');
+				input.attr('placeholder', '+7(___)___-__-__');
+				input.inputmask('+7(999)999-99-99');
+				break;
 			}
-		});
+			case 'BY': {
+				button.html('<i class="glyphicon bfh-flag-BY"></i><span class="caret">');
+				input.val('');
+				input.attr('placeholder', '+375(___)___-__-__');
+				input.inputmask('+375(999)999-99-99');
+				break;
+			}
+			case 'UA': {
+				button.html('<i class="glyphicon bfh-flag-UA"></i><span class="caret">');
+				input.val('');
+				input.attr('placeholder', '+380(___)___-__-__');
+				input.inputmask('+380(999)999-99-99');
+				break;
+			}
+			case 'US': {
+				button.html('<i class="glyphicon bfh-flag-US"></i><span class="caret">');
+				input.val('');
+				input.attr('placeholder', '+1(___)___-__-__');
+				input.inputmask('+1(999)999-99-99');
+				break;
+			}
+		}
 	}
-}
+
+	function openMarks() {
+		if ($('#openMarks').css('display') == 'none') {
+			$('#openMarks').show();
+		} else {
+			$('#openMarks').hide();
+		}
+	}
+	function openMessages() {
+		if ($('#openMessages').css('display') == 'none') {
+			$('#openMessages').show();
+		} else {
+			$('#openMessages').hide();
+		}
+	}
+	function openWorkTime() {
+		if ($('#openWorkTime').css('display') == 'none') {
+			$('#openWorkTime').show();
+		} else {
+			$('#openWorkTime').hide();
+		}
+	}
+
+	function openUtp() {
+		if ($('#openUtp').css('display') == 'none') {
+			$('#openUtp').show();
+		} else {
+			$('#openUtp').hide();
+		}
+	}
+	function openBlock(id) {
+		if ($('#openBlock-'+id).css('display') == 'none' && $('.bootstrap-switch-id-w'+id).hasClass('bootstrap-switch-on')) {
+			$('#w'+id).val(1);
+			$('#openBlock-'+id).show();
+		} else {
+			$('#w'+id).val(0);
+			$('#openBlock-'+id).hide();
+		}
+	}
+	function siteChange(url) {
+		address = ['http://', 'https://'];
+		new_url = url.replace(address, '');
+		if (url.length) {
+			$('#screenDesktop').attr('src', 'http://mini.s-shot.ru/1280x800/JPEG/1280/Z100/?'+new_url);
+			$('#screenMobile').attr('src', 'http://mini.s-shot.ru/360x640/JPEG/360/Z100/?'+new_url);
+			$.ajax({
+				url: '/profile/savesiteimage',
+				method: 'POST',
+				data: {
+					url_desktop: 'http://mini.s-shot.ru/1280x800/JPEG/1280/Z100/?'+new_url,
+					url_mobile: 'http://mini.s-shot.ru/360x640/JPEG/360/Z100/?'+new_url,
+					site: url
+				}
+			});
+		}
+	}
 </script>

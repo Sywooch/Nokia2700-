@@ -20,7 +20,7 @@ $this->title = 'История баланса';
 <section class="content">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'emptyText'=>'Нам очень жаль. Здесь пока пусто. <i class="fa fa-thumbs-o-down"></i>',
+        'emptyText'=>'Тут пусто, и нам от этого грустно... <img src=/images/sad.gif border=0>',
         'columns' => [
             'id',
             'dateFormat',

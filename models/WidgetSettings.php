@@ -37,7 +37,8 @@ use Yii;
  * @property string $widget_utp_form_position
  * @property string $utm_button_color
  * @property string $utp_img_url
- * @property integer hand_turn_on
+ * @property integer $hand_turn_on
+ * @property integer $widget_messages_on
  */
 class WidgetSettings extends \yii\db\ActiveRecord
 {
@@ -56,7 +57,9 @@ class WidgetSettings extends \yii\db\ActiveRecord
     {
         return [
             [['widget_key', 'widget_site_url', 'user_id', 'widget_work_time'], 'required'],
-            [['widget_status', 'widget_theme_color', 'widget_yandex_metrika', 'widget_google_metrika', 'user_id', 'widget_GMT', 'widget_callback_email', 'widget_sound','hand_turn_on', 'utp_turn_on'], 'integer'],
+            [['widget_status', 'widget_theme_color', 'widget_yandex_metrika', 'widget_google_metrika',
+                'user_id', 'widget_GMT', 'widget_callback_email', 'widget_sound','hand_turn_on',
+                'utp_turn_on', 'widget_messages_on'], 'integer'],
             [['widget_settings', 'black_list'], 'string'],
             [['widget_key', 'widget_site_url', 'widget_user_email', 'social'], 'string', 'max' => 100],
             [['widget_position', 'widget_position_mobile'], 'string', 'max' => 150],
@@ -265,6 +268,8 @@ class WidgetSettings extends \yii\db\ActiveRecord
             $widget_json['widget_utp_form_position'] = $widget->widget_utp_form_position;
             $widget_json['utp_img_url'] = $widget->utp_img_url;
             $widget_json['hand_turn_on'] = $widget->hand_turn_on;
+            $widget_json['widget_messages_on'] = $widget->widget_messages_on;
+            $widget_json['widget_work_time_on'] = $widget->widget_work_time_on;
             $widget_json['utp_turn_on'] = $widget->utp_turn_on;
             $widget_json['utm_button_color'] = $widget->utm_button_color;
             return $widget_json;

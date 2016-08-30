@@ -225,7 +225,9 @@ class ProfileController extends Controller
         $postArray = Yii::$app->request->post();
         if(!empty($postArray))
         {
+//            echo "<pre>";
 //            print_r($postArray);
+//            echo "</pre>";
 //            die();
             $address = ['http://', 'https://'];
             $url = str_replace($address, '', Yii::$app->request->post('widget_site_url'));
@@ -293,7 +295,9 @@ class ProfileController extends Controller
 
             $model->widget_work_time = json_encode($work_time);
             $model->widget_sound = Yii::$app->request->post('widget_sound');
+            ($_POST['WidgetSettings']['widget_messages_on']) ? $model->widget_messages_on = 1 : $model->widget_messages_on = 0;
             ($_POST['WidgetSettings']['hand_turn_on']) ? $model->hand_turn_on = 1 : $model->hand_turn_on = 0;
+            ($_POST['WidgetSettings']['widget_work_time_on']) ? $model->widget_work_time_on = 1 : $model->widget_work_time_on = 0;
 //            ($_POST['WidgetSettings']['utp_turn_on']) ? $model->utp_turn_on = 1 : $model->utp_turn_on = 0;
 //            $model->widget_utp_form_position = $_POST['widget-utp-form-top'].$_POST['widget-utp-form-left'];
 //            $model->utm_button_color = Yii::$app->request->post('utm-button-color');
@@ -351,8 +355,8 @@ class ProfileController extends Controller
         $marks = $this->findMarks($id);
         $widgetTemplate = WidgetTemplateNotification::find()->all();
         $widgetTemplateUsers = WidgetTemplateNotificationUsers::findAll(['id_widget' => $id]);
-
         $postArray = Yii::$app->request->post();
+
         if(!empty($postArray))
         {
             $address = ['http://', 'https://'];
@@ -425,6 +429,8 @@ class ProfileController extends Controller
             $model->social = json_encode($soc);
 
             $model->widget_sound = Yii::$app->request->post('widget_sound');
+            ($_POST['WidgetSettings']['widget_messages_on']) ? $model->widget_messages_on = 1 : $model->widget_messages_on = 0;
+            ($_POST['WidgetSettings']['widget_work_time_on']) ? $model->widget_work_time_on = 1 : $model->widget_work_time_on = 0;
             ($_POST['WidgetSettings']['hand_turn_on']) ? $model->hand_turn_on = 1 : $model->hand_turn_on = 0;
             /*($_POST['WidgetSettings']['utp_turn_on']) ? $model->utp_turn_on = 1 : $model->utp_turn_on = 0;*/
            // $model->widget_utp_form_position = $_POST['widget-utp-form-top'].$_POST['widget-utp-form-left'];
@@ -591,9 +597,9 @@ class ProfileController extends Controller
         for($i = 0; $i < count($fl_array); $i++)
         {
             $id = $_POST[$fl_array[$i]];
-            $limit = $_POST['limit-'.$id];
-            $email = $_POST['email-'.$id];
-            $sms = $_POST['sms-'.$id];
+            if(isset($_POST['limit-'.$id]))$limit = $_POST['limit-'.$id];
+            if(isset($_POST['email-'.$id]))$email = $_POST['email-'.$id];
+            if(isset($_POST['sms-'.$id]))$sms = $_POST['sms-'.$id];
 
             $u_notif_sett = UserNotifSettings::findOne($id);
             $u_notif_sett->notification_value = $limit;

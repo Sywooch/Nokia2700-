@@ -1,8 +1,8 @@
 <?php
 
-echo "<pre>";
+/*echo "<pre>";
 print_r($_POST);
-echo "</pre>";
+echo "</pre>";*/
 
 $this->registerJsFile('@web/plugins/bootstrap/js/bootstrap.min.js');
 use app\models\User;

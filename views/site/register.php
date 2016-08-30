@@ -2,7 +2,9 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\widgets\MaskedInput;
-
+use \app\models\User;
+use yii\jui\AutoComplete;
+$user = new User();
 ?>
 
 <div class="hold-transition register-page">
@@ -12,16 +14,16 @@ use yii\widgets\MaskedInput;
                 <p class="login-box-msg">Регистрация</p>
                 <?php $form = ActiveForm::begin(); ?>
                     <div class="form-group has-feedback">
-                        <input type="text" class="form-control" name="User[name]" placeholder="Имя">
-                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                        <input type="email" class="form-control" name="User[email]" placeholder="Почта">
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
                         <input type="password" class="form-control" name="User[pass]" placeholder="Пароль">
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="email" class="form-control" name="User[email]" placeholder="Почта">
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                        <input type="text" class="form-control" name="User[name]" placeholder="Имя">
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback" style="position: relative">
                         <?=MaskedInput::widget([

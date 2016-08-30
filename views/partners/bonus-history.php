@@ -23,11 +23,11 @@ $bonuses = isset(Yii::$app->user->identity->bonus) ? Yii::$app->user->identity->
 <!-- Main content -->
 <section class="content">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <!-- Profile Image -->
             <div class="box box-primary">
                 <div class="box-body box-profile">
-                    <img class="profile-user-img img-responsive" src="/images/profile.png" alt="User profile picture">
+                    <img class="profile-user-img img-responsive" src="/images/profile.png" style="width: 100%" alt="User profile picture">
                     <h3 class="profile-username text-center"><?=$name?></h3>
                     <!--<p class="text-muted text-center">Software Engineer</p>-->
                     <ul class="list-group list-group-unbordered">
@@ -40,7 +40,7 @@ $bonuses = isset(Yii::$app->user->identity->bonus) ? Yii::$app->user->identity->
                 <!-- /.box-body -->
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9">
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#activity" data-toggle="tab">Общая информация бонусного счета</a></li>
@@ -50,7 +50,7 @@ $bonuses = isset(Yii::$app->user->identity->bonus) ? Yii::$app->user->identity->
                     <div class="active tab-pane" id="activity">
                         <?= GridView::widget([
                             'dataProvider' => $dataProviderDesc,
-                            'emptyText'=>'Нам очень жаль. Пока нет оплат от Ваших клиентов. <i class="fa fa-thumbs-o-down"></i>',
+                            'emptyText'=>'Тут пусто, и нам от этого грустно... <img src=/images/sad.gif border=0>',
                             'columns' => [
                                 'client',
                                 'dateFormat',
@@ -63,7 +63,7 @@ $bonuses = isset(Yii::$app->user->identity->bonus) ? Yii::$app->user->identity->
                     <div class="tab-pane" id="bon-history">
                         <?= GridView::widget([
                             'dataProvider' => $dataProvider,
-                            'emptyText'=>'Нам очень жаль. У Вас пока нет бонусов. <i class="fa fa-thumbs-o-down"></i>',
+                            'emptyText'=>'Тут пусто, и нам от этого грустно... <img src=/images/sad.gif border=0>',
                             'columns' => [
                                 'order_num',
                                 'dateFormat',

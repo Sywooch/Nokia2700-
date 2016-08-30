@@ -27,6 +27,9 @@ $this->registerCss("
 $path = '/files/images/desktop/';
 $path2 = '/files/images/mobile/';
 $this->title = 'Изменить виджет';
+/*echo '<pre>';
+print_r($model);
+echo '</pre>';*/
 ?>
   <section class="content-header">
     <h1>
@@ -330,7 +333,21 @@ $this->title = 'Изменить виджет';
       </div>
         <div class="bordered">
             <label>Настройки сообщений виджета</label>
+            <div class="form-group">
+                <div style="margin: 10px 0;">
+                    <div style="display: inline-block;">
+                        <?echo $form->field($model, 'widget_messages_on')->widget(SwitchInput::classname(), [
+                            'options'=>[
+                                'onchange'=>'openMessages();',
+                            ]
+                        ])->label(false);?>
+                    </div>
+                    <div style="display: inline-block">
+                        <span style="margin: 0 15px;">если настройка выключена, то используются шаблоны разработанные нашим отделом маркетинга.</span></div>
+                </div>
+            </div>
             <br>
+            <div id="openMessages" class="messages-body" <?= ($model->widget_messages_on)? 'style="display: block;"':'style="display: none;"'?>>
             <?if ($widgetTemplateUsers) {
                 foreach ($widgetTemplateUsers as $key => $value) {?>
                     <div>
@@ -389,6 +406,7 @@ $this->title = 'Изменить виджет';
                     </div>
                 <?}
             }?>
+        </div>
         </div>
       <div class="bordered">
         <label>Настройки уведомлений</label>
@@ -469,343 +487,363 @@ $this->title = 'Изменить виджет';
       <div class="bordered">
         <div class="form-group">
           <label>Настройки рабочего времени</label><br>
-          <div class="line-time">
-            <label>Часовой пояс(GMT):</label>
-            <select class="form-control" name="widget_GMT">
-              <option value="-12">-12</option>
-              <option value="-11">-11</option>
-              <option value="-10">-10</option>
-              <option value="-9">-9</option>
-              <option value="-8">-8</option>
-              <option value="-7">-7</option>
-              <option value="-6">-6</option>
-              <option value="-5">-5</option>
-              <option value="-4:30">-4:30</option>
-              <option value="-4">-4</option>
-              <option value="-3:30">-3:30</option>
-              <option value="-3">-3</option>
-              <option value="-2">-2</option>
-              <option value="-1">-1</option>
-              <option value="0">+0</option>
-              <option value="1">+1</option>
-              <option value="2">+2</option>
-              <option value="3" selected="selected">+3</option>
-              <option value="3:30">+3:30</option>
-              <option value="4">+4</option>
-              <option value="4:30">+4:30</option>
-              <option value="5">+5</option>
-              <option value="5:30">+5:30</option>
-              <option value="5:45">+5:45</option>
-              <option value="6">+6</option>
-              <option value="6:30">+6:30</option>
-              <option value="7">+7</option>
-              <option value="8">+8</option>
-              <option value="8:30">+8:30</option>
-              <option value="8:45">+8:45</option>
-              <option value="9">+9</option>
-              <option value="9:30">+9:30</option>
-              <option value="10">+10</option>
-              <option value="10:30">+10:30</option>
-              <option value="11">+11</option>
-              <option value="11:30">+11:30</option>
-              <option value="12">+12</option>
-              <option value="12:45">+12:45</option>
-              <option value="13">+13</option>
-              <option value="13:45">+13:45</option>
-              <option value="14">+14</option>
-            </select>
-          </div>
-          <br>
-          <br>
-          <?php
-          $work_time = json_decode($model->widget_work_time);
-          ?>
-          <table class="table table-striped">
-            <tr>
-              <th>День недели:</th>
-              <th>Начало рабочего дня:</th>
-              <th>Конец рабочего дня:</th>
-              <th>Обед:</th>
-            </tr>
-            <tr>
-              <td>Понедельник</td>
-              <td>
-                  <?=MaskedInput::widget([
-                      'name' => 'work-start-time-monday',
-                      'value' => $work_time->monday->start,
-                      'mask' => '99:99',
-                      'options' => [
-                          'class' => 'form-control',
-                          'data-required' => true,
-                          'placeholder' => '09:00'
-                      ]
-                  ]);?>
-              </td>
-              <td>
-                  <?=MaskedInput::widget([
-                      'name' => 'work-end-time-monday',
-                      'value' => $work_time->monday->end,
-                      'mask' => '99:99',
-                      'options' => [
-                          'class' => 'form-control',
-                          'data-required' => true,
-                          'placeholder' => '18:00'
-                      ]
-                  ]);?>
-              </td>
-              <td>
-                  <?=MaskedInput::widget([
-                      'name' => 'work-lunch-time-monday',
-                      'value' => $work_time->monday->lunch,
-                      'mask' => '99:99 - 99:99',
-                      'options' => [
-                          'class' => 'form-control',
-                          'data-required' => true,
-                          'placeholder' => '13:00 - 14:00'
-                      ]
-                  ]);?>
-              </td>
-            </tr>
-            <tr>
-              <td>Вторник</td>
-                <td>
-                    <?=MaskedInput::widget([
-                        'name' => 'work-start-time-tuesday',
-                        'value' => $work_time->tuesday->start,
-                        'mask' => '99:99',
-                        'options' => [
-                            'class' => 'form-control',
-                            'data-required' => true,
-                            'placeholder' => '09:00'
-                        ]
-                    ]);?>
-                </td>
-                <td>
-                    <?=MaskedInput::widget([
-                        'name' => 'work-end-time-tuesday',
-                        'value' => $work_time->tuesday->end,
-                        'mask' => '99:99',
-                        'options' => [
-                            'class' => 'form-control',
-                            'data-required' => true,
-                            'placeholder' => '18:00'
-                        ]
-                    ]);?>
-                </td>
-                <td>
-                    <?=MaskedInput::widget([
-                        'name' => 'work-lunch-time-tuesday',
-                        'value' => $work_time->tuesday->lunch,
-                        'mask' => '99:99 - 99:99',
-                        'options' => [
-                            'class' => 'form-control',
-                            'data-required' => true,
-                            'placeholder' => '13:00 - 14:00'
-                        ]
-                    ]);?>
-                </td>
-            </tr>
-            <tr>
-              <td>Среда</td>
-                <td>
-                    <?=MaskedInput::widget([
-                        'name' => 'work-start-time-wednesday',
-                        'value' => $work_time->wednesday->start,
-                        'mask' => '99:99',
-                        'options' => [
-                            'class' => 'form-control',
-                            'data-required' => true,
-                            'placeholder' => '09:00'
-                        ]
-                    ]);?>
-                </td>
-                <td>
-                    <?=MaskedInput::widget([
-                        'name' => 'work-end-time-wednesday',
-                        'value' => $work_time->wednesday->end,
-                        'mask' => '99:99',
-                        'options' => [
-                            'class' => 'form-control',
-                            'data-required' => true,
-                            'placeholder' => '18:00'
-                        ]
-                    ]);?>
-                </td>
-                <td>
-                    <?=MaskedInput::widget([
-                        'name' => 'work-lunch-time-wednesday',
-                        'value' => $work_time->wednesday->lunch,
-                        'mask' => '99:99 - 99:99',
-                        'options' => [
-                            'class' => 'form-control',
-                            'data-required' => true,
-                            'placeholder' => '13:00 - 14:00'
-                        ]
-                    ]);?>
-                </td>
-            </tr>
-            <tr>
-              <td>Четверг</td>
-                <td>
-                    <?=MaskedInput::widget([
-                        'name' => 'work-start-time-thursday',
-                        'value' => $work_time->thursday->start,
-                        'mask' => '99:99',
-                        'options' => [
-                            'class' => 'form-control',
-                            'data-required' => true,
-                            'placeholder' => '09:00'
-                        ]
-                    ]);?>
-                </td>
-                <td>
-                    <?=MaskedInput::widget([
-                        'name' => 'work-end-time-thursday',
-                        'value' => $work_time->thursday->end,
-                        'mask' => '99:99',
-                        'options' => [
-                            'class' => 'form-control',
-                            'data-required' => true,
-                            'placeholder' => '18:00'
-                        ]
-                    ]);?>
-                </td>
-                <td>
-                    <?=MaskedInput::widget([
-                        'name' => 'work-lunch-time-thursday',
-                        'value' => $work_time->thursday->lunch,
-                        'mask' => '99:99 - 99:99',
-                        'options' => [
-                            'class' => 'form-control',
-                            'data-required' => true,
-                            'placeholder' => '13:00 - 14:00'
-                        ]
-                    ]);?>
-                </td>
-            </tr>
-            <tr>
-              <td>Пятница</td>
-                <td>
-                    <?=MaskedInput::widget([
-                        'name' => 'work-start-time-friday',
-                        'value' => $work_time->friday->start,
-                        'mask' => '99:99',
-                        'options' => [
-                            'class' => 'form-control',
-                            'data-required' => true,
-                            'placeholder' => '09:00'
-                        ]
-                    ]);?>
-                </td>
-                <td>
-                    <?=MaskedInput::widget([
-                        'name' => 'work-end-time-friday',
-                        'value' => $work_time->friday->end,
-                        'mask' => '99:99',
-                        'options' => [
-                            'class' => 'form-control',
-                            'data-required' => true,
-                            'placeholder' => '18:00'
-                        ]
-                    ]);?>
-                </td>
-                <td>
-                    <?=MaskedInput::widget([
-                        'name' => 'work-lunch-time-friday',
-                        'value' => $work_time->friday->lunch,
-                        'mask' => '99:99 - 99:99',
-                        'options' => [
-                            'class' => 'form-control',
-                            'data-required' => true,
-                            'placeholder' => '13:00 - 14:00'
-                        ]
-                    ]);?>
-                </td>
-            </tr>
-            <tr>
-              <td>Суббота</td>
-                <td>
-                    <?=MaskedInput::widget([
-                        'name' => 'work-start-time-saturday',
-                        'value' => $work_time->saturday->start,
-                        'mask' => '99:99',
-                        'options' => [
-                            'class' => 'form-control',
-                            'data-required' => true,
-                            'placeholder' => '09:00'
-                        ]
-                    ]);?>
-                </td>
-                <td>
-                    <?=MaskedInput::widget([
-                        'name' => 'work-end-time-saturday',
-                        'value' => $work_time->saturday->end,
-                        'mask' => '99:99',
-                        'options' => [
-                            'class' => 'form-control',
-                            'data-required' => true,
-                            'placeholder' => '18:00'
-                        ]
-                    ]);?>
-                </td>
-                <td>
-                    <?=MaskedInput::widget([
-                        'name' => 'work-lunch-time-saturday',
-                        'value' => $work_time->saturday->lunch,
-                        'mask' => '99:99 - 99:99',
-                        'options' => [
-                            'class' => 'form-control',
-                            'data-required' => true,
-                            'placeholder' => '13:00 - 14:00'
-                        ]
-                    ]);?>
-                </td>
-            </tr>
-            <tr>
-              <td>Воскресенье</td>
-                <td>
-                    <?=MaskedInput::widget([
-                        'name' => 'work-start-time-sunday',
-                        'value' => $work_time->sunday->start,
-                        'mask' => '99:99',
-                        'options' => [
-                            'class' => 'form-control',
-                            'data-required' => true,
-                            'placeholder' => '09:00'
-                        ]
-                    ]);?>
-                </td>
-                <td>
-                    <?=MaskedInput::widget([
-                        'name' => 'work-end-time-sunday',
-                        'value' => $work_time->sunday->end,
-                        'mask' => '99:99',
-                        'options' => [
-                            'class' => 'form-control',
-                            'data-required' => true,
-                            'placeholder' => '18:00'
-                        ]
-                    ]);?>
-                </td>
-                <td>
-                    <?=MaskedInput::widget([
-                        'name' => 'work-lunch-time-sunday',
-                        'value' => $work_time->sunday->lunch,
-                        'mask' => '99:99 - 99:99',
-                        'options' => [
-                            'class' => 'form-control',
-                            'data-required' => true,
-                            'placeholder' => '13:00 - 14:00'
-                        ]
-                    ]);?>
-                </td>
-            </tr>
-          </table>
+            <div class="form-group">
+                <div style="margin: 10px 0;">
+                    <div style="display: inline-block;">
+                        <?echo $form->field($model, 'widget_work_time_on')->widget(SwitchInput::classname(), [
+                            'options'=>[
+                                'onchange'=>'openWorkTime();',
+                            ]
+                        ])->label(false);?>
+                    </div>
+                    <div style="display: inline-block">
+                        <span style="margin: 0 15px;">если настройка выключена, то установлено время работы офиса с 9.00 до 18.00, перерыв на обед с 13.00 до 14.00 7 дней в неделю.</span></div>
+                </div>
+            </div>
+            <div id="openWorkTime" class="work-time-body" <?= ($model->widget_work_time_on)? 'style="display: block;"':'style="display: none;"'?>>
+              <div class="line-time">
+                <label>Часовой пояс(GMT):</label>
+                <select class="form-control" name="widget_GMT">
+                  <option value="-12">-12</option>
+                  <option value="-11">-11</option>
+                  <option value="-10">-10</option>
+                  <option value="-9">-9</option>
+                  <option value="-8">-8</option>
+                  <option value="-7">-7</option>
+                  <option value="-6">-6</option>
+                  <option value="-5">-5</option>
+                  <option value="-4:30">-4:30</option>
+                  <option value="-4">-4</option>
+                  <option value="-3:30">-3:30</option>
+                  <option value="-3">-3</option>
+                  <option value="-2">-2</option>
+                  <option value="-1">-1</option>
+                  <option value="0">+0</option>
+                  <option value="1">+1</option>
+                  <option value="2">+2</option>
+                  <option value="3" selected="selected">+3</option>
+                  <option value="3:30">+3:30</option>
+                  <option value="4">+4</option>
+                  <option value="4:30">+4:30</option>
+                  <option value="5">+5</option>
+                  <option value="5:30">+5:30</option>
+                  <option value="5:45">+5:45</option>
+                  <option value="6">+6</option>
+                  <option value="6:30">+6:30</option>
+                  <option value="7">+7</option>
+                  <option value="8">+8</option>
+                  <option value="8:30">+8:30</option>
+                  <option value="8:45">+8:45</option>
+                  <option value="9">+9</option>
+                  <option value="9:30">+9:30</option>
+                  <option value="10">+10</option>
+                  <option value="10:30">+10:30</option>
+                  <option value="11">+11</option>
+                  <option value="11:30">+11:30</option>
+                  <option value="12">+12</option>
+                  <option value="12:45">+12:45</option>
+                  <option value="13">+13</option>
+                  <option value="13:45">+13:45</option>
+                  <option value="14">+14</option>
+                </select>
+              </div>
+              <br>
+              <br>
+              <?php
+              $work_time = json_decode($model->widget_work_time);
+              ?>
+              <table class="table table-striped">
+                <tr>
+                  <th>День недели:</th>
+                  <th>Начало рабочего дня:</th>
+                  <th>Конец рабочего дня:</th>
+                  <th>Обед:</th>
+                </tr>
+                <tr>
+                  <td>Понедельник</td>
+                  <td>
+                      <?=MaskedInput::widget([
+                          'name' => 'work-start-time-monday',
+                          'value' => $work_time->monday->start,
+                          'mask' => '99:99',
+                          'options' => [
+                              'class' => 'form-control',
+                              'data-required' => true,
+                              'placeholder' => '09:00'
+                          ]
+                      ]);?>
+                  </td>
+                  <td>
+                      <?=MaskedInput::widget([
+                          'name' => 'work-end-time-monday',
+                          'value' => $work_time->monday->end,
+                          'mask' => '99:99',
+                          'options' => [
+                              'class' => 'form-control',
+                              'data-required' => true,
+                              'placeholder' => '18:00'
+                          ]
+                      ]);?>
+                  </td>
+                  <td>
+                      <?=MaskedInput::widget([
+                          'name' => 'work-lunch-time-monday',
+                          'value' => $work_time->monday->lunch,
+                          'mask' => '99:99 - 99:99',
+                          'options' => [
+                              'class' => 'form-control',
+                              'data-required' => true,
+                              'placeholder' => '13:00 - 14:00'
+                          ]
+                      ]);?>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Вторник</td>
+                    <td>
+                        <?=MaskedInput::widget([
+                            'name' => 'work-start-time-tuesday',
+                            'value' => $work_time->tuesday->start,
+                            'mask' => '99:99',
+                            'options' => [
+                                'class' => 'form-control',
+                                'data-required' => true,
+                                'placeholder' => '09:00'
+                            ]
+                        ]);?>
+                    </td>
+                    <td>
+                        <?=MaskedInput::widget([
+                            'name' => 'work-end-time-tuesday',
+                            'value' => $work_time->tuesday->end,
+                            'mask' => '99:99',
+                            'options' => [
+                                'class' => 'form-control',
+                                'data-required' => true,
+                                'placeholder' => '18:00'
+                            ]
+                        ]);?>
+                    </td>
+                    <td>
+                        <?=MaskedInput::widget([
+                            'name' => 'work-lunch-time-tuesday',
+                            'value' => $work_time->tuesday->lunch,
+                            'mask' => '99:99 - 99:99',
+                            'options' => [
+                                'class' => 'form-control',
+                                'data-required' => true,
+                                'placeholder' => '13:00 - 14:00'
+                            ]
+                        ]);?>
+                    </td>
+                </tr>
+                <tr>
+                  <td>Среда</td>
+                    <td>
+                        <?=MaskedInput::widget([
+                            'name' => 'work-start-time-wednesday',
+                            'value' => $work_time->wednesday->start,
+                            'mask' => '99:99',
+                            'options' => [
+                                'class' => 'form-control',
+                                'data-required' => true,
+                                'placeholder' => '09:00'
+                            ]
+                        ]);?>
+                    </td>
+                    <td>
+                        <?=MaskedInput::widget([
+                            'name' => 'work-end-time-wednesday',
+                            'value' => $work_time->wednesday->end,
+                            'mask' => '99:99',
+                            'options' => [
+                                'class' => 'form-control',
+                                'data-required' => true,
+                                'placeholder' => '18:00'
+                            ]
+                        ]);?>
+                    </td>
+                    <td>
+                        <?=MaskedInput::widget([
+                            'name' => 'work-lunch-time-wednesday',
+                            'value' => $work_time->wednesday->lunch,
+                            'mask' => '99:99 - 99:99',
+                            'options' => [
+                                'class' => 'form-control',
+                                'data-required' => true,
+                                'placeholder' => '13:00 - 14:00'
+                            ]
+                        ]);?>
+                    </td>
+                </tr>
+                <tr>
+                  <td>Четверг</td>
+                    <td>
+                        <?=MaskedInput::widget([
+                            'name' => 'work-start-time-thursday',
+                            'value' => $work_time->thursday->start,
+                            'mask' => '99:99',
+                            'options' => [
+                                'class' => 'form-control',
+                                'data-required' => true,
+                                'placeholder' => '09:00'
+                            ]
+                        ]);?>
+                    </td>
+                    <td>
+                        <?=MaskedInput::widget([
+                            'name' => 'work-end-time-thursday',
+                            'value' => $work_time->thursday->end,
+                            'mask' => '99:99',
+                            'options' => [
+                                'class' => 'form-control',
+                                'data-required' => true,
+                                'placeholder' => '18:00'
+                            ]
+                        ]);?>
+                    </td>
+                    <td>
+                        <?=MaskedInput::widget([
+                            'name' => 'work-lunch-time-thursday',
+                            'value' => $work_time->thursday->lunch,
+                            'mask' => '99:99 - 99:99',
+                            'options' => [
+                                'class' => 'form-control',
+                                'data-required' => true,
+                                'placeholder' => '13:00 - 14:00'
+                            ]
+                        ]);?>
+                    </td>
+                </tr>
+                <tr>
+                  <td>Пятница</td>
+                    <td>
+                        <?=MaskedInput::widget([
+                            'name' => 'work-start-time-friday',
+                            'value' => $work_time->friday->start,
+                            'mask' => '99:99',
+                            'options' => [
+                                'class' => 'form-control',
+                                'data-required' => true,
+                                'placeholder' => '09:00'
+                            ]
+                        ]);?>
+                    </td>
+                    <td>
+                        <?=MaskedInput::widget([
+                            'name' => 'work-end-time-friday',
+                            'value' => $work_time->friday->end,
+                            'mask' => '99:99',
+                            'options' => [
+                                'class' => 'form-control',
+                                'data-required' => true,
+                                'placeholder' => '18:00'
+                            ]
+                        ]);?>
+                    </td>
+                    <td>
+                        <?=MaskedInput::widget([
+                            'name' => 'work-lunch-time-friday',
+                            'value' => $work_time->friday->lunch,
+                            'mask' => '99:99 - 99:99',
+                            'options' => [
+                                'class' => 'form-control',
+                                'data-required' => true,
+                                'placeholder' => '13:00 - 14:00'
+                            ]
+                        ]);?>
+                    </td>
+                </tr>
+                <tr>
+                  <td>Суббота</td>
+                    <td>
+                        <?=MaskedInput::widget([
+                            'name' => 'work-start-time-saturday',
+                            'value' => $work_time->saturday->start,
+                            'mask' => '99:99',
+                            'options' => [
+                                'class' => 'form-control',
+                                'data-required' => true,
+                                'placeholder' => '09:00'
+                            ]
+                        ]);?>
+                    </td>
+                    <td>
+                        <?=MaskedInput::widget([
+                            'name' => 'work-end-time-saturday',
+                            'value' => $work_time->saturday->end,
+                            'mask' => '99:99',
+                            'options' => [
+                                'class' => 'form-control',
+                                'data-required' => true,
+                                'placeholder' => '18:00'
+                            ]
+                        ]);?>
+                    </td>
+                    <td>
+                        <?=MaskedInput::widget([
+                            'name' => 'work-lunch-time-saturday',
+                            'value' => $work_time->saturday->lunch,
+                            'mask' => '99:99 - 99:99',
+                            'options' => [
+                                'class' => 'form-control',
+                                'data-required' => true,
+                                'placeholder' => '13:00 - 14:00'
+                            ]
+                        ]);?>
+                    </td>
+                </tr>
+                <tr>
+                  <td>Воскресенье</td>
+                    <td>
+                        <?=MaskedInput::widget([
+                            'name' => 'work-start-time-sunday',
+                            'value' => $work_time->sunday->start,
+                            'mask' => '99:99',
+                            'options' => [
+                                'class' => 'form-control',
+                                'data-required' => true,
+                                'placeholder' => '09:00'
+                            ]
+                        ]);?>
+                    </td>
+                    <td>
+                        <?=MaskedInput::widget([
+                            'name' => 'work-end-time-sunday',
+                            'value' => $work_time->sunday->end,
+                            'mask' => '99:99',
+                            'options' => [
+                                'class' => 'form-control',
+                                'data-required' => true,
+                                'placeholder' => '18:00'
+                            ]
+                        ]);?>
+                    </td>
+                    <td>
+                        <?=MaskedInput::widget([
+                            'name' => 'work-lunch-time-sunday',
+                            'value' => $work_time->sunday->lunch,
+                            'mask' => '99:99 - 99:99',
+                            'options' => [
+                                'class' => 'form-control',
+                                'data-required' => true,
+                                'placeholder' => '13:00 - 14:00'
+                            ]
+                        ]);?>
+                    </td>
+                </tr>
+              </table>
+            </div>
         </div>
       </div>
         <div class="bordered">
             <div class="form-group">
                 <label>Настройки социальных сетей</label><br>
+                <div style="display: inline-block">
+                    <span style="margin: 0 0px;">
+                        После осуществления звонка и оценки качества обсуживания Вашими менджерами, мы предложим соц сети клиенту что бы подружится с Вашим проектом.
+                    </span>
+                </div><br/>
                 <?php
                 $social = json_decode($model->social);
                 ?>
@@ -1128,6 +1166,21 @@ function openMarks() {
   } else {
     $('#openMarks').hide();
   }
+}
+
+function openMessages() {
+    if ($('#openMessages').css('display') == 'none') {
+        $('#openMessages').show();
+    } else {
+        $('#openMessages').hide();
+    }
+}
+function openWorkTime() {
+    if ($('#openWorkTime').css('display') == 'none') {
+        $('#openWorkTime').show();
+    } else {
+        $('#openWorkTime').hide();
+    }
 }
 function openUtp() {
     if ($('#openUtp').css('display') == 'none') {

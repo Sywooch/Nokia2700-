@@ -243,6 +243,8 @@ class User extends ActiveRecord implements IdentityInterface
               "<input type=hidden name=Culture value=$culture>".
               "<input type=submit class='btn btn-success btn-block' value='Подтвердить'>".
               "</form></html>";
+
+        PayHistory::addHistoryPayment($total, $email, $order);
     }
 
     public static function PayInterKassa($total, $order, $name, $email, $phone)

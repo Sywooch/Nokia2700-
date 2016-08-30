@@ -92,7 +92,7 @@ $this->title = 'Партнёрская программа';
                 <div class="box-footer">
                     <?= GridView::widget([
                         'dataProvider' => $dataProviderLeft,
-                        'emptyText'=>'Здесь пока нет даных для отображения',
+                        'emptyText'=>'Здесь пока нет даных для отображения <img src=/images/sad.gif border=0>',
                         'summary' => 'Показано <b>{end}</b> из <b>{totalCount}</b> элементов.',
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
@@ -114,7 +114,7 @@ $this->title = 'Партнёрская программа';
                 <div class="box-footer">
                     <?= GridView::widget([
                         'dataProvider' => $dataProviderRight,
-                        'emptyText'=>'Здесь пока нет даных для отображения',
+                        'emptyText'=>'Здесь пока нет даных для отображения <img src=/images/sad.gif border=0>',
                         'summary' => 'Показано {end} из {totalCount} элементов.',
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],

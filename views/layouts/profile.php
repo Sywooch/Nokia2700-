@@ -65,8 +65,8 @@ AppAsset::register($this);
               				</a>
 	              			<ul class="dropdown-menu">
 			                	<!-- The user image in the menu -->
-								<li class="user-header" style="height: 145px;">
-									<img src="/images/profile.png" class="img-bordered" alt="User Image">
+								<li class="user-header" style="height: 250px;">
+									<img src="/images/profile.png" class="img-bordered" style="height: 100%;width: 90%;" alt="User Image">
 
 									<p>
 										<?=Yii::$app->user->identity->name?>
