@@ -51,7 +51,6 @@ $config = [
                 'activate/<code:\w+>' => 'site/activate',
                 'profile/update-widget/<id:\d+>' => 'profile/update-widget',
                 'profile/deletewidget/<id:\d+>' => 'profile/deletewidget',
-                'widget/listener/event' => 'widget/listener',
                 'r/<link:\w+>' => 'site/link',
                 'register' => 'site/register',
                 'login' => 'site/login',
