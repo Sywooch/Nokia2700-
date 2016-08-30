@@ -438,6 +438,7 @@ echo '</pre>';*/
         <div id="phones_block">
           <?php
           $phones = explode(';', $model->widget_phone_numbers);
+          $managers = explode(';', $model->widget_phone_manager);
           $num = count($phones)-1;
           unset($phones[$num]);
           $count_phones = count($phones);
@@ -445,6 +446,7 @@ echo '</pre>';*/
           {?>
               <span class="phone">Телефон №<?=$i?> (определяется при звонке клиенту)</span>
               <div class="input-group">
+                  <div class="col-md-6">
                   <?=MaskedInput::widget([
                       'name' => 'widget_phone_number_'.$i,
                       'value' => $phones[$i-1],
@@ -456,7 +458,7 @@ echo '</pre>';*/
                           'placeholder' => '+7(___)___-__-__'
                       ]
                   ]);?>
-                  <button class="flag-select dropdown-toggle" type="button" id="dropdown2Menu_<?=$i?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <button class="flag-select dropdown-toggle" style="margin-left: 15px;" type="button" id="dropdown2Menu_<?=$i?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                       <?php
                       $flag = 'RU';
                       $phone = explode('(', $phones[$i-1])[0];
@@ -475,6 +477,10 @@ echo '</pre>';*/
                       <li onclick="countryChange('UA', $(this));"><i class="glyphicon bfh-flag-UA"></i> Украина</li>
                       <li onclick="countryChange('US', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>
                   </ul>
+                  </div>
+                  <div class="col-md-6">
+                      <input type="text" name="widget_phone_manager_<?=$i?>" class = 'form-control widget_phone' style="display: inline-block" value="<?=$managers[$i-1]?>">
+                  </div>
               </div>
           <?}?>
         </div>
@@ -1040,7 +1046,7 @@ $('.blacklist_more').click(function(e){
     k++;
     e.preventDefault();
     var BL_input = '<span class="phone">Телефон №'+k+'</span><div class="input-group"><input type="text" style="padding-left: 45px;" class="form-control widget_phone" name="black_list_number_'+k+'" placeholder="+7(___)___-__-__" data-required="false">' +
-        '<button class="flag-select dropdown-toggle" type="button" id="dropdownMenu_'+k+'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="glyphicon bfh-flag-RU"></i><span class="caret"></span></button>' +
+        '<button style="margin-left: 15px;" class="flag-select dropdown-toggle" type="button" id="dropdownMenu_'+k+'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="glyphicon bfh-flag-RU"></i><span class="caret"></span></button>' +
         '<ul class="dropdown-menu" aria-labelledby="dropdownMenu_'+k+'">' +
         '<li onclick="countryChange(\'RU\', $(this));"><i class="glyphicon bfh-flag-RU"></i> Россия</li>' +
         '<li onclick="countryChange(\'BY\', $(this));"><i class="glyphicon bfh-flag-BY"></i> Белорусия</li>' +
@@ -1066,7 +1072,7 @@ var j = <?=$count_phones?>;
 $('.phone_more').click(function(e){
     j++;
     e.preventDefault();
-    var phone_input = '<span class="phone">Телефон №'+j+'</span><div class="input-group"><input type="text" style="padding-left: 45px;" class="form-control widget_phone" name="widget_phone_number_'+j+'" placeholder="+7(___)___-__-__" data-required="false">' +
+    var phone_input = '<span class="phone">Телефон №'+j+'</span><div class="input-group"><div class="col-md-6"><input type="text" style="padding-left: 45px;" class="form-control widget_phone" name="widget_phone_number_'+j+'" placeholder="+7(___)___-__-__" data-required="false">' +
         '<button class="flag-select dropdown-toggle" type="button" id="dropdown2Menu_'+j+'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="glyphicon bfh-flag-RU"></i><span class="caret"></span></button>' +
         '<ul class="dropdown-menu" aria-labelledby="dropdown2Menu_'+j+'">' +
         '<li onclick="countryChange(\'RU\', $(this));"><i class="glyphicon bfh-flag-RU"></i> Россия</li>' +
@@ -1074,6 +1080,10 @@ $('.phone_more').click(function(e){
         '<li onclick="countryChange(\'UA\', $(this));"><i class="glyphicon bfh-flag-UA"></i> Украина</li>' +
         '<li onclick="countryChange(\'US\', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>' +
         '</ul>'+
+        '</div>'+
+        '<div class="col-md-6">'+
+        '<input type="text" name="widget_phone_manager_'+j+'" class = "form-control widget_phone" style="display: inline-block;">'+
+        '</div>'+
         '</div>';
     $('#phones_block').append(phone_input);
     $("input[name='widget_phone_number_"+j+"']").inputmask("+7(999)999-99-99");

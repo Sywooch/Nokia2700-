@@ -63,7 +63,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
             [['widget_settings', 'black_list'], 'string'],
             [['widget_key', 'widget_site_url', 'widget_user_email', 'social'], 'string', 'max' => 100],
             [['widget_position', 'widget_position_mobile'], 'string', 'max' => 150],
-            [['widget_name'], 'string', 'max' => 80],
+            [['widget_name', 'widget_phone_manager'], 'string', 'max' => 80],
             [['widget_button_color', 'widget_phone_number_1', 'widget_phone_number_2', 'widget_phone_number_3', 'widget_phone_number_4', 'widget_language'], 'string', 'max' => 45],
             [['widget_phone_numbers'], 'string', 'max' => 150],
             [['widget_work_time', 'utp_img_url'], 'string', 'max' => 500],
@@ -256,12 +256,14 @@ class WidgetSettings extends \yii\db\ActiveRecord
                 "gmt" => $widget->widget_GMT
             );
             $phones = explode(';', $widget->widget_phone_numbers);
+            $managers = explode(';', $widget->widget_phone_manager);
             $num = count($phones) - 1;
             unset($phones[$num]);
             $count_phones = count($phones);
             for ($i = 1; $i <= $count_phones; $i++)
             {
                 $widget_json['widget_phone_number_'.$i] = $phones[$i-1];
+                $widget_json['widget_phone_manager_'.$i] = $managers[$i-1];
             }
             $widget_json['tmp'] = file_get_contents('../web/widget-front/WidGet.html');
             $widget_json['utp_img_url'] = $widget->utp_img_url;

@@ -430,13 +430,14 @@ $this->title = 'Добавить виджет';
 			{?>
 				<span class="phone">Телефон №<?=$i?> (определяется при звонке клиенту)</span>
 				<div class="input-group">
+					<div class="col-md-6">
 					<?=MaskedInput::widget([
 						'name' => 'widget_phone_number_'.$i,
 						'value' => $phones[$i-1],
 						'mask' => '+7(999)999-99-99',
 						'options' => [
 							'class' => 'form-control widget_phone',
-							'style' => 'padding-left: 45px;',
+							'style' => 'padding-left: 45px; display: inline-block;',
 							'data-required' => true,
 							'placeholder' => '+7(___)___-__-__'
 						]
@@ -460,6 +461,10 @@ $this->title = 'Добавить виджет';
 						<li onclick="countryChange('UA', $(this));"><i class="glyphicon bfh-flag-UA"></i> Украина</li>
 						<li onclick="countryChange('US', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>
 					</ul>
+					</div>
+					<div class="col-md-6">
+						<input type="text" name="widget_phone_manager_<?=$i?>" class = 'form-control widget_phone' style="display: inline-block">
+					</div>
 				</div>
 			<?}?>
 		</div>
@@ -1037,18 +1042,23 @@ $this->title = 'Добавить виджет';
 	$('.phone_more').click(function(e){
 		j++;
 		e.preventDefault();
-		var phone_input = '<span class="phone">Телефон №'+j+'</span><div class="input-group"><input type="text" style="padding-left: 45px;" class="form-control widget_phone" name="widget_phone_number_'+j+'" placeholder="+7(___)___-__-__" data-required="false">' +
-			'<button class="flag-select dropdown-toggle" type="button" id="dropdown2Menu_'+j+'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="glyphicon bfh-flag-RU"></i><span class="caret"></span></button>' +
+		var phone_input = '<span class="phone">Телефон №'+j+'</span><div class="input-group"><div class="col-md-6"><input type="text" style="padding-left: 45px;display: inline-block;" class="form-control widget_phone" name="widget_phone_number_'+j+'" placeholder="+7(___)___-__-__" data-required="false">' +
+			'<button style="margin-left: 20px;" class="flag-select dropdown-toggle" type="button" id="dropdown2Menu_'+j+'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="glyphicon bfh-flag-RU"></i><span class="caret"></span></button>' +
 			'<ul class="dropdown-menu" aria-labelledby="dropdown2Menu_'+j+'">' +
 			'<li onclick="countryChange(\'RU\', $(this));"><i class="glyphicon bfh-flag-RU"></i> Россия</li>' +
 			'<li onclick="countryChange(\'BY\', $(this));"><i class="glyphicon bfh-flag-BY"></i> Белорусия</li>' +
 			'<li onclick="countryChange(\'UA\', $(this));"><i class="glyphicon bfh-flag-UA"></i> Украина</li>' +
 			'<li onclick="countryChange(\'US\', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>' +
 			'</ul>'+
+			'</div>'+
+				'<div class="col-md-6">'+
+				'<input type="text" name="widget_phone_manager_'+j+'" class = "form-control widget_phone" style="display: inline-block;">'+
+			'</div>'+
 			'</div>';
 		$('#phones_block').append(phone_input);
 		$("input[name='widget_phone_number_"+j+"']").inputmask("+7(999)999-99-99");
 		$('input[name="count_phones"]').val(j);
+		$('input[name="widget_phone_manager_'+j+'"]');
 	});
 	//Добавит страницу
 	var l = <?=$count_site_pages?>;

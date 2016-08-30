@@ -262,11 +262,15 @@ class ProfileController extends Controller
             $model->widget_yandex_metrika = Yii::$app->request->post('widget_yandex_metrika');
             ($_POST['WidgetSettings']['widget_google_metrika']) ? $model->widget_google_metrika = 1 : $model->widget_google_metrika = 0;
             $phones = '';
+            $manager = '';
             for($i=1; $i<=$postArray['count_phones']; $i++)
             {
                 $index = 'widget_phone_number_'.$i;
+                $man = 'widget_phone_manager_'.$i;
                 $phones.=$postArray[$index].';';
+                $manager .=$postArray[$man].';';
             }
+            $model->widget_phone_manager = $manager;
             $model->widget_phone_numbers=$phones;
             $model->user_id = Yii::$app->user->id;
             $model->widget_GMT = Yii::$app->request->post('widget_GMT');
@@ -357,6 +361,10 @@ class ProfileController extends Controller
         $widgetTemplateUsers = WidgetTemplateNotificationUsers::findAll(['id_widget' => $id]);
         $postArray = Yii::$app->request->post();
 
+        /*echo '<pre>';
+        print_r($postArray);
+        echo '</pre>';*/
+
         if(!empty($postArray))
         {
             $address = ['http://', 'https://'];
@@ -386,11 +394,15 @@ class ProfileController extends Controller
             $model->widget_yandex_metrika = Yii::$app->request->post('widget_yandex_metrika');
             ($_POST['WidgetSettings']['widget_google_metrika']) ? $model->widget_google_metrika = 1 : $model->widget_google_metrika = 0;
             $phone = '';
+            $manager = '';
             for($i=1; $i<=$postArray['count_phones']; $i++)
             {
                 $index = 'widget_phone_number_'.$i;
+                $man = 'widget_phone_manager_'.$i;
                 $phone.=$postArray[$index].';';
+                $manager .=$postArray[$man].';';
             }
+            $model->widget_phone_manager = $manager;
             $model->widget_phone_numbers = $phone;
             $model->user_id = Yii::$app->user->id;
             $model->widget_GMT = Yii::$app->request->post('widget_GMT');
