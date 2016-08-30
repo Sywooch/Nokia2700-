@@ -361,10 +361,10 @@ class ProfileController extends Controller
         $widgetTemplateUsers = WidgetTemplateNotificationUsers::findAll(['id_widget' => $id]);
         $postArray = Yii::$app->request->post();
 
-        /*echo '<pre>';
+       /* echo '<pre>';
         print_r($postArray);
-        echo '</pre>';*/
-
+        echo '</pre>';
+        die();*/
         if(!empty($postArray))
         {
             $address = ['http://', 'https://'];
@@ -473,7 +473,7 @@ class ProfileController extends Controller
                             $value->id_template = $_POST['template']['id'][$key];
                             $value->description = $_POST['template']['description'][$key];
                             $value->param = $_POST['template']['param'][$key];
-                            $value->status = $_POST['template']['change'][$_POST['template']['id'][$key]];
+//                            $value->status = $_POST['template']['change'][$_POST['template']['id'][$key]];
                             $value->save();
                         }
                     } else {
@@ -483,7 +483,7 @@ class ProfileController extends Controller
                             $widgetTemplateUsers->id_template = $_POST['template']['id'][$i];
                             $widgetTemplateUsers->description = $_POST['template']['description'][$i];
                             $widgetTemplateUsers->param = $_POST['template']['param'][$i];
-                            $widgetTemplateUsers->status = $_POST['template']['change'][$_POST['template']['id'][$i]];
+//                            $widgetTemplateUsers->status = $_POST['template']['change'][$_POST['template']['id'][$i]];
                             $widgetTemplateUsers->save();
                         }
                     }
@@ -595,7 +595,7 @@ class ProfileController extends Controller
         $to_save->name = $user['name'];
         $to_save->email = $user['email'];
         $to_save->phone = $user['phone'];
-        $to_save->cache_notification = $user['cache_notification'];
+//        $to_save->cache_notification = $user['cache_notification'];
         $to_save->save();
 
         return $this->redirect('/profile');

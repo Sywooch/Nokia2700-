@@ -479,7 +479,7 @@ echo '</pre>';*/
                   </ul>
                   </div>
                   <div class="col-md-6">
-                      <input type="text" name="widget_phone_manager_<?=$i?>" class = 'form-control widget_phone' style="display: inline-block" value="<?=$managers[$i-1]?>">
+                      <input type="text" name="widget_phone_manager_<?=$i?>" class = 'form-control widget_phone' style="display: inline-block" value="<?=(array_key_exists($i-1,$managers))? $managers[$i-1]:''?>">
                   </div>
               </div>
           <?}?>
@@ -570,7 +570,7 @@ echo '</pre>';*/
                   <td>
                       <?=MaskedInput::widget([
                           'name' => 'work-start-time-monday',
-                          'value' => $work_time->monday->start,
+                          'value' => array_key_exists('start',$work_time->monday)?$work_time->monday->start:'',
                           'mask' => '99:99',
                           'options' => [
                               'class' => 'form-control',
@@ -582,7 +582,7 @@ echo '</pre>';*/
                   <td>
                       <?=MaskedInput::widget([
                           'name' => 'work-end-time-monday',
-                          'value' => $work_time->monday->end,
+                          'value' => array_key_exists('end',$work_time->monday)?$work_time->monday->end:'',
                           'mask' => '99:99',
                           'options' => [
                               'class' => 'form-control',
@@ -594,7 +594,7 @@ echo '</pre>';*/
                   <td>
                       <?=MaskedInput::widget([
                           'name' => 'work-lunch-time-monday',
-                          'value' => $work_time->monday->lunch,
+                          'value' => array_key_exists('lunch',$work_time->monday)?$work_time->monday->lunch:'',
                           'mask' => '99:99 - 99:99',
                           'options' => [
                               'class' => 'form-control',
@@ -609,7 +609,7 @@ echo '</pre>';*/
                     <td>
                         <?=MaskedInput::widget([
                             'name' => 'work-start-time-tuesday',
-                            'value' => $work_time->tuesday->start,
+                            'value' => array_key_exists('start',$work_time->tuesday)?$work_time->tuesday->start:'',
                             'mask' => '99:99',
                             'options' => [
                                 'class' => 'form-control',
@@ -621,7 +621,7 @@ echo '</pre>';*/
                     <td>
                         <?=MaskedInput::widget([
                             'name' => 'work-end-time-tuesday',
-                            'value' => $work_time->tuesday->end,
+                            'value' => array_key_exists('end',$work_time->tuesday)?$work_time->tuesday->end:'',
                             'mask' => '99:99',
                             'options' => [
                                 'class' => 'form-control',
@@ -633,7 +633,7 @@ echo '</pre>';*/
                     <td>
                         <?=MaskedInput::widget([
                             'name' => 'work-lunch-time-tuesday',
-                            'value' => $work_time->tuesday->lunch,
+                            'value' => array_key_exists('lunch',$work_time->tuesday)?$work_time->tuesday->lunch:'',
                             'mask' => '99:99 - 99:99',
                             'options' => [
                                 'class' => 'form-control',
@@ -648,7 +648,7 @@ echo '</pre>';*/
                     <td>
                         <?=MaskedInput::widget([
                             'name' => 'work-start-time-wednesday',
-                            'value' => $work_time->wednesday->start,
+                            'value' => array_key_exists('start',$work_time->wednesday)?$work_time->wednesday->start:'',
                             'mask' => '99:99',
                             'options' => [
                                 'class' => 'form-control',
@@ -660,7 +660,7 @@ echo '</pre>';*/
                     <td>
                         <?=MaskedInput::widget([
                             'name' => 'work-end-time-wednesday',
-                            'value' => $work_time->wednesday->end,
+                            'value' => array_key_exists('end',$work_time->wednesday)?$work_time->wednesday->end:'',
                             'mask' => '99:99',
                             'options' => [
                                 'class' => 'form-control',
@@ -672,7 +672,7 @@ echo '</pre>';*/
                     <td>
                         <?=MaskedInput::widget([
                             'name' => 'work-lunch-time-wednesday',
-                            'value' => $work_time->wednesday->lunch,
+                            'value' => array_key_exists('lunch',$work_time->wednesday)?$work_time->wednesday->lunch:'',
                             'mask' => '99:99 - 99:99',
                             'options' => [
                                 'class' => 'form-control',
@@ -687,7 +687,7 @@ echo '</pre>';*/
                     <td>
                         <?=MaskedInput::widget([
                             'name' => 'work-start-time-thursday',
-                            'value' => $work_time->thursday->start,
+                            'value' => array_key_exists('start',$work_time->thursday)?$work_time->thursday->start:'',
                             'mask' => '99:99',
                             'options' => [
                                 'class' => 'form-control',
@@ -699,7 +699,7 @@ echo '</pre>';*/
                     <td>
                         <?=MaskedInput::widget([
                             'name' => 'work-end-time-thursday',
-                            'value' => $work_time->thursday->end,
+                            'value' => array_key_exists('end',$work_time->thursday)?$work_time->thursday->end:'',
                             'mask' => '99:99',
                             'options' => [
                                 'class' => 'form-control',
@@ -711,7 +711,7 @@ echo '</pre>';*/
                     <td>
                         <?=MaskedInput::widget([
                             'name' => 'work-lunch-time-thursday',
-                            'value' => $work_time->thursday->lunch,
+                            'value' => array_key_exists('lunch',$work_time->thursday)?$work_time->thursday->lunch:'',
                             'mask' => '99:99 - 99:99',
                             'options' => [
                                 'class' => 'form-control',
@@ -726,7 +726,7 @@ echo '</pre>';*/
                     <td>
                         <?=MaskedInput::widget([
                             'name' => 'work-start-time-friday',
-                            'value' => $work_time->friday->start,
+                            'value' => array_key_exists('start',$work_time->friday)?$work_time->friday->start:'',
                             'mask' => '99:99',
                             'options' => [
                                 'class' => 'form-control',
@@ -738,7 +738,7 @@ echo '</pre>';*/
                     <td>
                         <?=MaskedInput::widget([
                             'name' => 'work-end-time-friday',
-                            'value' => $work_time->friday->end,
+                            'value' => array_key_exists('end',$work_time->friday)?$work_time->friday->end:'',
                             'mask' => '99:99',
                             'options' => [
                                 'class' => 'form-control',
@@ -750,7 +750,7 @@ echo '</pre>';*/
                     <td>
                         <?=MaskedInput::widget([
                             'name' => 'work-lunch-time-friday',
-                            'value' => $work_time->friday->lunch,
+                            'value' => array_key_exists('lunch',$work_time->friday)?$work_time->friday->lunch:'',
                             'mask' => '99:99 - 99:99',
                             'options' => [
                                 'class' => 'form-control',
@@ -765,7 +765,7 @@ echo '</pre>';*/
                     <td>
                         <?=MaskedInput::widget([
                             'name' => 'work-start-time-saturday',
-                            'value' => $work_time->saturday->start,
+                            'value' => array_key_exists('start',$work_time->saturday)?$work_time->saturday->start:'',
                             'mask' => '99:99',
                             'options' => [
                                 'class' => 'form-control',
@@ -777,7 +777,7 @@ echo '</pre>';*/
                     <td>
                         <?=MaskedInput::widget([
                             'name' => 'work-end-time-saturday',
-                            'value' => $work_time->saturday->end,
+                            'value' => array_key_exists('end',$work_time->saturday)?$work_time->saturday->end:'',
                             'mask' => '99:99',
                             'options' => [
                                 'class' => 'form-control',
@@ -789,7 +789,7 @@ echo '</pre>';*/
                     <td>
                         <?=MaskedInput::widget([
                             'name' => 'work-lunch-time-saturday',
-                            'value' => $work_time->saturday->lunch,
+                            'value' => array_key_exists('lunch',$work_time->saturday)?$work_time->saturday->lunch:'',
                             'mask' => '99:99 - 99:99',
                             'options' => [
                                 'class' => 'form-control',
@@ -804,7 +804,7 @@ echo '</pre>';*/
                     <td>
                         <?=MaskedInput::widget([
                             'name' => 'work-start-time-sunday',
-                            'value' => $work_time->sunday->start,
+                            'value' => array_key_exists('start',$work_time->sunday)?$work_time->sunday->start:'',
                             'mask' => '99:99',
                             'options' => [
                                 'class' => 'form-control',
@@ -816,7 +816,7 @@ echo '</pre>';*/
                     <td>
                         <?=MaskedInput::widget([
                             'name' => 'work-end-time-sunday',
-                            'value' => $work_time->sunday->end,
+                            'value' => array_key_exists('end',$work_time->sunday)?$work_time->sunday->end:'',
                             'mask' => '99:99',
                             'options' => [
                                 'class' => 'form-control',
@@ -828,7 +828,7 @@ echo '</pre>';*/
                     <td>
                         <?=MaskedInput::widget([
                             'name' => 'work-lunch-time-sunday',
-                            'value' => $work_time->sunday->lunch,
+                            'value' => array_key_exists('lunch',$work_time->sunday)?$work_time->sunday->lunch:'',
                             'mask' => '99:99 - 99:99',
                             'options' => [
                                 'class' => 'form-control',

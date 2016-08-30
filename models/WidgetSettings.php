@@ -164,6 +164,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
     public static function getJSONWidget($key, $url)
     {
         $widget = WidgetSettings::find()->where("widget_key='".$key."' AND widget_site_url='".$url."'")->one();
+//        $widgetTemplateUsers = WidgetTemplateNotificationUsers::find()->where('id_widget="'.$widget->widget_id.'""');
         if(isset($widget)&&$widget->widget_status==1) {
             $time_cache = json_decode($widget->widget_work_time);
 

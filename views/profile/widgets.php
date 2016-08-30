@@ -8,6 +8,7 @@ $this->title = 'Виджеты';
 <section class="content-header">
     <h1><?=$this->title?><small>Предварительный просмотр</small></h1>
 </section>
+<script src="https://cdn.rawgit.com/zenorocha/clipboard.js/master/dist/clipboard.min.js"></script>
 <style>
 	.line{display:inline-block; width:29%; margin:1%;}
 </style>
@@ -71,6 +72,7 @@ $this->title = 'Виджеты';
                             </div>
                             <!-- Футер модального окна -->
                             <div class="modal-footer">
+                                <button class="btn-clipboard btn btn-success" data-clipboard-target="#modal-code">Скопировать в буфер обмена</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                             </div>
                         </div>
@@ -83,3 +85,6 @@ $this->title = 'Виджеты';
 	<?}
 	?>
 </section>
+<script>
+    new Clipboard('.btn-clipboard'); // Не забываем инициализировать библиотеку на нашей кнопке
+</script>

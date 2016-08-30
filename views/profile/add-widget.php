@@ -143,27 +143,27 @@ $this->title = 'Добавить виджет';
 			<table>
 				<tr>
 					<td style="padding-right:10px">Переход на другую страницу</td>
-					<td style="padding-right:15px"><?=Html::dropDownList('other_page',$marks->other_page,$items);?></td>
+					<td style="padding-right:15px"><?=Html::dropDownList('other_page',0,$items);?></td>
 					<td>Посещение более 3х страниц сайта</td>
-					<td><?=Html::dropDownList('sitepage3_activity',$items[$marks->sitepage3_activity],$items);?></td>
+					<td><?=Html::dropDownList('sitepage3_activity',0,$items);?></td>
 				</tr>
 				<tr>
 					<td>Скролл вниз(за 100% страницы)</td>
-					<td><?=Html::dropDownList('scroll_down',$marks->scroll_down,$items);?></td>
+					<td><?=Html::dropDownList('scroll_down',0,$items);?></td>
 					<td>Дольше среднего времени на сайте</td>
-					<td><?=Html::dropDownList('more_avgtime',$marks->more_avgtime,$items);?></td>
+					<td><?=Html::dropDownList('more_avgtime',0,$items);?></td>
 				</tr>
 				<tr>
 					<td>Активность на сайте более 40 сек.</td>
-					<td><?=Html::dropDownList('active_more40',$marks->active_more40,$items);?></td>
+					<td><?=Html::dropDownList('active_more40',0,$items);?></td>
 					<td>За каждые 30 сек., после 1 мин.</td>
-					<td><?=Html::dropDownList('moretime_after1min',$marks->moretime_after1min,$items);?></td>
+					<td><?=Html::dropDownList('moretime_after1min',0,$items);?></td>
 				</tr>
 				<tr>
 					<td>Интенсивность движения мышки</td>
-					<td><?=Html::dropDownList('mouse_intencivity',$marks->mouse_intencivity,$items);?></td>
+					<td><?=Html::dropDownList('mouse_intencivity',0,$items);?></td>
 					<td>Взаимодействие с формами</td>
-					<td><?=Html::dropDownList('form_activity',$marks->form_activity,$items);?></td>
+					<td><?=Html::dropDownList('form_activity',0,$items);?></td>
 				</tr>
 				<tr>
 					<td style="padding-right:10px"></td>
@@ -333,36 +333,36 @@ $this->title = 'Добавить виджет';
 		</div>
 		<br>
 		<div id="openMessages" class="messages-body" <?= ($model->widget_messages_on)? 'style="display: block;"':'style="display: none;"'?>>
-			<?if ($widgetTemplateUsers) {
-			foreach ($widgetTemplateUsers as $key => $value) {?>
+			<?/*if ($widgetTemplate) {
+			foreach ($widgetTemplate as $key => $value) {*/?><!--
 				<div>
 					<div style="display: inline-block;">
-						<?echo SwitchInput::widget([
+						<?/*echo SwitchInput::widget([
 							'name'=>'template[change]['.$value['id_template'].']',
 							'value'=>$value['status'] ? 1 : 0,
 							'options'=>[
 								'onchange'=>'openBlock('.$value['id_template'].');',
 							]
-						]);?>
+						]);*/?>
 					</div>
 					<div style="display: inline-block;">
-						<?$widetTemplate = WidgetTemplateNotification::findOne(['id_template' => $value['id_template']]);?>
-						<span style="margin: 0 15px;"><?=$widetTemplate->name?></span>
+						<?/*$widetTemplate = WidgetTemplateNotification::findOne(['id_template' => $value['id_template']]);*/?>
+						<span style="margin: 0 15px;"><?/*=$widetTemplate->name*/?></span>
 					</div>
-					<div id="openBlock-<?=$value['id_template']?>" style="<?=$value['status'] ? 'display: block;' : 'display: none;'?>margin-bottom: 30px;">
-						<?if ($value['param']) {?>
+					<div id="openBlock-<?/*=$value['id_template']*/?>" style="<?/*=$value['status'] ? 'display: block;' : 'display: none;'*/?>margin-bottom: 30px;">
+						<?/*if ($value['param']) {*/?>
 							<div class="form-group">
-								<span>Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][]" min="0" max="60" value="<?=$value['param']?>"/>
+								<span>Каждые</span>&nbsp;&nbsp;&nbsp;<input type="number" name="template[param][]" min="0" max="60" value="<?/*=$value['param']*/?>"/>
 							</div>
-						<?} else {?>
+						<?/*} else {*/?>
 							<input type="text" style="display: none;" name="template[param][]"/>
-						<?}?>
-						<textarea name="template[description][]" class="form-control"><?=$value['description']?></textarea>
-						<input type="text" style="display: none;" name="template[id][]" value="<?=$value['id_template']?>"/>
+						<?/*}*/?>
+						<textarea name="template[description][]" class="form-control"><?/*=$value['description']*/?></textarea>
+						<input type="text" style="display: none;" name="template[id][]" value="<?/*=$value['id_template']*/?>"/>
 					</div>
 				</div>
-			<?}
-		} else {
+			--><?/*}
+		} else {*/
 			foreach ($widgetTemplate as $key => $value) {?>
 				<div>
 					<div style="display: inline-block;">
@@ -390,7 +390,7 @@ $this->title = 'Добавить виджет';
 					</div>
 				</div>
 			<?}
-		}?>
+		/*}*/?>
 		</div>
 	</div>
 	<div class="bordered">
@@ -554,7 +554,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-start-time-monday',
-								'value' => $work_time->monday->start,
+								'value' => ''/*$work_time->monday->start*/,
 								'mask' => '99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -566,7 +566,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-end-time-monday',
-								'value' => $work_time->monday->end,
+								'value' => ''/*$work_time->monday->end*/,
 								'mask' => '99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -578,7 +578,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-lunch-time-monday',
-								'value' => $work_time->monday->lunch,
+								'value' => ''/*$work_time->monday->lunch*/,
 								'mask' => '99:99 - 99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -593,7 +593,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-start-time-tuesday',
-								'value' => $work_time->tuesday->start,
+								'value' => ''/*$work_time->tuesday->start*/,
 								'mask' => '99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -605,7 +605,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-end-time-tuesday',
-								'value' => $work_time->tuesday->end,
+								'value' => ''/*$work_time->tuesday->end*/,
 								'mask' => '99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -617,7 +617,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-lunch-time-tuesday',
-								'value' => $work_time->tuesday->lunch,
+								'value' => ''/*$work_time->tuesday->lunch*/,
 								'mask' => '99:99 - 99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -632,7 +632,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-start-time-wednesday',
-								'value' => $work_time->wednesday->start,
+								'value' => ''/*$work_time->wednesday->start*/,
 								'mask' => '99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -644,7 +644,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-end-time-wednesday',
-								'value' => $work_time->wednesday->end,
+								'value' => ''/*$work_time->wednesday->end*/,
 								'mask' => '99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -656,7 +656,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-lunch-time-wednesday',
-								'value' => $work_time->wednesday->lunch,
+								'value' => ''/*$work_time->wednesday->lunch*/,
 								'mask' => '99:99 - 99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -671,7 +671,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-start-time-thursday',
-								'value' => $work_time->thursday->start,
+								'value' => ''/*$work_time->thursday->start*/,
 								'mask' => '99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -683,7 +683,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-end-time-thursday',
-								'value' => $work_time->thursday->end,
+								'value' => ''/*$work_time->thursday->end*/,
 								'mask' => '99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -695,7 +695,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-lunch-time-thursday',
-								'value' => $work_time->thursday->lunch,
+								'value' => ''/*$work_time->thursday->lunch*/,
 								'mask' => '99:99 - 99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -710,7 +710,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-start-time-friday',
-								'value' => $work_time->friday->start,
+								'value' => ''/*$work_time->friday->start*/,
 								'mask' => '99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -722,7 +722,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-end-time-friday',
-								'value' => $work_time->friday->end,
+								'value' => ''/*$work_time->friday->end*/,
 								'mask' => '99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -734,7 +734,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-lunch-time-friday',
-								'value' => $work_time->friday->lunch,
+								'value' => ''/*$work_time->friday->lunch*/,
 								'mask' => '99:99 - 99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -749,7 +749,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-start-time-saturday',
-								'value' => $work_time->saturday->start,
+								'value' => ''/*$work_time->saturday->start*/,
 								'mask' => '99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -761,7 +761,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-end-time-saturday',
-								'value' => $work_time->saturday->end,
+								'value' => ''/*$work_time->saturday->end*/,
 								'mask' => '99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -773,7 +773,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-lunch-time-saturday',
-								'value' => $work_time->saturday->lunch,
+								'value' => ''/*$work_time->saturday->lunch*/,
 								'mask' => '99:99 - 99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -788,7 +788,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-start-time-sunday',
-								'value' => $work_time->sunday->start,
+								'value' => ''/*$work_time->sunday->start*/,
 								'mask' => '99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -800,7 +800,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-end-time-sunday',
-								'value' => $work_time->sunday->end,
+								'value' => ''/*$work_time->sunday->end*/,
 								'mask' => '99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -812,7 +812,7 @@ $this->title = 'Добавить виджет';
 						<td>
 							<?=MaskedInput::widget([
 								'name' => 'work-lunch-time-sunday',
-								'value' => $work_time->sunday->lunch,
+								'value' => ''/*$work_time->sunday->lunch*/,
 								'mask' => '99:99 - 99:99',
 								'options' => [
 									'class' => 'form-control',
@@ -845,7 +845,7 @@ $this->title = 'Добавить виджет';
 							 alt="Вконтакте">
 					</td>
 					<td>
-						<input type="text" name = 'social-vk' value = "<?= $social->vk?>"
+						<input type="text" name = 'social-vk' value = ""
 							   class = 'form-control col-md-1' data-required = true
 							   placeholder = 'адресс без http:// или https://'>
 					</td>
@@ -857,7 +857,7 @@ $this->title = 'Добавить виджет';
 							 alt="Однокласники">
 					</td>
 					<td>
-						<input type="text" name = 'social-ok' value = "<?= $social->ok?>"
+						<input type="text" name = 'social-ok' value = ""
 							   class = 'form-control col-md-1' data-required = true
 							   placeholder = 'адресс без http:// или https://'>
 					</td>
@@ -870,7 +870,7 @@ $this->title = 'Добавить виджет';
 							 alt="FaceBook">
 					</td>
 					<td>
-						<input type="text" name = 'social-facebook' value = "<?= $social->facebook?>"
+						<input type="text" name = 'social-facebook' value = ""
 							   class = 'form-control col-md-1' data-required = true
 							   placeholder = 'адресс без http:// или https://'>
 					</td>
@@ -883,7 +883,7 @@ $this->title = 'Добавить виджет';
 							 alt="Twitter">
 					</td>
 					<td>
-						<input type="text" name = 'social-twitter' value = "<?= $social->twitter?>"
+						<input type="text" name = 'social-twitter' value = ""
 							   class = 'form-control col-md-1' data-required = true
 							   placeholder = 'адресс без http:// или https://'>
 					</td>
@@ -896,7 +896,7 @@ $this->title = 'Добавить виджет';
 							 alt="Instagram">
 					</td>
 					<td>
-						<input type="text" name = 'social-insta' value = "<?= $social->insta?>"
+						<input type="text" name = 'social-insta' value = ""
 							   class = 'form-control col-md-1' data-required = true
 							   placeholder = 'адресс без http:// или https://'>
 					</td>
