@@ -282,13 +282,13 @@ class WidgetSettings extends \yii\db\ActiveRecord
     public function widgetCall($phone, $megaEvent, $widget)
     {
         if(is_array($widget)){
-            $callback=$this->makeCallBackCallFollowMe($widget, $this->cutNumber($phone), $megaEvent);
+            $callback = $this->makeCallBackCallFollowMe($widget, $this->cutNumber($phone), $megaEvent);
             if($callback){
                 //all is good
             } else {
                 //all is shit
             }
-            return true;
+            return $callback;
         } else return 'error';
     }
 
@@ -409,7 +409,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
                 "params" => array(
                     "customer_name"=> $customer_name,
                     "b_number" => '+'.$this->cutNumber($phone),
-                    "callBackURL" => "r.oblax.ru/widget/listener",
+                    "callBackURL" => $_SERVER["HTTP_HOST"]."/widget/listener",
                     "caller_id" => $this->cutNumber($data['simpleCallBackFollowmeStruct'][0]['redirect_number']),
                     "recordEnable" => "1",
                     "simpleCallBackFollowmeStruct" => $data['simpleCallBackFollowmeStruct']
@@ -421,7 +421,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
                     $this->saveCall($widget['widget_id'], $phone, $callBackCall_id, 1, $megaEvent);
                 }
             }
-            return true;
+            return $response;
         } else {
             //Баланс < 10 рублей отправляем заявку на звонок
             return false;
@@ -532,7 +532,7 @@ class WidgetSettings extends \yii\db\ActiveRecord
         ];
     }
 
-    public function saveCall($w_id,$phone,$callBackCall_id,$status, $megaEvent)
+    public function saveCall($w_id, $phone, $callBackCall_id, $status, $megaEvent)
     {
         $model = new WidgetPendingCalls();
         $model->widget_id = $w_id;

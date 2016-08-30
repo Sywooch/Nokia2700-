@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\WidgetCatching;
+use app\models\WidgetEvent;
 use Yii;
 use yii\db\Query;
 use yii\web\Controller;
@@ -16,7 +17,6 @@ class WidgetController extends Controller
         $publicActions = [
             'location',
             'get-widget',
-            'listener',
             'get-marks',
             'get-urls',
             'catched',
@@ -269,7 +269,8 @@ class WidgetController extends Controller
         $model = new WidgetSettings();
         if(is_array($widget) && $phone != 'undefined'){
             header('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
-            die($model->widgetCall($phone, $event, $widget));
+            print_r($model->widgetCall($phone, $event, $widget));
+            die();
         } else throw new \Exception('Access-Control-Allow-Origin: '.$getArray['protocol'].'//'.$widget['widget_site_url']);
     }
 
@@ -337,6 +338,12 @@ class WidgetController extends Controller
     public function actionListener()
     {
         $getArray = Yii::$app->request->get();
+
+        $WidgetEvent = new WidgetEvent();
+        $WidgetEvent->event = $getArray['event'];
+        $WidgetEvent->callbackId = $getArray['id'];
+        $WidgetEvent->save();
+
         $model = new WidgetSettings();
         $model->getCallBackFollowmeCallInfo($getArray['event'], $getArray['id']);
     }
