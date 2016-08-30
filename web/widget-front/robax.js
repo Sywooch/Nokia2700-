@@ -1,4 +1,4 @@
-var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date;
+var hostWidget = "robax.dev", helperMask, callbackID, JSON_social, Widget_date, ClickCall = false;
 (function(w,d){
     var helper={};
     var widgetsound = 0;
@@ -680,6 +680,8 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date;
         $(".robax-social").show();
     };
     helper.resetRobax = function() {
+        helper.cssQuery(".rate").style.display = 'none';
+        helper.cssQuery(".rate-form").style.display = 'none';
         helper.cssQuery(".robax-social").style.display = 'none';
         helper.cssQuery(".robax-widget-phone-form").style.display = 'block';
         helper.cssQuery(".btn-call").style.display = 'block';
@@ -758,30 +760,34 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date;
         }
 
         helper.cssQuery('.btn-call').onclick = function() {
-            if (helper.cssQuery(".robax-later__day-val").innerHTML == "Сегодня") {
-                if (helper.cssQuery(".robax-widget-phone-form .robax-phone-input").value) {
-                    t.postCall(helper.cssQuery(".robax-widget-phone-form .robax-phone-input").value);
-                    t.controller.timer();
+            console.log(ClickCall);
+            if (!ClickCall) {
+                ClickCall = true;
+                if (helper.cssQuery(".robax-later__day-val").innerHTML == "Сегодня") {
+                    if (helper.cssQuery(".robax-widget-phone-form .robax-phone-input").value) {
+                        t.postCall(helper.cssQuery(".robax-widget-phone-form .robax-phone-input").value);
+                        t.controller.timer();
+                    } else {
+                        helper.typing({
+                            '#phone-h1': '— Упс,',
+                            '#phone-div': 'вы забыли ввести номер телефона. _',
+                            'type_h1': '#phone-h1',
+                            'type_div': '#phone-div'
+                        });
+                    }
                 } else {
+                    t.postOrderCall(
+                        helper.cssQuery(".robax-widget-phone-form .robax-phone-input").value,
+                        helper.cssQuery(".robax-later__day-val").innerHTML,
+                        helper.cssQuery(".robax-later__hour-val").innerHTML
+                    );
                     helper.typing({
-                        '#phone-h1': '— Упс,',
-                        '#phone-div': 'вы забыли ввести номер телефона. _',
+                        '#phone-h1': '— Спасибо,',
+                        '#phone-div': 'ваша заявка на звонок успешно отправлена. _',
                         'type_h1': '#phone-h1',
                         'type_div': '#phone-div'
                     });
                 }
-            } else {
-                t.postOrderCall(
-                    helper.cssQuery(".robax-widget-phone-form .robax-phone-input").value,
-                    helper.cssQuery(".robax-later__day-val").innerHTML,
-                    helper.cssQuery(".robax-later__hour-val").innerHTML
-                );
-                helper.typing({
-                    '#phone-h1': '— Спасибо,',
-                    '#phone-div': 'ваша заявка на звонок успешно отправлена. _',
-                    'type_h1': '#phone-h1',
-                    'type_div': '#phone-div'
-                });
             }
         };
         helper.cssQuery('.btn-mail').onclick = function() {
@@ -939,6 +945,7 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date;
             'site_url': window.location.hostname,
             'protocol' :window.location.protocol
         });
+        ClickCall = false;
     };
     RobaxWidget.prototype.postReview = function(starCount, review){
         helper.get('//'+hostWidget+'/widget/widget-review',{
@@ -999,6 +1006,7 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date;
     RobaxWidget.prototype.controller = {
         open:function(dataJSON) {
             helper.cssQuery('.robax-widget-open-button, .robax-widget-open-button-mobile').onclick = function(){
+                helper.resetRobax();
                 var dc = new Date();
                 timeNow = dc.getHours() * 60 + dc.getMinutes();
                 dc = dataJSON['date']['work-start-time'];
@@ -1013,12 +1021,14 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date;
                         'type_div': '#phone-div'
                     });
                 } else {
-                    helper.typing({
-                        '#phone-h1': dataJSON['phone']['h1'],
-                        '#phone-div': dataJSON['phone']['item-text'],
-                        'type_h1': '#phone-h1',
-                        'type_div': '#phone-div'
-                    });
+                    if ($(".rate").css("display") == "none" || $(".rate-social").css("display") == "none") {
+                        helper.typing({
+                            '#phone-h1': dataJSON['phone']['h1'],
+                            '#phone-div': dataJSON['phone']['item-text'],
+                            'type_h1': '#phone-h1',
+                            'type_div': '#phone-div'
+                        });
+                    }
                 }
                 helper.cssQuery('#cbh_timer_minutes').innerHTML = '00';
                 helper.cssQuery('#cbh_timer_seconds').innerHTML = '07';
@@ -1093,12 +1103,14 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date;
                     }
                     helper.addClass(helper.cssQuery(this.getAttribute("data-target")),' robax-widget-active');
                     if (this.getAttribute("data-target") == ".robax-widget-phone") {
-                        helper.typing({
-                            '#phone-h1': dataJSON['phone']['h1'],
-                            '#phone-div': dataJSON['phone']['item-text'],
-                            'type_h1': '#phone-h1',
-                            'type_div': '#phone-div'
-                        });
+                        if ($(".rate").css("display") == "none") {
+                            helper.typing({
+                                '#phone-h1': dataJSON['phone']['h1'],
+                                '#phone-div': dataJSON['phone']['item-text'],
+                                'type_h1': '#phone-h1',
+                                'type_div': '#phone-div'
+                            });
+                        }
                     } else if (this.getAttribute("data-target") == ".robax-widget-mail") {
                         helper.typing({
                             '#mail-h1': dataJSON['mail']['h1'],
@@ -1106,7 +1118,9 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date;
                             'type_h1': '#mail-h1',
                             'type_div': '#mail-div'
                         });
-                        helper.resetRobax();
+                        if ($(".rate").css("display") == "none") {
+                            helper.resetRobax();
+                        }
                     }
                 };
                 i++;
@@ -1189,27 +1203,27 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date;
         timer:function timer(s){
             var ms = Number(helper.cssQuery('#cbh_timer_ms').innerHTML)-1;
             helper.cssQuery("#cbh_timer_ms").innerHTML=(ms < 10 ? '0' + ms : ms);
-            if (ms > 0) setTimeout(timer,10);
-            else {
+            if (ms > 0) {
+                setTimeout(timer, 10);
+            } else {
                 //noinspection JSDuplicatedDeclaration
                 var s = Number(helper.cssQuery("#cbh_timer_seconds").innerHTML)-1;
                 if(s >= 0) {
                     helper.cssQuery("#cbh_timer_seconds").innerHTML = (s < 10 ? '0' + s : s);
                     helper.cssQuery("#cbh_timer_ms").innerHTML = 99;
                     setTimeout(timer, 10);
-                    if (s == 0) {
-                        helper.cssQuery(".robax-widget-phone-form").style.display = 'none';
-                        helper.cssQuery(".btn-call").style.display = 'none';
-                        helper.cssQuery(".robax-timer").style.display = 'none';
-                        helper.cssQuery(".robax-item-later").style.display = 'none';
-                        helper.typing({
-                            '#phone-h1': '— Спасибо за заказ.',
-                            '#phone-div': 'Оцените пожалуйста работу менеджера по 5-ти бальной шкале и оставте пожалуйста ваш отзыв. _',
-                            'type_h1': '#phone-h1',
-                            'type_div': '#phone-div'
-                        }, helper.rate);
-                    }
                 } else {
+                    helper.cssQuery(".robax-widget-phone-form").style.display = 'none';
+                    helper.cssQuery(".btn-call").style.display = 'none';
+                    helper.cssQuery(".robax-timer").style.display = 'none';
+                    helper.cssQuery(".robax-item-later").style.display = 'none';
+                    helper.typing({
+                        '#phone-h1': '— Спасибо за заказ.',
+                        '#phone-div': 'Оцените пожалуйста работу менеджера по 5-ти бальной шкале и оставте пожалуйста ваш отзыв. _',
+                        'type_h1': '#phone-h1',
+                        'type_div': '#phone-div'
+                    }, helper.rate);
+                    ClickCall = false;
                     if (typeof(s) == 'function') s();
                 }
             }
