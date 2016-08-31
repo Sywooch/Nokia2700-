@@ -402,16 +402,16 @@ $this->title = 'Добавить виджет';
 			$num = count($mails)-1;
 			unset($mails[$num]);
 			$count_mails = count($mails);
-			for($i=1; $i<=$count_mails; $i++)
-			{?>
+			/*for($i=1; $i<=$count_mails; $i++)
+			{*/?>
 				<span class="phone">Ваша эл-почта</span>
 				<div class="input-group">
 					<div class="input-group-addon">
 						<b>@</b>
 					</div>
-					<input type="text" class="form-control" name="widget_user_email_<?=$i?>" placeholder="Email" data-required="true" value="<?=$mails[$i-1]?>">
+					<input type="text" class="form-control" name="widget_user_email_1" placeholder="Email" data-required="true" value="">
 				</div>
-			<?}
+			<?/*}*/
 			?>
 		</div>
 		<br>
@@ -426,14 +426,14 @@ $this->title = 'Добавить виджет';
 			$num = count($phones)-1;
 			unset($phones[$num]);
 			$count_phones = count($phones);
-			for($i=1; $i<=$count_phones; $i++)
-			{?>
+			/*for($i=1; $i<=$count_phones; $i++)
+			{*/?>
 				<span class="phone">Телефон №<?=$i?> (определяется при звонке клиенту)</span>
 				<div class="input-group">
 					<div class="col-md-6">
 					<?=MaskedInput::widget([
-						'name' => 'widget_phone_number_'.$i,
-						'value' => $phones[$i-1],
+						'name' => 'widget_phone_number_1',
+						'value' => '',
 						'mask' => '+7(999)999-99-99',
 						'options' => [
 							'class' => 'form-control widget_phone',
@@ -445,13 +445,13 @@ $this->title = 'Добавить виджет';
 					<button class="flag-select dropdown-toggle" type="button" id="dropdown2Menu_<?=$i?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 						<?php
 						$flag = 'RU';
-						$phone = explode('(', $phones[$i-1])[0];
+						/*$phone = explode('(', $phones[$i-1])[0];
 						switch ($phone) {
 							case '+7' : $flag = 'RU';break;
 							case '+375' : $flag = 'BY';break;
 							case '+380' : $flag = 'UA';break;
 							case '+1' : $flag = 'US';break;
-						}
+						}*/
 						?>
 						<i class="glyphicon bfh-flag-<?=$flag?>"></i><span class="caret"></span>
 					</button>
@@ -463,10 +463,10 @@ $this->title = 'Добавить виджет';
 					</ul>
 					</div>
 					<div class="col-md-6">
-						<input type="text" name="widget_phone_manager_<?=$i?>" class = 'form-control widget_phone' style="display: inline-block">
+						<input type="text" name="widget_phone_manager_1" class = 'form-control widget_phone' style="display: inline-block">
 					</div>
 				</div>
-			<?}?>
+			<?/*}*/?>
 		</div>
 		<br>
 		<input type="hidden" name="count_phones" value="<?=$count_phones?>">
@@ -1029,7 +1029,7 @@ $this->title = 'Добавить виджет';
 		$('input[name="count_black_list"]').val(k);
 	});
 	//Добавление емэйла (настройка уведомлений)
-	var i = <?=$count_mails?>;
+	var i = 1;
 	$('.email_more').click(function(e){
 		i++;
 		e.preventDefault();
@@ -1038,7 +1038,7 @@ $this->title = 'Добавить виджет';
 		$('input[name="count_emails"]').val(i);
 	});
 	//Добавление телефона (определяется при звонке клиенту)
-	var j = <?=$count_phones?>;
+	var j = 1;
 	$('.phone_more').click(function(e){
 		j++;
 		e.preventDefault();
