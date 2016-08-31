@@ -827,6 +827,16 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date,
                     starCount++;
                 }
             });
+
+            /*var rate = document.getElementsByClassName("rate")[0];
+            var i_cont = 0;
+            while (rate.getElementsByTagName("i").length) {
+                if (rate.getElementsByTagName("i")[i_cont].getAttribute("select-start")) {
+                    starCount++;
+                }
+                i_cont++;
+            }*/
+
             if (starCount && helper.cssQuery(".form-review").value) {
                 helper.typing({
                     '#phone-h1': '— Спасибо Вам,',
@@ -886,17 +896,17 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date,
         }
         if (dataJSON['widget_goal'].length) {
             $('html script').each(function (e, i) {
-                if ($(this).attr('src') == 'https://mc.yandex.ru/metrika/watch.js' && $(this).attr('src') == 'http://www.google-analytics.com/analytics.js') {
+                if (this.getAttribute('src') == 'https://mc.yandex.ru/metrika/watch.js' && this.getAttribute('src') == 'http://www.google-analytics.com/analytics.js') {
                     if (dataJSON['widget_goal'] && dataJSON['widget_yandex_metrika'] && dataJSON['widget_google_metrika']) {
                         helper.cssQuery('.robax-widget-phone .robax-widget-item-button').setAttribute('onclick', "_gaq.push(['_trackEvent', 'Кнопка', '"+dataJSON['widget_goal']+"']);yaCounter"+dataJSON['widget_yandex_metrika']+".reachGoal('"+dataJSON['widget_goal']+"');");
                     }
                 }
-                if ($(this).attr('src') == 'https://mc.yandex.ru/metrika/watch.js') {
+                if (this.getAttribute('src') == 'https://mc.yandex.ru/metrika/watch.js') {
                     if (dataJSON['widget_goal'] && dataJSON['widget_yandex_metrika']) {
                         helper.cssQuery('.robax-widget-phone .robax-widget-item-button').setAttribute('onclick', "yaCounter"+dataJSON['widget_yandex_metrika']+".reachGoal('"+dataJSON['widget_goal']+"');");
                     }
                 }
-                if ($(this).attr('src') == 'http://www.google-analytics.com/analytics.js') {
+                if (this.getAttribute('src') == 'http://www.google-analytics.com/analytics.js') {
                     if (dataJSON['widget_goal'] && dataJSON['widget_google_metrika']) {
                         helper.cssQuery('.robax-widget-phone .robax-widget-item-button').setAttribute('onclick', "_gaq.push(['_trackEvent', 'Кнопка', '"+dataJSON['widget_goal']+"']);");
                     }
@@ -904,8 +914,8 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date,
             });
         }
         if (getCookie('__utmctr') != undefined) {
-            $('#phone-h1').text(dataJSON['phone']['h1']);
-            $('#phone-div').text('Вы наверное ищите ' + getCookie('__utmctr') + '? Связать вас с менеджером?');
+            document.getElementById('phone-h1').innerText = dataJSON['phone']['h1'];
+            document.getElementById('phone-div').innerText = 'Вы наверное ищите ' + getCookie('__utmctr') + '? Связать вас с менеджером?';
         }
         if(dataJSON['utp_img_url'].length>0){
             setTimeout(function(){
@@ -1021,7 +1031,8 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date,
                         'type_div': '#phone-div'
                     });
                 } else {
-                    if ($(".rate").css("display") == "none" || $(".rate-social").css("display") == "none") {
+                    if (document.getElementsByClassName('rate')[0].style.display == "none" ||
+                        document.getElementsByClassName('ate-social')[0].style.display == "none") {
                         helper.typing({
                             '#phone-h1': dataJSON['phone']['h1'],
                             '#phone-div': dataJSON['phone']['item-text'],
@@ -1033,7 +1044,8 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date,
                 helper.cssQuery('#cbh_timer_minutes').innerHTML = '00';
                 helper.cssQuery('#cbh_timer_seconds').innerHTML = '07';
                 helper.cssQuery('#cbh_timer_ms').innerHTML = '99';
-                $('.robax-d').text(':');
+                document.getElementsByClassName('robax-d')[0].innerHTML = ':';
+                document.getElementsByClassName('robax-d')[1].innerHTML = ':';
                 if (widgetsound == 1) {
                     var audio = new Audio(); // Создаём новый элемент Audio
                     audio.src = 'http://'+hostWidget+'/widget-front/open_1.mp3'; // Указываем путь к звуку "клика"
@@ -1045,10 +1057,10 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date,
             };
             helper.cssQuery('.overlay').onclick=function () {
                 helper.cssQuery('.overlay').setAttribute("style","display:none;");
-                if (!$('.robax-widget-mobile').length) {
+                if (!document.getElementsByClassName('robax-widget-mobile').length) {
                     helper.cssQuery('.robax-widget').setAttribute("style","right:-350px;");
                 } else {
-                    $('.robax-widget-active').removeClass('robax-widget-active');
+                    document.getElementsByClassName('robax-widget-active').removeClass('robax-widget-active');
                     helper.cssQuery('.robax-widget-mobile').setAttribute("style","right:-360px;");
                 }
             };
@@ -1057,15 +1069,15 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date,
         closed:function() {
             helper.cssQuery('.robax-widget-closed').onclick = function(){
                 helper.cssQuery('.overlay').setAttribute("style","display:none;");
-                if (!$('.robax-widget-mobile').length) {
+                if (!document.getElementsByClassName('robax-widget-mobile').length) {
                     helper.cssQuery('.robax-widget').setAttribute("style","right:-350px;");
                 } else {
-                    $('.robax-widget-active').removeClass('robax-widget-active');
+                    document.getElementsByClassName('robax-widget-active').removeClass('robax-widget-active');
                     helper.cssQuery('.robax-widget-mobile').setAttribute("style","right:-360px;");
                 }
                 helper.resetRobax();
             };
-            if (!$('.robax-widget-mobile').length) {
+            if (!document.getElementsByClassName('robax-widget-mobile').length) {
                 helper.cssQuery('.robax-arrow').onclick = function(){
                     helper.cssQuery('.overlay').setAttribute("style","display:none;");
                     helper.cssQuery('.robax-widget').setAttribute("style","right:-350px;");
@@ -1103,7 +1115,7 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date,
                     }
                     helper.addClass(helper.cssQuery(this.getAttribute("data-target")),' robax-widget-active');
                     if (this.getAttribute("data-target") == ".robax-widget-phone") {
-                        if ($(".rate").css("display") == "none") {
+                        if (document.getElementsByClassName('rate')[0].style.display == "none") {
                             helper.typing({
                                 '#phone-h1': dataJSON['phone']['h1'],
                                 '#phone-div': dataJSON['phone']['item-text'],
@@ -1118,7 +1130,7 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date,
                             'type_h1': '#mail-h1',
                             'type_div': '#mail-div'
                         });
-                        if ($(".rate").css("display") == "none") {
+                        if (document.getElementsByClassName('rate')[0].style.display == "none") {
                             helper.resetRobax();
                         }
                     }
@@ -1173,7 +1185,11 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date,
                 };
                 i++;
             }
-            var s=Number(dataJSON["date"]['work-start-time'].split(':')[0])*60+Number(dataJSON["date"]['work-start-time'].split(':')[1]),e=Number(dataJSON["date"]['work-end-time'].split(':')[0])*60+Number(dataJSON["date"]['work-end-time'].split(':')[1]),m=e-s,i=0,html='';
+            var s = Number(dataJSON["date"]['work-start-time'].split(':')[0]) * 60 + Number(dataJSON["date"]['work-start-time'].split(':')[1]),
+                e = Number(dataJSON["date"]['work-end-time'].split(':')[0]) * 60 + Number(dataJSON["date"]['work-end-time'].split(':')[1]),
+                m = e - s,
+                i = 0,
+                html='';
             while (i<=m) {
                 html+='<li data-time="'+helper.parseHourse(s+i)+'">'+helper.parseHourse(s+i)+'</li>';
                 i=i+60;
@@ -1181,7 +1197,9 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date,
 
             helper.cssQuery('.robax-later-sel__hold__hour').innerHTML = html;
             helper.cssQuery('.robax-later__hour-val').innerHTML = helper.cssQuery('.robax-later-sel__hold__hour li').innerHTML;
-            var e=helper.cssQueryAll('.robax-later__hour li'),i=0,n=e.length;
+            var e = helper.cssQueryAll('.robax-later__hour li'),
+                i = 0,
+                n = e.length;
             while(i<n){
                 e[i].onclick = function(){
                     helper.cssQuery('.robax-later-data-hour').value = this.getAttribute("data-day");
@@ -1248,18 +1266,22 @@ var hostWidget = "r.oblax.ru", helperMask, callbackID, JSON_social, Widget_date,
             },true);
         }
     };
-    var textEcho=function (options){
-        var o=options;
-        if(typeof(o.text)!='string')o.text = helper.cssQuery(o.selector).innerHTML;
-        if(isNaN(o.io))o.io=0;
-        helper.cssQuery(o.selector).innerHTML='';
+    var textEcho = function (options){
+        var o = options;
+        if( typeof(o.text) != 'string')o.text = helper.cssQuery(o.selector).innerHTML;
+        if(isNaN(o.io)) o.io = 0;
+        helper.cssQuery(o.selector).innerHTML = '';
         var i=0;
         while(i<o.io){
-            helper.cssQuery(o.selector).innerHTML+=o.text[i];
+            helper.cssQuery(o.selector).innerHTML += o.text[i];
             i++;
         }
-        if(o.text.length>o.io) {o.io=o.io+1;setTimeout(function(){textEcho(o)},50);}
-        else if(typeof(o.s)=='function') o.s();
+        if(o.text.length>o.io) {
+            o.io = o.io + 1;
+            setTimeout(function(){
+                textEcho(o)
+            }, 50);
+        } else if(typeof(o.s)=='function') o.s();
     }
 
 })(this, this.document);
