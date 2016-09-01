@@ -170,12 +170,29 @@ if(empty($notif))$notif = UserNotifSettings::setUserNotifSettings($id);
                                     </td>
 
                                     <td style="vertical-align: middle;text-align: center;">
-                                        <input readonly="readonly" role="form" type="text"
-                                               disabled
-                                               class="form-group form-control col-md-12"
-                                               id="edit_notification_settings-<?=$nott['id']?>-limit"
-                                               name="limit-<?=$nott['id']?>"
-                                               value="<?=$nott['notification_value']?>">
+                                        <?if($nott['notification_id'] == 2){?>
+                                            <div class="star-rating">
+                                              <div class="star-rating__wrap disabledbutton" id="edit_notification_settings-<?=$nott['id']?>-lim">
+                                                <input class="star-rating__input" id="star-rating-5" type="radio" <?if($nott['notification_value']<=5)echo 'checked'?> name="limit-<?=$nott['id']?>" value="5">
+                                                <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-5" title=""></label>
+                                                <input class="star-rating__input" id="star-rating-4" type="radio" <?if($nott['notification_value']<=4)echo 'checked'?> name="limit-<?=$nott['id']?>" value="4">
+                                                <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-4" title=""></label>
+                                                <input class="star-rating__input" id="star-rating-3" type="radio" <?if($nott['notification_value']<=3)echo 'checked'?> name="limit-<?=$nott['id']?>" value="3">
+                                                <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-3" title=""></label>
+                                                <input class="star-rating__input" id="star-rating-2" type="radio" <?if($nott['notification_value']<=2)echo 'checked'?> name="limit-<?=$nott['id']?>" value="2">
+                                                <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-2" title=""></label>
+                                                <input class="star-rating__input" id="star-rating-1" type="radio" <?if($nott['notification_value']<=1)echo 'checked'?> name="limit-<?=$nott['id']?>" value="1">
+                                                <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-1" title=""></label>
+                                              </div>
+                                            </div>
+                                            <?}else{?>
+                                            <input readonly="readonly" role="form" type="text"
+                                                   disabled
+                                                   class="form-group form-control col-md-12"
+                                                   id="edit_notification_settings-<?=$nott['id']?>-limit"
+                                                   name="limit-<?=$nott['id']?>"
+                                                   value="<?=$nott['notification_value']?>">
+                                        <?}?>
                                     </td>
                                     <td style="vertical-align: middle; text-align: center;">
                                         <input disabled type="checkbox" role="form" class="form-group col-md" form="w1"
@@ -225,6 +242,42 @@ if(empty($notif))$notif = UserNotifSettings::setUserNotifSettings($id);
         </div>
     </div>
 </section>
+<style>
+    .star-rating{
+        font-size: 0;
+    }
+    .star-rating__wrap{
+        display: inline-block;
+        font-size: 2rem;
+    }
+    .star-rating__wrap:after{
+        content: "";
+        display: table;
+        clear: both;
+    }
+    .star-rating__ico{
+        float: right;
+        padding-left: 2px;
+        cursor: pointer;
+        color: #3c8dbc;
+    }
+    .star-rating__ico:last-child{
+        padding-left: 0;
+    }
+    .star-rating__input{
+        display: none;
+    }
+    .star-rating__ico:hover:before,
+    .star-rating__ico:hover ~ .star-rating__ico:before,
+    .star-rating__input:checked ~ .star-rating__ico:before
+    {
+        content: "\f005";
+    }
+    .disabledbutton {
+        pointer-events: none;
+        opacity: 0.4;
+    }
+</style>
 <script>
 function myclick(param){
     document.getElementById('user-'+param).readOnly=false;
@@ -241,11 +294,16 @@ $(document).on('click','.sub_link',function(e){
 function notifSet(param){
     document.getElementById(param+"-sms").disabled=false;
     document.getElementById(param+"-email").disabled=false;
-    document.getElementById(param+"-limit").readOnly=false;
-    document.getElementById(param+"-limit").disabled=false;
+    if(document.getElementById(param+"-limit"))
+    {
+        document.getElementById(param+"-limit").readOnly=false;
+        document.getElementById(param+"-limit").disabled=false;
+    }
+
     document.getElementById(param+"-notif-id").disabled=false;
     document.getElementById(param+"-id").disabled=false;
     document.getElementById(param+'-save').hidden=false;
+    if(document.getElementById(param+"-lim"))document.getElementById(param+"-lim").className='star-rating__wrap';
     document.getElementById(param).hidden=true;
     $(param+"-limit").focus();
 }
@@ -254,4 +312,25 @@ $(document).on('click','.settings_sub_link',function(e){
     e.preventDefault();
     $('#w1').yiiActiveForm('submitForm');
 });
+
+/*$(document).on('click','#star-rating-1',function(e){
+    e.preventDefault();
+    $('#w1').yiiActiveForm('submitForm');
+});
+$(document).on('click','#star-rating-2',function(e){
+    e.preventDefault();
+    $('#w1').yiiActiveForm('submitForm');
+});
+$(document).on('click','#star-rating-3',function(e){
+    e.preventDefault();
+    $('#w1').yiiActiveForm('submitForm');
+});
+$(document).on('click','#star-rating-4',function(e){
+    e.preventDefault();
+    $('#w1').yiiActiveForm('submitForm');
+});
+$(document).on('click','#star-rating-5',function(e){
+    e.preventDefault();
+    $('#w1').yiiActiveForm('submitForm');
+});*/
 </script>

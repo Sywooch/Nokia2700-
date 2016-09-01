@@ -332,9 +332,27 @@ class WidgetSettings extends \yii\db\ActiveRecord
             $WidgetRatingManager = new WidgetRatingManager();
             $WidgetRatingManager->widget_id = $widget["widget_id"];
             $WidgetRatingManager->rating = $starCount;
-            $WidgetRatingManager->comment = ($review) ? $review : 'Нет коментария.';
+            $coment = ($review) ? $review : 'Пользователь не оставил коментария.';
+            $WidgetRatingManager->comment = ($review) ? $review : 'Пользователь не оставил коментария.';
             $WidgetRatingManager->phone = $WidgetPendingCalls->phone;
             if (!$WidgetRatingManager->save()) print_r($WidgetRatingManager->getErrors());
+
+
+            $w_settings = WidgetSettings::findOne($widget["widget_id"]);
+            $u_id =$w_settings->user_id;
+            $user = User::findOne($u_id);
+            $phones = explode(';', $widget->widget_phone_numbers);
+            $managers = explode(';', $widget->widget_phone_manager);
+            $manager = $managers[array_search($WidgetPendingCalls->phone, $phones)];
+            $not_sett = UserNotifSettings::findOne(["user_id" => $u_id, "notification_id" => 2]);
+            if($starCount <= $not_sett->notification_value)
+            {
+                User::sendManagerRating($user->email,$w_settings->widget_site_url,$starCount, $manager, date("d.m.Y h:i"), $coment);
+            }
+            else
+            {
+                return http_redirect('http://r.oblax.ru/profile/fail');
+            }
 
             return true;
         } else return "error";

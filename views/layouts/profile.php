@@ -152,6 +152,12 @@ AppAsset::register($this);
 							<li><a href="<?=Url::to('/partners/bonus-history');?>" class=""><i class="fa fa-line-chart"></i>Бонусный счет</a></li>
 						</ul>
 					</li>
+					<?php $active = (Url::to(['']) == '/profile/integration') ? 'active' : ''; ?>
+					<li class="<?=$active?>">
+						<a href="<?=Url::to('/profile/integration');?>">
+							<i class="fa fa-cloud-upload"></i> <span>Интеграции</span>
+						</a>
+					</li>
         		</ul>
     		</section>
   		</aside>

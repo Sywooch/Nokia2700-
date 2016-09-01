@@ -161,6 +161,28 @@ class User extends ActiveRecord implements IdentityInterface
         return true;
     }
 
+    public static function sendManagerRating($email, $site_url, $rating, $manager, $date, $coment)
+    {
+        $subject = "Уведомление о низкой оценке менеджера";
+        $message =
+            '<html>
+            <head>
+                <title>Уведомление о низкой оценке менеджера</title>
+            </head>
+            <body>
+                <p>'.$date.' Ваш менеджер '.$manager.' получил оценку: '.$rating.' за звонок с сайта: '.$site_url.' . </p>
+                <p> И оставил коментарий : \"'.$coment.'\".</p>
+            </body>
+        </html>';
+        Yii::$app->mailer->compose()
+            ->setTo($email)
+            ->setFrom('robax@oblax.ru')
+            ->setSubject($subject)
+            ->setHtmlBody($message)
+            ->send();
+        return true;
+    }
+
     public function getWidgets()
     {
         return $this

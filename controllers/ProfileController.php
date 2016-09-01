@@ -46,7 +46,8 @@ class ProfileController extends Controller
                             'pay-with', 'paid', 'fail','paid-ik',
                             'update-paid-ik', 'tarifs', 'sound',
                             'user-tarif', 'for-test', 'deletewidget',
-                            'update-user', 'update-notif-settings'
+                            'update-user', 'update-notif-settings',
+                            'integration'
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -78,6 +79,11 @@ class ProfileController extends Controller
     public function actionForTest()
     {
         return $this->render('for-test');
+    }
+
+    public function actionIntegration()
+    {
+        return $this->render('integration');
     }
 
     public function actionTarifs()
@@ -225,10 +231,10 @@ class ProfileController extends Controller
         $postArray = Yii::$app->request->post();
         if(!empty($postArray))
         {
-//            echo "<pre>";
-//            print_r($postArray);
-//            echo "</pre>";
-//            die();
+            /*echo "<pre>";
+            print_r($postArray);
+            echo "</pre>";
+            die();*/
             $address = ['http://', 'https://'];
             $url = str_replace($address, '', Yii::$app->request->post('widget_site_url'));
             $code = "user-".Yii::$app->user->identity->id."-url-".$url."-date-".time();
@@ -239,7 +245,7 @@ class ProfileController extends Controller
             for($i=1; $i<=$postArray['count_emails']; $i++)
             {
                 $index = 'widget_user_email_'.$i;
-                $mail.=$postArray[$index].';';
+                if(!empty($postArray[$index]))$mail.=$postArray[$index].';';
             }
             $model->widget_user_email = $mail;
             $black_list = '';
@@ -267,8 +273,11 @@ class ProfileController extends Controller
             {
                 $index = 'widget_phone_number_'.$i;
                 $man = 'widget_phone_manager_'.$i;
-                $phones.=$postArray[$index].';';
-                $manager .=$postArray[$man].';';
+                if(!empty($postArray[$index]))
+                {
+                    $phones.=$postArray[$index].';';
+                    $manager .=$postArray[$man].';';
+                }
             }
             $model->widget_phone_manager = $manager;
             $model->widget_phone_numbers=$phones;
@@ -361,10 +370,10 @@ class ProfileController extends Controller
         $widgetTemplateUsers = WidgetTemplateNotificationUsers::findAll(['id_widget' => $id]);
         $postArray = Yii::$app->request->post();
 
-       /* echo '<pre>';
+        /*echo '<pre>';
         print_r($postArray);
-        echo '</pre>';
-        die();*/
+        echo '</pre>';*/
+        /*die();*/
         if(!empty($postArray))
         {
             $address = ['http://', 'https://'];
@@ -375,7 +384,7 @@ class ProfileController extends Controller
             for($i=1; $i<=$postArray['count_emails']; $i++)
             {
                 $index = 'widget_user_email_'.$i;
-                $email.=$postArray[$index].';';
+                if(!empty($postArray[$index]))$email.=$postArray[$index].';';
             }
             $model->widget_user_email = $email;
             $black_list = '';
@@ -399,8 +408,12 @@ class ProfileController extends Controller
             {
                 $index = 'widget_phone_number_'.$i;
                 $man = 'widget_phone_manager_'.$i;
-                $phone.=$postArray[$index].';';
-                $manager .=$postArray[$man].';';
+                if(!empty($postArray[$index]))
+                {
+                    $phone.=$postArray[$index].';';
+                    $manager .=$postArray[$man].';';
+                }
+
             }
             $model->widget_phone_manager = $manager;
             $model->widget_phone_numbers = $phone;
@@ -603,7 +616,6 @@ class ProfileController extends Controller
 
     public function actionUpdateNotifSettings()
     {
-
         $fl_array =array_values(preg_grep("/^id-/", array_keys($_POST)));
 
         for($i = 0; $i < count($fl_array); $i++)

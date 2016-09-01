@@ -35,7 +35,8 @@ $this->title = 'Добавить виджет';
 <!-- Main content -->
 <section class="content">
 	<!-- Small boxes (Stat box) -->
-	<?php $form = ActiveForm::begin(); ?>
+	<?php $form = ActiveForm::begin([
+		'options' => ["onsubmit"=>"return sendform();"]]); ?>
 	<div class="">
 
 		<div class="form-group bordered">
@@ -394,22 +395,22 @@ $this->title = 'Добавить виджет';
 		</div>
 	</div>
 	<div class="bordered">
-		<label>Настройки уведомлений</label>
+		<div class="row">
+			<label class="col-md-3">Настройки уведомлений</label>
+			<label class="col-md-1 btn-danger">Важно</label>
+		</div>
 		<br>
 		<div id="emails_block">
 			<?php
-			$mails = explode(';', $model->widget_user_email);
-			$num = count($mails)-1;
-			unset($mails[$num]);
-			$count_mails = count($mails);
+			$count_mails = 1;
 			/*for($i=1; $i<=$count_mails; $i++)
 			{*/?>
-				<span class="phone">Ваша эл-почта</span>
+				<span class="phone">Ваша эл-почта </span><span id="errMail" class="phone"></span>
 				<div class="input-group">
 					<div class="input-group-addon">
 						<b>@</b>
 					</div>
-					<input type="text" class="form-control" name="widget_user_email_1" placeholder="Email" data-required="true" value="">
+					<input type="text" class="form-control" id="widget_user_email_1" name="widget_user_email_1" placeholder="Email" data-required="true" value="">
 				</div>
 			<?/*}*/
 			?>
@@ -422,27 +423,25 @@ $this->title = 'Добавить виджет';
 		<br>
 		<div id="phones_block">
 			<?php
-			$phones = explode(';', $model->widget_phone_numbers);
-			$num = count($phones)-1;
-			unset($phones[$num]);
-			$count_phones = count($phones);
+			$count_phones = 1;
 			/*for($i=1; $i<=$count_phones; $i++)
 			{*/?>
-				<span class="phone">Телефон №<?=$i?> (определяется при звонке клиенту)</span>
+				<span class="phone">Телефон №1 (определяется при звонке клиенту) </span> <span id="errPhone" class="phone"></span>
 				<div class="input-group">
-					<div class="col-md-6">
+					<div class="col-md-5" style="margin-right: -15px;">
 					<?=MaskedInput::widget([
 						'name' => 'widget_phone_number_1',
 						'value' => '',
 						'mask' => '+7(999)999-99-99',
 						'options' => [
 							'class' => 'form-control widget_phone',
-							'style' => 'padding-left: 45px; display: inline-block;',
+							'id' => 'widget_phone_number_1',
+							'style' => 'padding-left: 45px; display: inline-block; margin-left: -15px;',
 							'data-required' => true,
 							'placeholder' => '+7(___)___-__-__'
 						]
 					]);?>
-					<button class="flag-select dropdown-toggle" type="button" id="dropdown2Menu_<?=$i?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					<button class="flag-select dropdown-toggle" style="margin-left: 0px;" type="button" id="dropdown2Menu_<?=$i?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 						<?php
 						$flag = 'RU';
 						/*$phone = explode('(', $phones[$i-1])[0];
@@ -462,7 +461,8 @@ $this->title = 'Добавить виджет';
 						<li onclick="countryChange('US', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>
 					</ul>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-2" style="padding-left: 0; padding-right: 0;padding-top: 7px;"><span>Менеджер : </span></div>
+					<div class="col-md-5" style="padding-left: 0;">
 						<input type="text" name="widget_phone_manager_1" class = 'form-control widget_phone' style="display: inline-block">
 					</div>
 				</div>
@@ -1042,8 +1042,8 @@ $this->title = 'Добавить виджет';
 	$('.phone_more').click(function(e){
 		j++;
 		e.preventDefault();
-		var phone_input = '<span class="phone">Телефон №'+j+'</span><div class="input-group"><div class="col-md-6"><input type="text" style="padding-left: 45px;display: inline-block;" class="form-control widget_phone" name="widget_phone_number_'+j+'" placeholder="+7(___)___-__-__" data-required="false">' +
-			'<button style="margin-left: 20px;" class="flag-select dropdown-toggle" type="button" id="dropdown2Menu_'+j+'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="glyphicon bfh-flag-RU"></i><span class="caret"></span></button>' +
+		var phone_input = '<span class="phone">Телефон №'+j+' (определяется при звонке клиенту)</span><div class="input-group"><div class="col-md-5" style="margin-right: -15px;"><input type="text" style="padding-left: 45px;display: inline-block;margin-left: -15px;" class="form-control widget_phone" name="widget_phone_number_'+j+'" placeholder="+7(___)___-__-__" data-required="false">' +
+			'<button style="margin-left: 0px;" class="flag-select dropdown-toggle" type="button" id="dropdown2Menu_'+j+'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="glyphicon bfh-flag-RU"></i><span class="caret"></span></button>' +
 			'<ul class="dropdown-menu" aria-labelledby="dropdown2Menu_'+j+'">' +
 			'<li onclick="countryChange(\'RU\', $(this));"><i class="glyphicon bfh-flag-RU"></i> Россия</li>' +
 			'<li onclick="countryChange(\'BY\', $(this));"><i class="glyphicon bfh-flag-BY"></i> Белорусия</li>' +
@@ -1051,7 +1051,8 @@ $this->title = 'Добавить виджет';
 			'<li onclick="countryChange(\'US\', $(this));"><i class="glyphicon bfh-flag-US"></i> США</li>' +
 			'</ul>'+
 			'</div>'+
-				'<div class="col-md-6">'+
+			'<div class="col-md-2" style="padding-left: 0; padding-right: 0;padding-top: 7px;"><span>Менеджер : </span></div>'+
+				'<div class="col-md-5" style="padding-left: 0;">'+
 				'<input type="text" name="widget_phone_manager_'+j+'" class = "form-control widget_phone" style="display: inline-block;">'+
 			'</div>'+
 			'</div>';
@@ -1195,5 +1196,31 @@ $this->title = 'Добавить виджет';
 				}
 			});
 		}
+	}
+
+	function sendform() {
+
+		if (document.getElementById('widget_user_email_1').value == "") {
+			if (document.getElementById('widget_phone_number_1').value == "") {
+				document.getElementById('errPhone').innerText=' Пожалуйста, введите хотя бы один номер телефона менеджера';
+				document.getElementById('errPhone').style.color='red';
+				document.getElementById('widget_phone_number_1').style.background = '#ffc2cd';
+			}
+			document.getElementById('errMail').innerText=' Пожалуйста, введите хотя бы один email';
+			document.getElementById('errMail').style.color='red';
+			document.getElementById('widget_user_email_1').style.background = '#ffc2cd';
+			document.getElementById('widget_user_email_1').focus();
+			return false
+		}
+
+		if (document.getElementById('widget_phone_number_1').value == "") {
+			document.getElementById('errPhone').innerText=' Пожалуйста, введите хотя бы один номер телефона менеджера';
+			document.getElementById('errPhone').style.color='red';
+			document.getElementById('widget_phone_number_1').style.background = '#ffc2cd';
+			document.getElementById('widget_phone_number_1').focus();
+			return false
+		}
+
+		return true;
 	}
 </script>

@@ -31,9 +31,9 @@ $this->title = 'Пополнение баланса';
 		$form->action = "pay-with";
 		$items=array(
 			""=>'Выберите способ оплаты',
-			"Roboxchange"=> 'Roboxchange',
-			"InterKassa"=>'InterKassa',
-			"WalletOne"=>'WalletOne',
+			"Roboxchange"=> 'Робокасса',
+			"InterKassa"=>'Интеркасса',
+			"WalletOne"=>'Единый кошелек W1',
 		);
 		?>
 		<div class="row">
